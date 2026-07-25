@@ -22,9 +22,15 @@ class TtsService {
     _pret = true;
   }
 
+  // Les mots de vocabulaire sont stockés sous forme de citation de
+  // dictionnaire (ex. "unus, -a, -um", "puella, -ae, f.") : seul le premier
+  // segment est le mot à prononcer, le reste (génitif, genre) ne doit pas
+  // être lu à voix haute.
   Future<void> prononcer(String texte) async {
+    final motSeul = texte.split(',').first.trim();
+
     await _initialiser();
     await _tts.stop();
-    await _tts.speak(texte);
+    await _tts.speak(motSeul);
   }
 }
