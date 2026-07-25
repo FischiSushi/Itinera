@@ -1,0 +1,55 @@
+rules_version = '2';
+
+// Colle ce contenu dans la Console Firebase, sous Firestore Database →
+// Règles, puis publie. Voir FIREBASE_SETUP.md pour le contexte.
+//
+// Modèle :
+//   users/{uid}                      profil public (lecture: tout compte
+//                                     connecté ; écriture: le propriétaire
+//                                     uniquement)
+//   users/{uid}/following/{autreUid} "moi je suis {autreUid}" (écrit par
+//                                     {uid} lui-même)
+//   users/{uid}/followers/{autreUid} "je suis suivi par {autreUid}" (écrit
+//                                     par {autreUid}, pas par {uid} — c'est
+//                                     l'autre personne qui déclare qu'elle
+//                                     me suit)
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /users/{userId} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null && request.auth.uid == userId;
+
+      match /following/{autreId} {
+        allow read: if request.auth != null;
+        allow write: if request.auth != null && request.auth.uid == userId;
+      }
+
+      match /followers/{autreId} {
+        allow read: if request.auth != null;
+        allow write: if request.auth != null && request.auth.uid == autreId;
+      }
+    }
+
+    // Défis entre amis : un défi est créé par {fromUid} avec un score déjà
+    // en poche, envoyé à {toUid}. Seul le destinataire peut le compléter
+    // (en ajoutant son propre score), une seule fois.
+    match /duels/{defiId} {
+      allow read: if request.auth != null
+        && request.auth.uid in [resource.data.fromUid, resource.data.toUid];
+
+      allow create: if request.auth != null
+        && request.auth.uid == request.resource.data.fromUid
+        && request.resource.data.statut == 'en_attente'
+        && request.resource.data.scoreTo == null;
+
+      allow update: if request.auth != null
+        && request.auth.uid == resource.data.toUid
+        && resource.data.statut == 'en_attente'
+        && request.resource.data.statut == 'termine'
+        && request.resource.data.fromUid == resource.data.fromUid
+        && request.resource.data.toUid == resource.data.toUid
+        && request.resource.data.scoreFrom == resource.data.scoreFrom
+        && request.resource.data.mots == resource.data.mots;
+    }
+  }
+}
