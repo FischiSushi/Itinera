@@ -3,6 +3,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:fsrs/fsrs.dart' as fsrs;
 
 import 'package:itinera/main.dart';
+import 'package:itinera/services/tts_service.dart';
 import 'package:itinera/vocabulaire_data.dart';
 
 // ============================================================
@@ -188,6 +189,17 @@ class _VocabulaireScreenState extends State<VocabulaireScreen> {
                         ],
                       ),
                     ),
+                  ),
+                ),
+                Positioned(
+                  top: 4,
+                  left: 4,
+                  child: IconButton(
+                    icon: const Icon(Icons.volume_up, color: texteClair),
+                    tooltip: 'Écouter la prononciation',
+                    onPressed: () {
+                      TtsService.instance.prononcer(aktuelleVokabel.latin);
+                    },
                   ),
                 ),
                 if (aktuelleVokabel.etymologie != null)
