@@ -82,6 +82,25 @@ String normaliserReponse(String texte) {
   return resultat.replaceAll(RegExp(r'\s+'), ' ');
 }
 
+// Un "parcours guidé" alterne de courts blocs de lecture avec des
+// vérifications rapides (non notées, juste formatives), plutôt que de tout
+// lire d'un bloc avant d'attaquer le quiz noté (voir Lecon.etapes).
+sealed class EtapeLecon {
+  const EtapeLecon();
+}
+
+class EtapeTexte extends EtapeLecon {
+  final List<Widget> Function(BuildContext) contenu;
+
+  const EtapeTexte(this.contenu);
+}
+
+class EtapeVerification extends EtapeLecon {
+  final ExerciceLecon exercice;
+
+  const EtapeVerification(this.exercice);
+}
+
 class Lecon {
   final String id;
   final String titre;
@@ -96,6 +115,12 @@ class Lecon {
   final List<ExerciceLecon>? exercices;
   final Widget Function(BuildContext)? fiche;
 
+  // Si présent, remplace l'écran d'explication par un parcours guidé qui
+  // alterne lecture et vérifications rapides — voir EtapeLecon. Le quiz
+  // noté (exercices) et la fiche restent inchangés et suivent le parcours
+  // guidé normalement.
+  final List<EtapeLecon>? etapes;
+
   // Unités de vocabulaire recommandées pour aller avec ce point de
   // grammaire (accessibles librement, pas verrouillées).
   final List<String> uniteRecommandees;
@@ -109,6 +134,7 @@ class Lecon {
     this.explication,
     this.exercices,
     this.fiche,
+    this.etapes,
     this.uniteRecommandees = const [],
   });
 }
@@ -355,6 +381,50 @@ final Lecon _leconDeclinaison1 = Lecon(
       'Le génitif singulier (ici puellae) permet toujours de reconnaître '
       'la déclinaison d\'un mot : c\'est pourquoi le dictionnaire indique '
       'toujours les deux formes, « puella, -ae ».',
+    ),
+  ],
+  etapes: [
+    EtapeTexte(
+      (context) => [
+        _paragrapheExplication(
+          'Maintenant que tu connais le rôle de chaque cas, voici comment '
+          'ils s\'expriment concrètement.\n\n'
+          'Les noms latins se répartissent en 5 groupes de terminaisons, '
+          'appelés déclinaisons. La 1ère déclinaison regroupe surtout des '
+          'noms féminins terminés par -a au nominatif singulier, comme '
+          'puella (la jeune fille).',
+        ),
+      ],
+    ),
+    EtapeTexte(
+      (context) => [
+        _titreExplication('Les terminaisons'),
+        tableauDeclinaison(declinaisons[0]),
+      ],
+    ),
+    const EtapeVerification(
+      QuestionLecon(
+        question: 'Quel est le nominatif singulier de puella (le mot de base) ?',
+        options: ['puella', 'puellam', 'puellae', 'puellas'],
+        reponseCorrecte: 'puella',
+      ),
+    ),
+    const EtapeVerification(
+      QuestionLecon(
+        question:
+            'Quel est le génitif singulier de puella (utilisé dans le dictionnaire) ?',
+        options: ['puella', 'puellam', 'puellae', 'puellis'],
+        reponseCorrecte: 'puellae',
+      ),
+    ),
+    EtapeTexte(
+      (context) => [
+        _paragrapheExplication(
+          'Le génitif singulier (ici puellae) permet toujours de '
+          'reconnaître la déclinaison d\'un mot : c\'est pourquoi le '
+          'dictionnaire indique toujours les deux formes, « puella, -ae ».',
+        ),
+      ],
     ),
   ],
   exercices: const [
