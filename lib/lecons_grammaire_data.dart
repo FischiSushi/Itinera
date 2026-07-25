@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
+import 'grammaire_tableaux_data.dart';
 import 'main.dart';
 import 'vocabulaire_data.dart';
+import 'screens/declinaisons_screen.dart' show tableauDeclinaison;
+import 'screens/grammaire_screen.dart' show tableauConjugaison, tableauImparfait;
 
 // ============================================================
 // PARCOURS DE LEÇONS : DONNÉES

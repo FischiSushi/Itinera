@@ -2,8 +2,10 @@ import 'package:firebase_auth/firebase_auth.dart' show User;
 import 'package:flutter/material.dart';
 
 import 'package:itinera/main.dart';
+import 'package:itinera/screens/boutique_screen.dart';
 import 'package:itinera/screens/classement_screen.dart';
 import 'package:itinera/screens/defis_screen.dart';
+import 'package:itinera/screens/succes_screen.dart';
 import 'package:itinera/services/auth_service.dart';
 import 'package:itinera/services/duel_service.dart';
 import 'package:itinera/services/social_service.dart';
