@@ -171,7 +171,7 @@ class _CarteNachhilfe extends StatelessWidget {
   static const _roseBordure = Color(0xFFFF8FC7);
   static const _rosePuce = Color(0xFFFFC1E3);
 
-  static const _email = 'majerusluna@gmail.com';
+  static const _email = 'myitineraapp@gmail.com';
 
   @override
   Widget build(BuildContext context) {
