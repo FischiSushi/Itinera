@@ -138,6 +138,18 @@ void main() {
     });
   });
 
+  group('Pomodoro', () {
+    test('0 avant toute session terminée', () {
+      expect(pomodorosTermines(), 0);
+    });
+
+    test('enregistrerPomodoroTermine incrémente le compteur', () {
+      enregistrerPomodoroTermine();
+      enregistrerPomodoroTermine();
+      expect(pomodorosTermines(), 2);
+    });
+  });
+
   group('Succès', () {
     test('aucun succès débloqué au départ', () {
       expect(succesDebloques(), isEmpty);
