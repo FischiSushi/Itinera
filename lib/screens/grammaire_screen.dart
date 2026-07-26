@@ -9,7 +9,50 @@ import 'package:itinera/screens/points_faibles_screen.dart';
 import 'package:itinera/screens/speed_declinaison_screen.dart';
 import 'package:itinera/screens/stamm_trainer_screen.dart';
 
+// Préfixe commun à toutes les formes d'un temps donné (calculé plutôt que
+// stocké) : ce qui reste après ce préfixe est la terminaison personnelle,
+// mise en évidence dans le tableau — même principe que pour les
+// déclinaisons (voir declinaisons_screen.dart).
+String _radicalCommunConjugaison(Map<String, String> formes) {
+  final valeurs = formes.values.toList();
+
+  var prefixe = valeurs.first;
+
+  for (final forme in valeurs.skip(1)) {
+    var longueur = 0;
+    while (longueur < prefixe.length &&
+        longueur < forme.length &&
+        prefixe[longueur] == forme[longueur]) {
+      longueur++;
+    }
+    prefixe = prefixe.substring(0, longueur);
+  }
+
+  return prefixe;
+}
+
+Widget _celluleFormeConjugaison(String forme, String radical) {
+  final terminaison = forme.substring(radical.length);
+
+  return Text.rich(
+    TextSpan(
+      children: [
+        TextSpan(text: radical),
+        TextSpan(
+          text: terminaison,
+          style: const TextStyle(
+            color: accentViolet,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
 Widget tableauConjugaison(Conjugaison conj) {
+  final radical = _radicalCommunConjugaison(conj.present);
+
   return Card(
     child: Padding(
       padding: const EdgeInsets.all(16),
@@ -51,7 +94,10 @@ Widget tableauConjugaison(Conjugaison conj) {
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 4),
-                      child: Text(conj.present[personne]!),
+                      child: _celluleFormeConjugaison(
+                        conj.present[personne]!,
+                        radical,
+                      ),
                     ),
                   ],
                 ),
@@ -67,6 +113,8 @@ Widget tableauImparfait(Conjugaison conj) {
   final imparfait = conj.imparfait;
   if (imparfait == null) return const SizedBox.shrink();
 
+  final radical = _radicalCommunConjugaison(imparfait);
+
   return Card(
     child: Padding(
       padding: const EdgeInsets.all(16),
@@ -108,7 +156,10 @@ Widget tableauImparfait(Conjugaison conj) {
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 4),
-                      child: Text(imparfait[personne]!),
+                      child: _celluleFormeConjugaison(
+                        imparfait[personne]!,
+                        radical,
+                      ),
                     ),
                   ],
                 ),
