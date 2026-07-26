@@ -1,11 +1,15 @@
+import 'dart:math';
+
 import 'package:firebase_auth/firebase_auth.dart' show FirebaseAuth;
 import 'package:flutter/material.dart';
 
 import 'package:itinera/lecons_grammaire_data.dart';
+import 'package:itinera/locutions_data.dart';
 import 'package:itinera/main.dart';
 import 'package:itinera/services/duel_service.dart';
 import 'package:itinera/screens/compte_screen.dart';
 import 'package:itinera/screens/lecon_detail_screen.dart';
+import 'package:itinera/screens/locutions_screen.dart';
 import 'package:itinera/screens/selecteur_unite_screen.dart';
 
 // ============================================================
@@ -25,6 +29,31 @@ class AccueilScreen extends StatefulWidget {
 }
 
 class _AccueilScreenState extends State<AccueilScreen> {
+  // Tirée une fois par ouverture de l'écran (pas à chaque rebuild), pour
+  // remplir l'espace vide entre l'avatar et la série/les deniers.
+  late final Locution _citation = locutions[Random().nextInt(locutions.length)];
+
+  Widget _citationLatine() {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const LocutionsScreen()),
+        );
+      },
+      child: Text(
+        '« ${_citation.latin} »',
+        textAlign: TextAlign.center,
+        overflow: TextOverflow.ellipsis,
+        style: const TextStyle(
+          fontStyle: FontStyle.italic,
+          color: texteAttenue,
+          fontSize: 13,
+        ),
+      ),
+    );
+  }
+
   Future<void> _ouvrirLecon(Lecon lecon) async {
     await Navigator.push(
       context,
@@ -172,15 +201,21 @@ class _AccueilScreenState extends State<AccueilScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: GestureDetector(
-          onTap: () async {
-            await Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const CompteScreen()),
-            );
-            setState(() {});
-          },
-          child: _avatarCompteAvecBadge(),
+        title: Row(
+          children: [
+            GestureDetector(
+              onTap: () async {
+                await Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const CompteScreen()),
+                );
+                setState(() {});
+              },
+              child: _avatarCompteAvecBadge(),
+            ),
+            const SizedBox(width: 12),
+            Expanded(child: _citationLatine()),
+          ],
         ),
         actions: [
           Row(
