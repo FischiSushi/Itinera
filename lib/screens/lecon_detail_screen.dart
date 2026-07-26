@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import 'package:itinera/lecons_grammaire_data.dart';
 import 'package:itinera/main.dart';
-import 'package:itinera/screens/vocabulaire_liste_screen.dart';
 
 // ============================================================
 // PARCOURS DE LEÇONS : DÉTAIL D'UNE LEÇON
@@ -587,39 +586,7 @@ class _LeconDetailScreenState extends State<LeconDetailScreen> {
             padding: const EdgeInsets.all(20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                widget.lecon.fiche!(context),
-                if (widget.lecon.uniteRecommandees.isNotEmpty) ...[
-                  const SizedBox(height: 24),
-                  Text(
-                    'Vocabulaire recommandé pour t\'entraîner',
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: accentViolet,
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-                  for (final unite in widget.lecon.uniteRecommandees)
-                    Card(
-                      margin: const EdgeInsets.only(bottom: 8),
-                      child: ListTile(
-                        leading: const Icon(Icons.menu_book),
-                        title: Text(nomAffiche(unite)),
-                        trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  VocabulaireListeScreen(unite: unite),
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                ],
-              ],
+              children: [widget.lecon.fiche!(context)],
             ),
           ),
         ),
