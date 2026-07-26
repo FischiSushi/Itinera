@@ -10,6 +10,7 @@ import 'package:itinera/services/duel_service.dart';
 import 'package:itinera/screens/compte_screen.dart';
 import 'package:itinera/screens/lecon_detail_screen.dart';
 import 'package:itinera/screens/locutions_screen.dart';
+import 'package:itinera/screens/recherche_lecons_screen.dart';
 import 'package:itinera/screens/selecteur_unite_screen.dart';
 
 // ============================================================
@@ -253,20 +254,34 @@ class _AccueilScreenState extends State<AccueilScreen> {
                     letterSpacing: 1.2,
                   ),
                 ),
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: TextButton.icon(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const SelecteurUniteScreen(),
-                        ),
-                      );
-                    },
-                    icon: const Icon(Icons.swap_horiz, size: 18),
-                    label: const Text('Changer d\'année'),
-                  ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    IconButton(
+                      icon: const Icon(Icons.search),
+                      tooltip: 'Rechercher une leçon',
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const RechercheLeconsScreen(),
+                          ),
+                        );
+                      },
+                    ),
+                    TextButton.icon(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const SelecteurUniteScreen(),
+                          ),
+                        );
+                      },
+                      icon: const Icon(Icons.swap_horiz, size: 18),
+                      label: const Text('Changer d\'année'),
+                    ),
+                  ],
                 ),
                 if (parcours.isNotEmpty) ...[
                   const SizedBox(height: 10),
