@@ -84,9 +84,23 @@ Widget tableauDeclinaison(Declinaison decl) {
                   children: [
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 4),
-                      child: Text(
-                        cas,
-                        style: const TextStyle(color: texteAttenue),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            cas,
+                            style: const TextStyle(color: texteAttenue),
+                          ),
+                          if (roleCourtCas[cas] != null)
+                            Text(
+                              roleCourtCas[cas]!,
+                              style: TextStyle(
+                                fontSize: 11,
+                                color: texteAttenue.withValues(alpha: 0.65),
+                                fontStyle: FontStyle.italic,
+                              ),
+                            ),
+                        ],
                       ),
                     ),
                     Padding(

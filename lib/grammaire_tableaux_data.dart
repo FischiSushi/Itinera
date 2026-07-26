@@ -27,6 +27,19 @@ const casLatins = [
   'Ablatif',
 ];
 
+// Rappel très court du rôle de chaque cas (déjà enseigné en détail dans la
+// leçon « Qu'est-ce qu'un cas ? »), affiché à côté du nom du cas dans les
+// tableaux de déclinaison pour que quelqu'un qui ne l'a pas encore
+// mémorisé n'ait pas à s'y référer séparément.
+const roleCourtCas = {
+  'Nominatif': 'sujet',
+  'Vocatif': 'appel',
+  'Accusatif': 'COD',
+  'Génitif': 'de qui/quoi',
+  'Datif': 'COI',
+  'Ablatif': 'moyen/lieu',
+};
+
 final List<Declinaison> declinaisons = [
   const Declinaison(
     titre: '1re déclinaison (thème en -a)',
