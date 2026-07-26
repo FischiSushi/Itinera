@@ -29,7 +29,49 @@ class DeclinaisonsScreen extends StatelessWidget {
   }
 }
 
+// Préfixe commun à toutes les formes de la déclinaison (calculé plutôt que
+// stocké dans les données) : ce qui reste après ce préfixe est la
+// terminaison propre à chaque cas, mise en évidence dans le tableau.
+String _radicalCommun(Declinaison decl) {
+  final formes = [...decl.singulier.values, ...decl.pluriel.values];
+
+  var prefixe = formes.first;
+
+  for (final forme in formes.skip(1)) {
+    var longueur = 0;
+    while (longueur < prefixe.length &&
+        longueur < forme.length &&
+        prefixe[longueur] == forme[longueur]) {
+      longueur++;
+    }
+    prefixe = prefixe.substring(0, longueur);
+  }
+
+  return prefixe;
+}
+
+Widget _celluleForme(String forme, String radical) {
+  final terminaison = forme.substring(radical.length);
+
+  return Text.rich(
+    TextSpan(
+      children: [
+        TextSpan(text: radical),
+        TextSpan(
+          text: terminaison,
+          style: const TextStyle(
+            color: accentViolet,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
 Widget tableauDeclinaison(Declinaison decl) {
+  final radical = _radicalCommun(decl);
+
   return Card(
     child: Padding(
       padding: const EdgeInsets.all(16),
@@ -105,11 +147,11 @@ Widget tableauDeclinaison(Declinaison decl) {
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 4),
-                      child: Text(decl.singulier[cas]!),
+                      child: _celluleForme(decl.singulier[cas]!, radical),
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 4),
-                      child: Text(decl.pluriel[cas]!),
+                      child: _celluleForme(decl.pluriel[cas]!, radical),
                     ),
                   ],
                 ),
