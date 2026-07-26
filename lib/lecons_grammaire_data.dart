@@ -285,6 +285,103 @@ final Lecon _leconCasIntro = Lecon(
       '• Ablatif — Puella cum lupo ambulat.\n   La fille se promène avec le loup.',
     ),
   ],
+  etapes: [
+    EtapeTexte(
+      (context) => [
+        _paragrapheExplication(
+          'En français, c\'est l\'ordre des mots qui indique qui fait quoi.\n'
+          '« Le loup mange l\'agneau » ne veut pas dire la même chose que '
+          '« L\'agneau mange le loup ».',
+        ),
+      ],
+    ),
+    EtapeTexte(
+      (context) => [
+        _paragrapheExplication(
+          'En latin, ce n\'est pas la position du mot qui compte, mais sa '
+          'terminaison (la fin du mot). Chaque terminaison indique le rôle '
+          'du mot dans la phrase : sujet, complément, possession...\n\n'
+          'Cette terminaison s\'appelle un cas. Changer les terminaisons '
+          's\'appelle décliner un mot, et l\'ensemble de ses terminaisons '
+          'possibles s\'appelle sa déclinaison.',
+        ),
+      ],
+    ),
+    EtapeTexte(
+      (context) => [
+        _paragrapheExplication(
+          'C\'est pourquoi l\'ordre des mots est très libre en latin : '
+          '« Lupus agnum vorat » et « Agnum lupus vorat » veulent dire '
+          'exactement la même chose (Le loup dévore l\'agneau), grâce aux '
+          'terminaisons -us et -um.',
+        ),
+      ],
+    ),
+    EtapeTexte(
+      (context) => [
+        _titreExplication('Les cas et leur rôle'),
+        _tableauRolesCas([
+          ['Nominatif', 'le sujet, qui fait l\'action', 'qui est-ce qui ?'],
+          ['Vocatif', 'pour appeler quelqu\'un', 'ô ... !'],
+          ['Accusatif', 'le complément d\'objet direct', 'qui ? quoi ?'],
+          ['Génitif', 'la possession', 'de qui ? de quoi ?'],
+          ['Datif', 'le complément d\'objet indirect', 'à qui ? à quoi ?'],
+          ['Ablatif', 'le moyen, la manière, le lieu', 'par/avec/dans quoi ?'],
+        ]),
+      ],
+    ),
+    const EtapeVerification(
+      QuestionLecon(
+        question:
+            'Quel cas exprime le sujet de la phrase, celui qui fait l\'action ?',
+        options: ['Nominatif', 'Accusatif', 'Génitif', 'Datif'],
+        reponseCorrecte: 'Nominatif',
+      ),
+    ),
+    const EtapeVerification(
+      QuestionLecon(
+        question:
+            'Quel cas est utilisé pour le complément d\'objet direct (COD) ?',
+        options: ['Nominatif', 'Accusatif', 'Datif', 'Ablatif'],
+        reponseCorrecte: 'Accusatif',
+      ),
+    ),
+    const EtapeVerification(
+      QuestionLecon(
+        question: 'Quel cas exprime la possession (« de qui ? de quoi ? ») ?',
+        options: ['Génitif', 'Accusatif', 'Vocatif', 'Ablatif'],
+        reponseCorrecte: 'Génitif',
+      ),
+    ),
+    EtapeTexte(
+      (context) => [
+        _titreExplication('Un même mot, tous les cas'),
+        _paragrapheExplication(
+          'Voici « lupus » (le loup) décliné dans une phrase à chaque cas :\n\n'
+          '• Nominatif — Lupus currit.\n   Le loup court.\n\n'
+          '• Vocatif — Ô lupe, ubi es ?\n   Ô loup, où es-tu ?\n\n'
+          '• Accusatif — Puer lupum videt.\n   Le garçon voit le loup.\n\n'
+          '• Génitif — Cauda lupi longa est.\n   La queue du loup est longue.\n\n'
+          '• Datif — Puer cibum lupo dat.\n   Le garçon donne de la nourriture au loup.\n\n'
+          '• Ablatif — Puella cum lupo ambulat.\n   La fille se promène avec le loup.',
+        ),
+      ],
+    ),
+    const EtapeVerification(
+      QuestionLecon(
+        question:
+            'Dans « Puer lupum videt » (Le garçon voit le loup), '
+            'quel est le rôle de « lupum » ?',
+        options: [
+          'Sujet (nominatif)',
+          'COD (accusatif)',
+          'Possession (génitif)',
+          'COI (datif)',
+        ],
+        reponseCorrecte: 'COD (accusatif)',
+      ),
+    ),
+  ],
   exercices: const [
     QuestionLecon(
       question:
