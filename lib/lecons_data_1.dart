@@ -913,6 +913,188 @@ final Lecon leconFonctionsPhrase = Lecon(
       'tableau dans la fiche de cette leçon.',
     ),
   ],
+  etapes: [
+    EtapeTexte(
+      (context) => [
+        paragrapheExplication(
+          'Avant de décliner un mot, il faut savoir quel rôle — quelle '
+          'fonction — il joue dans la phrase. C\'est ce rôle qui '
+          'déterminera plus tard son cas en latin.',
+        ),
+      ],
+    ),
+    EtapeTexte(
+      (context) => [
+        titreExplication('Les fonctions liées au verbe'),
+        paragrapheExplication(
+          'Le verbe est le point de départ de l\'analyse : il exprime '
+          'l\'action. Pour que la phrase ait un sens, il manque deux '
+          'informations :\n\n'
+          '• le sujet : qui fait l\'action ? Le sujet détermine la '
+          'terminaison du verbe.\n'
+          'Ex. : L\'ennemi tombe. / Les ennemis tombent. / Nous tombons.\n\n'
+          '• l\'objet : sur qui ou sur quoi s\'applique l\'action ? '
+          'L\'objet complète le verbe, il dépend de lui.',
+        ),
+      ],
+    ),
+    EtapeTexte(
+      (context) => [
+        paragrapheExplication(
+          'Il existe deux types de compléments d\'objet :\n\n'
+          '• le complément d\'objet direct (COD), rattaché directement au '
+          'verbe (voir qqn / voir qqch) ;\n'
+          '• le complément d\'objet indirect (COI), rattaché « '
+          'indirectement » au verbe par les prépositions « à » ou « de » '
+          '(penser à qqn / à qqch). En latin, on considère aussi la '
+          'préposition « pour » : « pour qui », « dans l\'intérêt de qui » '
+          'l\'action est faite.',
+        ),
+      ],
+    ),
+    const EtapeVerification(
+      QuestionLecon(
+        question:
+            'Dans « Puella Romam amat » (La jeune fille aime Rome), quelle '
+            'est la fonction de « puella » ?',
+        options: ['Sujet', 'COD', 'COI', 'CN'],
+        reponseCorrecte: 'Sujet',
+      ),
+    ),
+    const EtapeVerification(
+      QuestionLecon(
+        question:
+            'Dans « Puella Romam amat » (La jeune fille aime Rome), quelle '
+            'est la fonction de « Romam » ?',
+        options: ['Sujet', 'COD', 'COI', 'Apostrophe'],
+        reponseCorrecte: 'COD',
+      ),
+    ),
+    const EtapeVerification(
+      QuestionLecon(
+        question:
+            'Dans « Puella deae fidem habet » (La jeune fille fait '
+            'confiance à la déesse), quelle est la fonction de « deae » ?',
+        options: ['COD', 'COI', 'CN', 'Attribut du sujet'],
+        reponseCorrecte: 'COI',
+      ),
+    ),
+    EtapeTexte(
+      (context) => [
+        titreExplication('Cas particulier : l\'apostrophe'),
+        paragrapheExplication(
+          'L\'apostrophe désigne la personne (ou la chose) à laquelle on '
+          's\'adresse. On la trouve donc avec des verbes à l\'impératif ou '
+          'à la 2e personne.\n\n'
+          'Ex. : Marcus, écoute le maître ! / Venez, les enfants !',
+        ),
+      ],
+    ),
+    const EtapeVerification(
+      QuestionLecon(
+        question:
+            'Dans « Puella, ambula ! » (Jeune fille, marche !), quelle est '
+            'la fonction de « puella » ?',
+        options: ['Sujet', 'Apostrophe', 'COD', 'Attribut du sujet'],
+        reponseCorrecte: 'Apostrophe',
+      ),
+    ),
+    EtapeTexte(
+      (context) => [
+        titreExplication('Cas particulier : l\'attribut du sujet'),
+        paragrapheExplication(
+          'Compare : « Publius chante une chanson » (une chanson = COD) et '
+          '« Publius est chanteur » (chanteur = attribut du sujet).\n\n'
+          'L\'attribut du sujet exprime une caractéristique du sujet. Il '
+          'est rattaché au sujet par l\'intermédiaire du verbe « être » et '
+          'de verbes comme « paraître, sembler, demeurer, rester, naître, '
+          'vivre, devenir, mourir, tomber (amoureux, malade) ». Ces verbes '
+          'sont appelés verbes attributifs.',
+        ),
+      ],
+    ),
+    const EtapeVerification(
+      QuestionLecon(
+        question:
+            'Dans « Puella laeta est » (La jeune fille est joyeuse), '
+            'quelle est la fonction de « laeta » (joyeuse) ?',
+        options: ['COD', 'CN', 'Attribut du sujet', 'Apostrophe'],
+        reponseCorrecte: 'Attribut du sujet',
+      ),
+    ),
+    EtapeTexte(
+      (context) => [
+        titreExplication('Une fonction liée au nom : le complément du nom (CN)'),
+        paragrapheExplication(
+          'Ex. : Le livre de Pierre a disparu. → le livre de qui ? de '
+          'Pierre.\n\n'
+          'Le complément du nom « complète » un nom. Il se rattache le '
+          'plus souvent au nom par la préposition « de ». Il marque '
+          'principalement l\'appartenance.',
+        ),
+      ],
+    ),
+    const EtapeVerification(
+      QuestionLecon(
+        question:
+            'Dans « Puellae patriae fama magna est » (La renommée de la '
+            'patrie de la jeune fille est grande), quelle est la fonction '
+            'de « puellae » ?',
+        options: ['CN', 'COD', 'COI', 'Apostrophe'],
+        reponseCorrecte: 'CN',
+      ),
+    ),
+    EtapeTexte(
+      (context) => [
+        titreExplication(
+          'Des fonctions « libres » : les compléments circonstanciels',
+        ),
+        paragrapheExplication(
+          'Ces fonctions indiquent les circonstances de l\'action :\n\n'
+          '• CCT (temps) — quand ? Ex. : Tullia part le matin.\n'
+          '• CCL (lieu) — où ? Ex. : Tullia reste à la maison.\n'
+          '• CCM (manière) — comment ? Ex. : Quintus travaille bien.\n'
+          '• CCC (cause) — pourquoi ? Ex. : Quintus pleure parce qu\'il a '
+          'mal.\n'
+          '• CC de moyen — avec quoi ? au moyen de quoi ? Le moyen est '
+          'toujours un être inanimé (une chose), introduit par : au moyen '
+          'de, de, grâce à, par, avec.',
+        ),
+      ],
+    ),
+    EtapeTexte(
+      (context) => [
+        titreExplication('Cas particulier : l\'apposition'),
+        paragrapheExplication(
+          'Ex. : Rome, la capitale de l\'Italie, est une ville '
+          'magnifique. → Rome = la capitale (de l\'Italie).\n\n'
+          'L\'apposition se rattache à un nom auquel elle apporte une '
+          'information supplémentaire. L\'apposition et le nom indiquent '
+          'la même réalité, et ont donc la même fonction — et en latin, '
+          'le même cas.',
+        ),
+      ],
+    ),
+    const EtapeVerification(
+      QuestionLecon(
+        question:
+            'Dans « Vesta, dea bona, Romae flammam curat » (Vesta, bonne '
+            'déesse, prend soin de la flamme à Rome), quelle est la '
+            'fonction de « dea bona » ?',
+        options: ['CN', 'Apposition', 'COI', 'Sujet'],
+        reponseCorrecte: 'Apposition',
+      ),
+    ),
+    EtapeTexte(
+      (context) => [
+        titreExplication('Fonction ↔ cas en latin'),
+        paragrapheExplication(
+          'Chaque fonction correspond à un cas latin précis — retrouve ce '
+          'tableau dans la fiche de cette leçon.',
+        ),
+      ],
+    ),
+  ],
   exercices: const [
     QuestionLecon(
       question:
@@ -1029,6 +1211,123 @@ final Lecon leconVerbeEtre = Lecon(
       'forêt.)\n'
       'Sunt puellae in Galliā. (Il y a des jeunes filles en Gaule.) ≠ '
       'Puellae in Galliā sunt. (Les jeunes filles sont en Gaule.)',
+    ),
+  ],
+  etapes: [
+    EtapeTexte(
+      (context) => [
+        titreExplication('Le sujet du verbe'),
+        paragrapheExplication(
+          'Sauf pour insister, le latin ne connaît pas de pronom personnel '
+          'sujet, puisque les terminaisons -o/m, -s, -t, -mus, -tis, -nt '
+          'renseignent déjà sur la personne.\n\n'
+          'Ex. : Cogito, ergo sum. → Je pense, donc je suis.\n'
+          'Boni discipuli estis. → Vous êtes de bons élèves.\n\n'
+          'MAIS, pour insister :\n'
+          'Ego in Italiā fui. → Moi, j\'ai été en Italie.\n'
+          'Vos bene laboratis. → Vous, vous travaillez bien.',
+        ),
+      ],
+    ),
+    const EtapeVerification(
+      QuestionLecon(
+        question:
+            'Dans « Ego in Italiā fui », pourquoi le pronom « Ego » (moi) '
+            'est-il exprimé alors que ce n\'est en général pas nécessaire ?',
+        options: [
+          'Pour insister',
+          'Parce que c\'est une question',
+          'Parce que le verbe est à l\'infinitif',
+          'Par erreur',
+        ],
+        reponseCorrecte: 'Pour insister',
+      ),
+    ),
+    EtapeTexte(
+      (context) => [
+        titreExplication('Indicatif et infinitif présents de esse'),
+        paragrapheExplication(
+          'sum, es, est, sumus, estis, sunt — je suis, tu es, il/elle '
+          'est, nous sommes, vous êtes, ils/elles sont.\n\n'
+          'Infinitif présent : esse (« être »).\n\n'
+          'Dans le lexique, esse se présente sous cette forme, avec ses '
+          'temps primitifs : sum, es, esse, fui, – « être ».',
+        ),
+      ],
+    ),
+    const EtapeVerification(
+      ExerciceSaisie(
+        question: 'Comment dit-on « je suis » en latin ?',
+        reponsesAcceptees: ['sum'],
+      ),
+    ),
+    const EtapeVerification(
+      ExerciceSaisie(
+        question:
+            'Quelle est la 3e personne du pluriel de esse au présent '
+            '(« ils/elles sont ») ?',
+        reponsesAcceptees: ['sunt'],
+      ),
+    ),
+    EtapeTexte(
+      (context) => [
+        titreExplication('Les emplois de esse'),
+        paragrapheExplication(
+          '1. En général, le verbe esse est accompagné d\'un attribut du '
+          'sujet et se traduit par « être ».\n'
+          'Ex. : Puella est pulchra. (La jeune fille est belle.)\n'
+          'Gallia est magna. (La Gaule est grande.)\n'
+          'Vesta dea est. (Vesta est une déesse.)',
+        ),
+      ],
+    ),
+    const EtapeVerification(
+      QuestionLecon(
+        question: 'Dans « Puella est pulchra », quel est l\'emploi de « est » ?',
+        options: [
+          'Il y a (sans attribut)',
+          'Avec un attribut du sujet (« être »)',
+          'Verbe attributif seul',
+          'Apostrophe',
+        ],
+        reponseCorrecte: 'Avec un attribut du sujet (« être »)',
+      ),
+    ),
+    EtapeTexte(
+      (context) => [
+        paragrapheExplication(
+          '2. « est » ou « sunt » employés SANS attribut et placés '
+          'DEVANT le sujet se traduisent par « il y a » (ALL. Es gibt ; '
+          'ANGL. there is/are).\n'
+          'Ex. : Est puella in silvā. (Il y a une jeune fille dans la '
+          'forêt.) ≠ Puella in silvā est. (La jeune fille est dans la '
+          'forêt.)\n'
+          'Sunt puellae in Galliā. (Il y a des jeunes filles en Gaule.) '
+          '≠ Puellae in Galliā sunt. (Les jeunes filles sont en '
+          'Gaule.)',
+        ),
+      ],
+    ),
+    const EtapeVerification(
+      QuestionLecon(
+        question: 'Que signifie « Sunt bonae copiae in Galliā » ?',
+        options: [
+          'Les troupes sont bonnes en Gaule.',
+          'Il y a de bonnes troupes en Gaule.',
+          'Les bonnes troupes sont gauloises.',
+          'La Gaule a de bonnes troupes.',
+        ],
+        reponseCorrecte: 'Il y a de bonnes troupes en Gaule.',
+      ),
+    ),
+    const EtapeVerification(
+      QuestionLecon(
+        question:
+            'Quand « est » ou « sunt » sont placés devant le sujet, sans '
+            'attribut, comment les traduit-on généralement ?',
+        options: ['être', 'avoir', 'il y a', 'devenir'],
+        reponseCorrecte: 'il y a',
+      ),
     ),
   ],
   exercices: const [
@@ -1274,6 +1573,169 @@ final Lecon leconOrdreMots = Lecon(
       'Ledona in Galliā, pulchrā puellae patriā, est.',
     ),
   ],
+  etapes: [
+    EtapeTexte(
+      (context) => [
+        paragrapheExplication(
+          'L\'ordre des mots en latin est libre, dans des limites bien '
+          'définies. En effet, le latin regroupe souvent les mots ayant '
+          'un lien grammatical et logique. Voici les regroupements les '
+          'plus usuels :',
+        ),
+      ],
+    ),
+    EtapeTexte(
+      (context) => [
+        paragrapheExplication(
+          '1. le sujet en tête de proposition\n'
+          'Ex. : Ledona in Galliā est.',
+        ),
+      ],
+    ),
+    const EtapeVerification(
+      QuestionLecon(
+        question: 'Où se place généralement le sujet dans une phrase latine ?',
+        options: [
+          'En tête de la proposition',
+          'À la fin',
+          'Juste après le verbe',
+          'N\'importe où, sans règle',
+        ],
+        reponseCorrecte: 'En tête de la proposition',
+      ),
+    ),
+    EtapeTexte(
+      (context) => [
+        paragrapheExplication(
+          '2. l\'adjectif épithète devant le nom auquel il se rapporte\n'
+          'Ex. : pulchra patria.\n'
+          'Exceptions : les déterminants (ou adjectifs) possessifs '
+          '(patria mea) ; les adjectifs qualificatifs formés sur des '
+          'noms propres (puella Gallica ; senatus populusque Romanus, '
+          'SPQR).',
+        ),
+      ],
+    ),
+    const EtapeVerification(
+      QuestionLecon(
+        question:
+            'Où se place l\'adjectif épithète par rapport au nom qu\'il '
+            'qualifie ?',
+        options: [
+          'Devant le nom',
+          'Derrière le nom',
+          'Toujours après le verbe',
+          'Toujours au génitif',
+        ],
+        reponseCorrecte: 'Devant le nom',
+      ),
+    ),
+    const EtapeVerification(
+      QuestionLecon(
+        question:
+            'Quelle est l\'exception à cette règle pour les déterminants '
+            'possessifs (mon, ta, son...) ?',
+        options: [
+          'Ils se placent derrière le nom',
+          'Ils se placent devant le verbe',
+          'Ils n\'existent pas en latin',
+          'Ils précèdent toujours l\'adjectif',
+        ],
+        reponseCorrecte: 'Ils se placent derrière le nom',
+      ),
+    ),
+    EtapeTexte(
+      (context) => [
+        paragrapheExplication(
+          '3. le complément du nom (CN) — devant le nom auquel il se '
+          'rapporte, ou entre l\'adjectif épithète et le nom\n'
+          'Ex. : puellae patria ; pulchra puellae patria.',
+        ),
+      ],
+    ),
+    const EtapeVerification(
+      QuestionLecon(
+        question:
+            'Dans « pulchra puellae patria » (la belle patrie de la jeune '
+            'fille), où se situe le complément du nom « puellae » ?',
+        options: [
+          'Entre l\'adjectif épithète et le nom',
+          'Après le nom',
+          'En tête de la phrase',
+          'Avant l\'adjectif',
+        ],
+        reponseCorrecte: 'Entre l\'adjectif épithète et le nom',
+      ),
+    ),
+    EtapeTexte(
+      (context) => [
+        paragrapheExplication('4. la préposition devant le nom\nEx. : in Galliā.'),
+      ],
+    ),
+    const EtapeVerification(
+      QuestionLecon(
+        question:
+            'Où se place la préposition par rapport au nom qu\'elle '
+            'introduit ?',
+        options: [
+          'Devant le nom',
+          'Derrière le nom',
+          'Entre l\'adjectif et le nom',
+          'À la fin de la phrase',
+        ],
+        reponseCorrecte: 'Devant le nom',
+      ),
+    ),
+    EtapeTexte(
+      (context) => [
+        paragrapheExplication(
+          '5. le verbe à la fin de la proposition\nEx. : in Galliā est.',
+        ),
+      ],
+    ),
+    const EtapeVerification(
+      QuestionLecon(
+        question: 'Où se place le verbe dans une proposition latine classique ?',
+        options: [
+          'À la fin',
+          'En tête',
+          'Juste après le sujet',
+          'Avant la préposition',
+        ],
+        reponseCorrecte: 'À la fin',
+      ),
+    ),
+    EtapeTexte(
+      (context) => [
+        paragrapheExplication(
+          '6. l\'apposition derrière le nom auquel elle se rapporte\n'
+          'Ex. : Gallia, pulchra patria.',
+        ),
+      ],
+    ),
+    const EtapeVerification(
+      QuestionLecon(
+        question:
+            'Où se place l\'apposition par rapport au nom auquel elle se '
+            'rapporte ?',
+        options: [
+          'Derrière ce nom',
+          'Devant ce nom',
+          'En tête de phrase',
+          'Elle n\'a pas de place fixe',
+        ],
+        reponseCorrecte: 'Derrière ce nom',
+      ),
+    ),
+    EtapeTexte(
+      (context) => [
+        paragrapheExplication(
+          'En combinant toutes ces règles :\n'
+          'Ledona in Galliā, pulchrā puellae patriā, est.',
+        ),
+      ],
+    ),
+  ],
   exercices: const [
     QuestionLecon(
       question: 'Où se place généralement le sujet dans une phrase latine ?',
@@ -1431,6 +1893,192 @@ final Lecon leconMethodeAnalyse = Lecon(
       '« in Arduennā silvā » (dans la forêt des Ardennes)\n\n'
       '→ Traduction naturelle : « La jeune fille habite avec sa famille '
       'dans la forêt des Ardennes. »',
+    ),
+  ],
+  etapes: [
+    EtapeTexte(
+      (context) => [
+        paragrapheExplication(
+          'Tu connais maintenant les fonctions, les cas et l\'ordre des '
+          'mots. Voici comment t\'en servir, dans l\'ordre, pour analyser '
+          'puis traduire n\'importe quelle phrase latine.',
+        ),
+      ],
+    ),
+    EtapeTexte(
+      (context) => [
+        titreExplication('1. Repérer le verbe'),
+        paragrapheExplication(
+          'Le verbe est souvent à la fin de la proposition. Sa '
+          'terminaison indique la personne et le nombre (donc, souvent, '
+          'le sujet — même sans pronom exprimé).',
+        ),
+      ],
+    ),
+    const EtapeVerification(
+      QuestionLecon(
+        question:
+            'Quelle est la toute première étape de l\'analyse d\'une '
+            'phrase latine ?',
+        options: [
+          'Repérer le verbe',
+          'Traduire le premier mot',
+          'Chercher le complément du nom',
+          'Compter les syllabes',
+        ],
+        reponseCorrecte: 'Repérer le verbe',
+      ),
+    ),
+    EtapeTexte(
+      (context) => [
+        titreExplication('2. Chercher le sujet'),
+        paragrapheExplication(
+          'Cherche un nominatif qui s\'accorde avec le verbe. S\'il n\'y '
+          'en a pas, le sujet est sous-entendu dans la terminaison du '
+          'verbe (« il/elle », « ils/elles »).',
+        ),
+      ],
+    ),
+    const EtapeVerification(
+      QuestionLecon(
+        question:
+            'Si aucun nominatif n\'apparaît dans la phrase, comment '
+            'connaît-on quand même le sujet ?',
+        options: [
+          'Grâce à la terminaison du verbe',
+          'Le sujet est toujours « Roma »',
+          'On ne peut pas le savoir',
+          'Il faut regarder le génitif',
+        ],
+        reponseCorrecte: 'Grâce à la terminaison du verbe',
+      ),
+    ),
+    EtapeTexte(
+      (context) => [
+        titreExplication('3. Chercher les compléments d\'objet'),
+        paragrapheExplication(
+          'Un accusatif sans préposition est souvent un COD. Un datif, '
+          'ou un accusatif/ablatif avec préposition, est souvent un COI '
+          'ou un CC.',
+        ),
+      ],
+    ),
+    EtapeTexte(
+      (context) => [
+        titreExplication('4. Chercher le complément du nom'),
+        paragrapheExplication(
+          'Un génitif se rattache toujours à un nom (jamais au verbe) : '
+          'cherche de quel nom il dépend.',
+        ),
+      ],
+    ),
+    const EtapeVerification(
+      QuestionLecon(
+        question: 'À quel nom un génitif se rattache-t-il toujours ?',
+        options: [
+          'À un autre nom, jamais au verbe',
+          'Toujours au verbe',
+          'Toujours au sujet',
+          'À rien, il est libre',
+        ],
+        reponseCorrecte: 'À un autre nom, jamais au verbe',
+      ),
+    ),
+    EtapeTexte(
+      (context) => [
+        titreExplication('5. Chercher les compléments circonstanciels'),
+        paragrapheExplication(
+          'Un ablatif seul (moyen, manière) ou avec préposition (lieu, '
+          'temps...), ou un accusatif avec préposition de direction : ce '
+          'sont des CC.',
+        ),
+      ],
+    ),
+    EtapeTexte(
+      (context) => [
+        titreExplication('6. Vérifier les cas particuliers'),
+        paragrapheExplication(
+          'Un vocatif ? C\'est une apostrophe. Un nom au nominatif après '
+          '« être » ou un verbe attributif ? C\'est un attribut du '
+          'sujet. Un nom qui renomme un autre nom, au même cas ? C\'est '
+          'une apposition.',
+        ),
+      ],
+    ),
+    const EtapeVerification(
+      QuestionLecon(
+        question:
+            'Un nom au nominatif juste après le verbe « être » : de '
+            'quelle fonction particulière s\'agit-il ?',
+        options: ['Attribut du sujet', 'Apostrophe', 'Apposition', 'COD'],
+        reponseCorrecte: 'Attribut du sujet',
+      ),
+    ),
+    const EtapeVerification(
+      QuestionLecon(
+        question:
+            'Un nom qui en renomme un autre, au même cas que lui : '
+            'quelle est cette fonction ?',
+        options: ['Apposition', 'CN', 'COI', 'CC de moyen'],
+        reponseCorrecte: 'Apposition',
+      ),
+    ),
+    EtapeTexte(
+      (context) => [
+        titreExplication('7. Traduire dans l\'ordre naturel'),
+        paragrapheExplication(
+          'Traduis chaque groupe, puis reconstruis la phrase en français '
+          'dans l\'ordre sujet - verbe - compléments : ne traduis jamais '
+          'mot à mot dans l\'ordre latin !',
+        ),
+      ],
+    ),
+    const EtapeVerification(
+      QuestionLecon(
+        question:
+            'Une fois chaque groupe traduit, dans quel ordre reconstruit-'
+            'on la phrase en français ?',
+        options: [
+          'Sujet - verbe - compléments',
+          'Exactement l\'ordre latin, mot à mot',
+          'Toujours en commençant par le verbe',
+          'Dans l\'ordre alphabétique',
+        ],
+        reponseCorrecte: 'Sujet - verbe - compléments',
+      ),
+    ),
+    EtapeTexte(
+      (context) => [
+        titreExplication('Exemple complet'),
+        paragrapheExplication(
+          '« Puella cum familiā in Arduennā silvā habitat. »\n\n'
+          '1. Verbe : habitat (elle habite, 3e pers. sg.)\n'
+          '2. Sujet : puella (nominatif) — la jeune fille\n'
+          '3-4. Pas de COD ni de CN ici.\n'
+          '5. CC de lieu : « cum familiā » (avec sa famille), '
+          '« in Arduennā silvā » (dans la forêt des Ardennes)\n\n'
+          '→ Traduction naturelle : « La jeune fille habite avec sa '
+          'famille dans la forêt des Ardennes. »',
+        ),
+      ],
+    ),
+    const EtapeVerification(
+      QuestionLecon(
+        question:
+            'Dans « Puella cum familiā in Arduennā silvā habitat », quel '
+            'est le verbe ?',
+        options: ['habitat', 'puella', 'familiā', 'silvā'],
+        reponseCorrecte: 'habitat',
+      ),
+    ),
+    const EtapeVerification(
+      QuestionLecon(
+        question:
+            'Dans la même phrase, quelle est la fonction de « in '
+            'Arduennā silvā » ?',
+        options: ['CC de lieu', 'COD', 'Sujet', 'Complément du nom'],
+        reponseCorrecte: 'CC de lieu',
+      ),
     ),
   ],
   exercices: const [
