@@ -14,6 +14,7 @@ import 'screens/onboarding_screen.dart';
 import 'screens/quiz_choix_multiple_screen.dart';
 import 'screens/vocabulaire_screen.dart';
 import 'services/notification_service.dart';
+import 'lecons_grammaire_data.dart';
 import 'vocabulaire_data.dart';
 
 final scheduler = fsrs.Scheduler();
@@ -382,11 +383,28 @@ bool acheterArticle(ArticleBoutique article) {
 // SUCCÈS
 // ============================================================
 
+// Regroupement des succès à l'écran (voir SuccesScreen) : la vocabulaire au
+// sens strict n'est qu'une partie de l'app, les leçons de grammaire, la
+// régularité et le reste méritent chacun leur section plutôt que d'être
+// noyés dans une seule longue liste.
+const categorieVocabulaire = 'Vocabulaire';
+const categorieLecons = 'Leçons';
+const categorieSerie = 'Série';
+const categorieDivers = 'Divers';
+
+const categoriesSucces = [
+  categorieVocabulaire,
+  categorieLecons,
+  categorieSerie,
+  categorieDivers,
+];
+
 class Succes {
   final String id;
   final String titre;
   final String description;
   final IconData icone;
+  final String categorie;
   final int recompense;
   final bool Function() estDebloque;
 
@@ -395,6 +413,7 @@ class Succes {
     required this.titre,
     required this.description,
     required this.icone,
+    required this.categorie,
     required this.estDebloque,
     this.recompense = 20,
   });
@@ -402,12 +421,16 @@ class Succes {
 
 int _motsApprisTotal() => vocabulaire.where((mot) => !mot.estNouveau).length;
 
+int _leconsTermineesTotal() =>
+    construireParcoursComplet().where(leconEstCompletee).length;
+
 final List<Succes> succesDisponibles = [
   Succes(
     id: 'premier_mot',
     titre: 'Premier pas',
     description: 'Apprends ton premier mot',
     icone: Icons.emoji_events,
+    categorie: categorieVocabulaire,
     estDebloque: () => _motsApprisTotal() >= 1,
   ),
   Succes(
@@ -415,6 +438,7 @@ final List<Succes> succesDisponibles = [
     titre: 'Apprenti',
     description: '50 mots appris',
     icone: Icons.school,
+    categorie: categorieVocabulaire,
     estDebloque: () => _motsApprisTotal() >= 50,
   ),
   Succes(
@@ -422,6 +446,7 @@ final List<Succes> succesDisponibles = [
     titre: 'Érudit',
     description: '200 mots appris',
     icone: Icons.school,
+    categorie: categorieVocabulaire,
     recompense: 40,
     estDebloque: () => _motsApprisTotal() >= 200,
   ),
@@ -430,23 +455,84 @@ final List<Succes> succesDisponibles = [
     titre: 'Savant',
     description: '500 mots appris',
     icone: Icons.school,
+    categorie: categorieVocabulaire,
     recompense: 60,
     estDebloque: () => _motsApprisTotal() >= 500,
   ),
   Succes(
     id: 'mots_tous',
-    titre: 'Magister',
+    titre: 'Magister verborum',
     description: 'Tous les mots appris',
     icone: Icons.workspace_premium,
+    categorie: categorieVocabulaire,
     recompense: 100,
     estDebloque: () =>
         vocabulaire.isNotEmpty && _motsApprisTotal() == vocabulaire.length,
+  ),
+  Succes(
+    id: 'mot_perso',
+    titre: 'Lexicographe',
+    description: 'Ajoute ton premier mot',
+    icone: Icons.add_circle,
+    categorie: categorieVocabulaire,
+    estDebloque: () {
+      final box = Hive.box('vocabBox');
+      return ((box.get(_customVocabKey) as List?) ?? []).isNotEmpty;
+    },
+  ),
+  Succes(
+    id: 'lecon_1',
+    titre: 'Premier chapitre',
+    description: 'Termine ta première leçon de grammaire',
+    icone: Icons.menu_book,
+    categorie: categorieLecons,
+    estDebloque: () => _leconsTermineesTotal() >= 1,
+  ),
+  Succes(
+    id: 'lecons_10',
+    titre: 'Sur la bonne voie',
+    description: '10 leçons de grammaire terminées',
+    icone: Icons.menu_book,
+    categorie: categorieLecons,
+    recompense: 30,
+    estDebloque: () => _leconsTermineesTotal() >= 10,
+  ),
+  Succes(
+    id: 'lecons_25',
+    titre: 'Grammairien',
+    description: '25 leçons de grammaire terminées',
+    icone: Icons.menu_book,
+    categorie: categorieLecons,
+    recompense: 50,
+    estDebloque: () => _leconsTermineesTotal() >= 25,
+  ),
+  Succes(
+    id: 'lecons_50',
+    titre: 'Latiniste confirmé',
+    description: '50 leçons de grammaire terminées',
+    icone: Icons.menu_book,
+    categorie: categorieLecons,
+    recompense: 70,
+    estDebloque: () => _leconsTermineesTotal() >= 50,
+  ),
+  Succes(
+    id: 'lecons_toutes',
+    titre: 'Magister grammaticus',
+    description: 'Tout le parcours de grammaire terminé',
+    icone: Icons.workspace_premium,
+    categorie: categorieLecons,
+    recompense: 100,
+    estDebloque: () {
+      final total = construireParcoursComplet().length;
+      return total > 0 && _leconsTermineesTotal() == total;
+    },
   ),
   Succes(
     id: 'serie_3',
     titre: 'Sur la lancée',
     description: '3 jours de suite',
     icone: Icons.local_fire_department,
+    categorie: categorieSerie,
     estDebloque: () => streakActuel() >= 3,
   ),
   Succes(
@@ -454,6 +540,7 @@ final List<Succes> succesDisponibles = [
     titre: 'Une semaine',
     description: '7 jours de suite',
     icone: Icons.local_fire_department,
+    categorie: categorieSerie,
     recompense: 30,
     estDebloque: () => streakActuel() >= 7,
   ),
@@ -462,6 +549,7 @@ final List<Succes> succesDisponibles = [
     titre: 'Habitude romaine',
     description: '30 jours de suite',
     icone: Icons.local_fire_department,
+    categorie: categorieSerie,
     recompense: 80,
     estDebloque: () => streakActuel() >= 30,
   ),
@@ -470,6 +558,7 @@ final List<Succes> succesDisponibles = [
     titre: 'Premier sprint',
     description: 'Termine un Pomodoro',
     icone: Icons.local_cafe,
+    categorie: categorieDivers,
     estDebloque: () => pomodorosTermines() >= 1,
   ),
   Succes(
@@ -477,24 +566,16 @@ final List<Succes> succesDisponibles = [
     titre: 'Concentré',
     description: '10 Pomodoros terminés',
     icone: Icons.local_cafe,
+    categorie: categorieDivers,
     recompense: 40,
     estDebloque: () => pomodorosTermines() >= 10,
-  ),
-  Succes(
-    id: 'mot_perso',
-    titre: 'Lexicographe',
-    description: 'Ajoute ton premier mot',
-    icone: Icons.add_circle,
-    estDebloque: () {
-      final box = Hive.box('vocabBox');
-      return ((box.get(_customVocabKey) as List?) ?? []).isNotEmpty;
-    },
   ),
   Succes(
     id: 'coins_100',
     titre: 'Petit trésor',
     description: 'Amasse 100 deniers',
     icone: Icons.savings,
+    categorie: categorieDivers,
     recompense: 0,
     estDebloque: () => coins() >= 100,
   ),

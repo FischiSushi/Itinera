@@ -35,42 +35,81 @@ class _SuccesScreenState extends State<SuccesScreen> {
         ],
       ),
 
-      body: ListView.builder(
+      body: ListView(
         padding: const EdgeInsets.all(16),
 
-        itemCount: succesDisponibles.length,
+        children: [
+          for (final categorie in categoriesSucces) ...[
+            _entetesCategorie(categorie, debloques),
+            for (final succes in succesDisponibles.where(
+              (s) => s.categorie == categorie,
+            ))
+              _carteSucces(succes, debloques.contains(succes.id)),
+            const SizedBox(height: 8),
+          ],
+        ],
+      ),
+    );
+  }
 
-        itemBuilder: (context, index) {
-          final succes = succesDisponibles[index];
-          final debloque = debloques.contains(succes.id);
+  Widget _entetesCategorie(String categorie, Set<String> debloques) {
+    final succesDeCetteCategorie = succesDisponibles.where(
+      (s) => s.categorie == categorie,
+    );
 
-          return Card(
-            margin: const EdgeInsets.only(bottom: 12),
+    if (succesDeCetteCategorie.isEmpty) return const SizedBox.shrink();
 
-            child: ListTile(
-              leading: Icon(
-                debloque ? succes.icone : Icons.lock,
-                color: debloque ? accentViolet : texteAttenue,
-              ),
+    final termines = succesDeCetteCategorie
+        .where((s) => debloques.contains(s.id))
+        .length;
 
-              title: Text(
-                succes.titre,
-                style: TextStyle(
-                  color: debloque ? texteClair : texteAttenue,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-
-              subtitle: Text(succes.description),
-
-              trailing: debloque
-                  ? const Icon(Icons.check_circle, color: Colors.green)
-                  : (succes.recompense > 0
-                        ? badgeDeniers(succes.recompense, rayon: 10)
-                        : null),
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(4, 8, 4, 8),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            categorie,
+            style: const TextStyle(
+              fontSize: 15,
+              fontWeight: FontWeight.bold,
+              color: accentViolet,
             ),
-          );
-        },
+          ),
+          Text(
+            '$termines / ${succesDeCetteCategorie.length}',
+            style: const TextStyle(color: texteAttenue, fontSize: 13),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _carteSucces(Succes succes, bool debloque) {
+    return Card(
+      margin: const EdgeInsets.only(bottom: 12),
+
+      child: ListTile(
+        leading: Icon(
+          debloque ? succes.icone : Icons.lock,
+          color: debloque ? accentViolet : texteAttenue,
+        ),
+
+        title: Text(
+          succes.titre,
+          style: TextStyle(
+            color: debloque ? texteClair : texteAttenue,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+
+        subtitle: Text(succes.description),
+
+        trailing: debloque
+            ? const Icon(Icons.check_circle, color: Colors.green)
+            : (succes.recompense > 0
+                  ? badgeDeniers(succes.recompense, rayon: 10)
+                  : null),
       ),
     );
   }

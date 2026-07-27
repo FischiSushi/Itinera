@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:itinera/lecons_grammaire_data.dart';
 import 'package:itinera/main.dart';
 
 // Couvre les mécaniques de jeu "coeur" de l'app (pièces, boutique, série,
@@ -194,6 +195,38 @@ void main() {
       );
 
       expect(verifierNouveauxSucces().map((s) => s.id), contains('mot_perso'));
+    });
+
+    test('lecon_1 se débloque après une première leçon terminée', () {
+      expect(verifierNouveauxSucces().map((s) => s.id), isNot(contains('lecon_1')));
+
+      marquerLeconCompletee(construireParcoursComplet().first.id);
+
+      expect(verifierNouveauxSucces().map((s) => s.id), contains('lecon_1'));
+    });
+
+    test('lecons_toutes se débloque une fois tout le parcours terminé', () async {
+      for (final lecon in construireParcoursComplet()) {
+        marquerLeconCompletee(lecon.id);
+      }
+
+      expect(verifierNouveauxSucces().map((s) => s.id), contains('lecons_toutes'));
+
+      // marquerLeconCompletee()/ajouterCoins() font des box.put() Hive non
+      // attendus : avec ~90 appels d'un coup, on laisse le temps aux
+      // écritures de se terminer avant que tearDown() ne ferme le box,
+      // sinon certaines arrivent après la fermeture (HiveError).
+      await Hive.box('vocabBox').flush();
+    });
+
+    test('chaque succès a une catégorie parmi categoriesSucces', () {
+      for (final succes in succesDisponibles) {
+        expect(
+          categoriesSucces,
+          contains(succes.categorie),
+          reason: '${succes.id} a une catégorie inconnue : ${succes.categorie}',
+        );
+      }
     });
   });
 }
