@@ -91,6 +91,19 @@ class _ClassementScreenState extends State<ClassementScreen> {
             );
           }
 
+          // Peut être absent si le profil public n'a pas encore fini de se
+          // synchroniser (synchroniserProfil() dans CompteScreen n'est pas
+          // attendu) : on se contente alors de masquer le bouton "Défier"
+          // plutôt que de planter tout l'écran sur un firstWhere() sans
+          // correspondance.
+          ProfilPublic? monProfil;
+          for (final p in classement) {
+            if (p.uid == widget.monUid) {
+              monProfil = p;
+              break;
+            }
+          }
+
           return RefreshIndicator(
             onRefresh: _rafraichir,
             child: ListView.separated(
@@ -101,7 +114,7 @@ class _ClassementScreenState extends State<ClassementScreen> {
                 final profil = classement[index];
                 final rang = index + 1;
                 final cestMoi = profil.uid == widget.monUid;
-                final moi = classement.firstWhere((p) => p.uid == widget.monUid);
+                final moi = monProfil;
 
                 return Card(
                   color: cestMoi ? accentViolet.withValues(alpha: 0.12) : null,
@@ -125,7 +138,7 @@ class _ClassementScreenState extends State<ClassementScreen> {
                     subtitle: Text(
                       '🔥 ${profil.streak} · 🏆 ${profil.achievementsCount} · 💎 ${profil.coins}',
                     ),
-                    trailing: cestMoi
+                    trailing: cestMoi || moi == null
                         ? null
                         : IconButton(
                             icon: const Icon(Icons.sports_kabaddi, color: accentViolet),
