@@ -1,6 +1,13 @@
 import 'package:fsrs/fsrs.dart' as fsrs;
 
 // ============================================================
+// SENS DE RÉVISION
+// ============================================================
+
+const directionLatinVersFrancais = 'latin_vers_francais';
+const directionFrancaisVersLatin = 'francais_vers_latin';
+
+// ============================================================
 // DATENMODELL
 // ============================================================
 
@@ -11,7 +18,11 @@ class Vocabulaire {
   final String unite;
   final String? etymologie;
 
-  fsrs.Card fsrsCard;
+  // Reconnaître "lupus -> le loup" et produire "le loup -> lupus" sont deux
+  // compétences différentes (l'une passive, l'autre active) : chaque sens
+  // de révision a donc sa propre carte FSRS plutôt que de partager une
+  // seule progression.
+  final Map<String, fsrs.Card> fsrsCards;
 
   Vocabulaire({
     required this.latin,
@@ -19,7 +30,23 @@ class Vocabulaire {
     required this.categorie,
     required this.unite,
     this.etymologie,
-  }) : fsrsCard = fsrs.Card(cardId: latin.hashCode);
+  }) : fsrsCards = {
+         directionLatinVersFrancais: fsrs.Card(cardId: latin.hashCode),
+         directionFrancaisVersLatin: fsrs.Card(cardId: latin.hashCode),
+       };
+
+  fsrs.Card carte(String direction) => fsrsCards[direction]!;
+
+  void definirCarte(String direction, fsrs.Card carte) {
+    fsrsCards[direction] = carte;
+  }
+
+  // "Dû" si au moins un des deux sens de révision est en retard.
+  bool estDu(DateTime maintenant) =>
+      fsrsCards.values.any((c) => !c.due.isAfter(maintenant));
+
+  // "Nouveau" tant qu'aucun des deux sens n'a jamais été révisé.
+  bool get estNouveau => fsrsCards.values.every((c) => c.lastReview == null);
 }
 
 // ============================================================

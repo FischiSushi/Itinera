@@ -76,10 +76,12 @@ class _VocabulaireScreenState extends State<VocabulaireScreen> {
       _ => fsrs.Rating.easy,
     };
 
-    final result = scheduler.reviewCard(carte.fsrsCard, rating);
-    carte.fsrsCard = result.card;
+    final result = scheduler.reviewCard(carte.carte(widget.direction), rating);
+    carte.definirCarte(widget.direction, result.card);
 
-    Hive.box('vocabBox').put(carte.latin, carte.fsrsCard.toMap());
+    Hive.box(
+      'vocabBox',
+    ).put('${carte.latin}::${widget.direction}', result.card.toMap());
     registrerActiviteDuJour();
     enregistrerRevisionDuJour();
 

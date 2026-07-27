@@ -42,6 +42,9 @@ void main() {
   });
 
   group('niveauDifficulte', () {
+    // Chaque sens de révision a sa propre carte FSRS (voir
+    // Vocabulaire.fsrsCards) : on ne renseigne que le sens testé, l'autre
+    // reste à difficulté null (non pertinent ici).
     Vocabulaire motAvecDifficulte(double? difficulte) {
       final mot = Vocabulaire(
         latin: 'testum',
@@ -49,24 +52,36 @@ void main() {
         unite: 'test',
         categorie: 'Noms',
       );
-      mot.fsrsCard.difficulty = difficulte;
+      mot.carte(directionLatinVersFrancais).difficulty = difficulte;
       return mot;
     }
 
     test('null tant que le mot n\'a jamais été révisé', () {
-      expect(niveauDifficulte(motAvecDifficulte(null)), isNull);
+      expect(
+        niveauDifficulte(motAvecDifficulte(null), directionLatinVersFrancais),
+        isNull,
+      );
     });
 
     test('facile en dessous de 4', () {
-      expect(niveauDifficulte(motAvecDifficulte(2)), niveauFacile);
+      expect(
+        niveauDifficulte(motAvecDifficulte(2), directionLatinVersFrancais),
+        niveauFacile,
+      );
     });
 
     test('moyen entre 4 et 7', () {
-      expect(niveauDifficulte(motAvecDifficulte(5)), niveauMoyen);
+      expect(
+        niveauDifficulte(motAvecDifficulte(5), directionLatinVersFrancais),
+        niveauMoyen,
+      );
     });
 
     test('difficile à partir de 7', () {
-      expect(niveauDifficulte(motAvecDifficulte(8)), niveauDifficile);
+      expect(
+        niveauDifficulte(motAvecDifficulte(8), directionLatinVersFrancais),
+        niveauDifficile,
+      );
     });
   });
 }

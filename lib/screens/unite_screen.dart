@@ -49,24 +49,16 @@ class _UniteScreenState extends State<UniteScreen> {
 
   int compterARevoir() {
     final maintenant = DateTime.now().toUtc();
-
-    return vocabulaire.where((mot) {
-      return mot.fsrsCard.due.isBefore(maintenant);
-    }).length;
+    return vocabulaire.where((mot) => mot.estDu(maintenant)).length;
   }
 
   int compterNouveaux() {
-    return vocabulaire.where((mot) {
-      return mot.fsrsCard.lastReview == null;
-    }).length;
+    return vocabulaire.where((mot) => mot.estNouveau).length;
   }
 
   List<Vocabulaire> vocabulaireARevoir() {
     final maintenant = DateTime.now().toUtc();
-
-    return vocabulaire.where((mot) {
-      return !mot.fsrsCard.due.isAfter(maintenant);
-    }).toList();
+    return vocabulaire.where((mot) => mot.estDu(maintenant)).toList();
   }
 
   @override
@@ -273,9 +265,7 @@ class _UniteScreenState extends State<UniteScreen> {
 
                 final nombreARevoir = vocabulaire
                     .where(
-                      (mot) =>
-                          mot.unite == unite &&
-                          !mot.fsrsCard.due.isAfter(maintenant),
+                      (mot) => mot.unite == unite && mot.estDu(maintenant),
                     )
                     .length;
 

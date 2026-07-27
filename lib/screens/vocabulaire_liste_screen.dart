@@ -29,7 +29,7 @@ class _VocabulaireListeScreenState extends State<VocabulaireListeScreen> {
         .toList();
 
     final dueDeCetteUnite = vocabulaireDeCetteUnite
-        .where((mot) => !mot.fsrsCard.due.isAfter(maintenant))
+        .where((mot) => mot.estDu(maintenant))
         .toList();
 
     final categories = <String>[];
@@ -80,7 +80,7 @@ class _VocabulaireListeScreenState extends State<VocabulaireListeScreen> {
           final categorie = categories[indexCategorie];
           final motsDeCetteCategorie = motsParCategorie[categorie]!;
           final dueDeCetteCategorie = motsDeCetteCategorie
-              .where((mot) => !mot.fsrsCard.due.isAfter(maintenant))
+              .where((mot) => mot.estDu(maintenant))
               .toList();
 
           return Card(

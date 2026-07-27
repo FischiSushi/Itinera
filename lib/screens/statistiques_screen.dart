@@ -25,12 +25,10 @@ class _StatistiquesScreenState extends State<StatistiquesScreen> {
     final totalMots = vocabulaire.length;
 
     final totalARevoir = vocabulaire
-        .where((mot) => !mot.fsrsCard.due.isAfter(maintenant))
+        .where((mot) => mot.estDu(maintenant))
         .length;
 
-    final totalNouveaux = vocabulaire
-        .where((mot) => mot.fsrsCard.lastReview == null)
-        .length;
+    final totalNouveaux = vocabulaire.where((mot) => mot.estNouveau).length;
 
     final totalAppris = totalMots - totalNouveaux;
 
@@ -184,7 +182,7 @@ class _StatistiquesScreenState extends State<StatistiquesScreen> {
         .toList();
 
     final apprisDeCetteUnite = motsDeCetteUnite
-        .where((mot) => mot.fsrsCard.lastReview != null)
+        .where((mot) => !mot.estNouveau)
         .length;
 
     final total = motsDeCetteUnite.length;

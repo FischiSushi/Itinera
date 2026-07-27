@@ -95,21 +95,45 @@ void main() async {
   }
 
   for (final mot in vocabulaire) {
-    final data = box.get(mot.latin);
+    final donneeLatinVersFrancais = box.get(
+      '${mot.latin}::$directionLatinVersFrancais',
+    );
+    final donneeFrancaisVersLatin = box.get(
+      '${mot.latin}::$directionFrancaisVersLatin',
+    );
 
-    if (data != null) {
-      try {
-        mot.fsrsCard = fsrs.Card.fromMap(Map<String, dynamic>.from(data));
-      } catch (_) {
-        // altes Datenformat (statut/prochaineRevision/intervalle) —
-        // kein Crash, das Wort startet einfach wieder als neue Karte
+    if (donneeLatinVersFrancais != null) {
+      _chargerCarte(mot, directionLatinVersFrancais, donneeLatinVersFrancais);
+    } else {
+      // Migration : progression enregistrée avant que les deux sens de
+      // révision soient indépendants — récupérée côté Latin → Français
+      // (le sens par défaut) ; Français → Latin repart de zéro.
+      final ancienneDonnee = box.get(mot.latin);
+      if (ancienneDonnee != null) {
+        _chargerCarte(mot, directionLatinVersFrancais, ancienneDonnee);
       }
+    }
+
+    if (donneeFrancaisVersLatin != null) {
+      _chargerCarte(mot, directionFrancaisVersLatin, donneeFrancaisVersLatin);
     }
   }
 
   unawaited(NotificationService().reprogrammerSiActif());
 
   runApp(const LateinApp());
+}
+
+void _chargerCarte(Vocabulaire mot, String direction, dynamic donnee) {
+  try {
+    mot.definirCarte(
+      direction,
+      fsrs.Card.fromMap(Map<String, dynamic>.from(donnee)),
+    );
+  } catch (_) {
+    // altes Datenformat (statut/prochaineRevision/intervalle) —
+    // kein Crash, das Wort startet einfach wieder als neue Karte
+  }
 }
 
 // ============================================================
@@ -376,8 +400,7 @@ class Succes {
   });
 }
 
-int _motsApprisTotal() =>
-    vocabulaire.where((mot) => mot.fsrsCard.lastReview != null).length;
+int _motsApprisTotal() => vocabulaire.where((mot) => !mot.estNouveau).length;
 
 final List<Succes> succesDisponibles = [
   Succes(
@@ -820,7 +843,16 @@ void reinitialiserProgression({String? unite}) {
       : vocabulaire.where((mot) => mot.unite == unite).toList();
 
   for (final mot in mots) {
-    mot.fsrsCard = fsrs.Card(cardId: mot.latin.hashCode);
+    mot.definirCarte(
+      directionLatinVersFrancais,
+      fsrs.Card(cardId: mot.latin.hashCode),
+    );
+    mot.definirCarte(
+      directionFrancaisVersLatin,
+      fsrs.Card(cardId: mot.latin.hashCode),
+    );
+    box.delete('${mot.latin}::$directionLatinVersFrancais');
+    box.delete('${mot.latin}::$directionFrancaisVersLatin');
     box.delete(mot.latin);
   }
 }
@@ -1024,9 +1056,8 @@ Future<bool> confirmerSuppressionVolume(
 // ============================================================
 // DIRECTION DE RÉVISION
 // ============================================================
-
-const directionLatinVersFrancais = 'latin_vers_francais';
-const directionFrancaisVersLatin = 'francais_vers_latin';
+// Constantes directionLatinVersFrancais/directionFrancaisVersLatin
+// définies dans vocabulaire_data.dart (portées par le modèle Vocabulaire).
 
 Future<String?> choisirDirection(BuildContext context) {
   return showModalBottomSheet<String>(
@@ -1098,8 +1129,10 @@ const niveauFacile = 'facile';
 const niveauMoyen = 'moyen';
 const niveauDifficile = 'difficile';
 
-String? niveauDifficulte(Vocabulaire mot) {
-  final difficulte = mot.fsrsCard.difficulty;
+// La difficulté FSRS dépend du sens de révision (reconnaître un mot n'a
+// pas la même difficulté que le produire), donc il faut préciser lequel.
+String? niveauDifficulte(Vocabulaire mot, String direction) {
+  final difficulte = mot.carte(direction).difficulty;
 
   if (difficulte == null) return null;
 
@@ -1109,14 +1142,19 @@ String? niveauDifficulte(Vocabulaire mot) {
   return niveauDifficile;
 }
 
-List<Vocabulaire> vocabulairePourNiveau(String niveau) {
-  return vocabulaire.where((mot) => niveauDifficulte(mot) == niveau).toList();
+List<Vocabulaire> vocabulairePourNiveau(String niveau, String direction) {
+  return vocabulaire
+      .where((mot) => niveauDifficulte(mot, direction) == niveau)
+      .toList();
 }
 
 Future<void> choisirEtReviserParDifficulte(BuildContext context) async {
-  final facile = vocabulairePourNiveau(niveauFacile);
-  final moyen = vocabulairePourNiveau(niveauMoyen);
-  final difficile = vocabulairePourNiveau(niveauDifficile);
+  final direction = await choisirDirection(context);
+  if (direction == null || !context.mounted) return;
+
+  final facile = vocabulairePourNiveau(niveauFacile, direction);
+  final moyen = vocabulairePourNiveau(niveauMoyen, direction);
+  final difficile = vocabulairePourNiveau(niveauDifficile, direction);
 
   final niveau = await showModalBottomSheet<String>(
     context: context,
@@ -1174,9 +1212,20 @@ Future<void> choisirEtReviserParDifficulte(BuildContext context) async {
 
   if (niveau == null || !context.mounted) return;
 
-  final mots = vocabulairePourNiveau(niveau);
+  final mots = vocabulairePourNiveau(niveau, direction);
 
-  await demarrerRevision(context, mots);
+  await Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (context) {
+        return VocabulaireScreen(
+          vocabulaire: mots,
+          startIndex: 0,
+          direction: direction,
+        );
+      },
+    ),
+  );
 }
 
 Future<void> choisirJeu(BuildContext context, List<Vocabulaire> mots) async {
