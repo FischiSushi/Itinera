@@ -1,4 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Requis sur Android 13+ (API 33+) pour que
+         requestNotificationsPermission() puisse afficher la demande
+         d'autorisation, et pour que le rappel quotidien de série
+         (NotificationService) s'affiche effectivement. -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
     <application
         android:label="Itinera"
         android:name="${applicationName}"
