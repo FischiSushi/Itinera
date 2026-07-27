@@ -436,6 +436,133 @@ final Lecon leconDeclinaison2 = Lecon(
       '(le radical vir- ne change pas).',
     ),
   ],
+  etapes: [
+    EtapeTexte(
+      (context) => [
+        paragrapheExplication(
+          'La 2e déclinaison regroupe deux groupes principaux :\n'
+          '• les masculins en -us, comme dominus, -i (le maître)\n'
+          '• les neutres en -um, comme bellum, -i (la guerre)',
+        ),
+      ],
+    ),
+    EtapeTexte(
+      (context) => [
+        titreExplication('Masculin (dominus)'),
+        tableauDeclinaison(declinaisons[1]),
+      ],
+    ),
+    EtapeTexte(
+      (context) => [
+        titreExplication('Neutre (bellum)'),
+        tableauDeclinaison(declinaisons[2]),
+        const SizedBox(height: 12),
+        paragrapheExplication(
+          'Règle importante à retenir pour TOUS les neutres, à toutes les '
+          'déclinaisons : le nominatif, le vocatif et l\'accusatif sont '
+          'toujours identiques. Et au pluriel, ces trois cas se terminent '
+          'toujours par -a.',
+        ),
+      ],
+    ),
+    const EtapeVerification(
+      QuestionLecon(
+        question:
+            'Quel est l\'accusatif singulier de bellum (neutre — rappelle-toi '
+            'la règle) ?',
+        options: ['bellum', 'belli', 'bello', 'bella'],
+        reponseCorrecte: 'bellum',
+      ),
+    ),
+    const EtapeVerification(
+      QuestionLecon(
+        question:
+            'Quel est le génitif singulier de dominus (utilisé dans le '
+            'dictionnaire) ?',
+        options: ['domini', 'dominum', 'domino', 'dominus'],
+        reponseCorrecte: 'domini',
+      ),
+    ),
+    EtapeTexte(
+      (context) => [
+        titreExplication('Les noms et adjectifs en -er'),
+        paragrapheExplication(
+          'En plus des mots en -us, la 2e déclinaison comprend des noms et '
+          'adjectifs qui ont un nominatif (et un vocatif) singulier en '
+          '-er. À tous les autres cas, ils se déclinent exactement comme '
+          'dominus. Deux cas de figure :\n\n'
+          '• le radical garde son -e- partout : puer, púeri (le garçon) → '
+          'génitif púeri, accusatif púerum...\n'
+          '• le radical perd son -e- partout sauf au nominatif/vocatif '
+          'singulier : ager, agri (le champ) → génitif agri (pas '
+          '« ageri »), accusatif agrum...\n\n'
+          'Le génitif singulier indiqué dans le dictionnaire permet de '
+          'savoir tout de suite dans quel cas on se trouve.',
+        ),
+      ],
+    ),
+    EtapeTexte(
+      (context) => [
+        titreExplication('puer, pueri'),
+        tableauDeclinaison(declinaisons[9]),
+      ],
+    ),
+    EtapeTexte(
+      (context) => [
+        titreExplication('ager, agri (radical qui perd son -e-)'),
+        tableauDeclinaison(declinaisons[10]),
+      ],
+    ),
+    const EtapeVerification(
+      QuestionLecon(
+        question:
+            'Pourquoi ager perd-il son -e- au génitif (agri) alors que puer '
+            'le garde (pueri) ?',
+        options: [
+          'C\'est propre au radical de chaque mot : il faut le retenir par '
+              'le génitif',
+          'Ager est neutre, pas puer',
+          'Ager est toujours au pluriel',
+          'C\'est une règle générale à tous les mots en -er',
+        ],
+        reponseCorrecte:
+            'C\'est propre au radical de chaque mot : il faut le retenir '
+            'par le génitif',
+      ),
+    ),
+    EtapeTexte(
+      (context) => [
+        paragrapheExplication(
+          'Les adjectifs suivent le même schéma : miser, mísera, míserum '
+          '(malheureux) se décline comme puer ; pulcher, pulchra, '
+          'pulchrum (beau) et sacer, sacra, sacrum (sacré) se déclinent '
+          'comme ager, mais seulement au masculin — le féminin (pulchra) '
+          'et le neutre (pulchrum) suivent leurs déclinaisons habituelles '
+          '(1re et 2e neutre), sans perdre de -e-, puisqu\'il n\'y en '
+          'avait pas.',
+        ),
+      ],
+    ),
+    EtapeTexte(
+      (context) => [
+        titreExplication('vir, viri — une exception à part'),
+        tableauDeclinaison(declinaisons[11]),
+        paragrapheExplication(
+          'vir (l\'homme, le mari) ne se termine ni en -us ni en -er au '
+          'nominatif, mais suit par ailleurs exactement le modèle de puer '
+          '(le radical vir- ne change pas).',
+        ),
+      ],
+    ),
+    const EtapeVerification(
+      QuestionLecon(
+        question:
+            'vir (l\'homme) se décline comme quel autre mot de cette leçon ?',
+        options: ['dominus', 'bellum', 'puer', 'ager'],
+        reponseCorrecte: 'puer',
+      ),
+    ),
+  ],
   exercices: const [
     QuestionLecon(
       question:
@@ -616,6 +743,180 @@ final Lecon leconPhraseSimpleComplexe = Lecon(
       'structurer la phrase à l\'oral comme à l\'écrit.',
     ),
   ],
+  etapes: [
+    EtapeTexte(
+      (context) => [
+        paragrapheExplication(
+          'La phrase est l\'unité maximale de l\'analyse grammaticale : '
+          'elle commence par une majuscule et se termine par une '
+          'ponctuation forte (. ! ?). Son pivot est le verbe : une phrase '
+          'contient au moins un verbe conjugué, mais elle peut en '
+          'comporter plusieurs. Chaque partie de la phrase qui contient '
+          'un verbe conjugué s\'appelle une proposition.',
+        ),
+      ],
+    ),
+    const EtapeVerification(
+      QuestionLecon(
+        question:
+            'Comment appelle-t-on chaque partie d\'une phrase complexe, '
+            'contenant un verbe conjugué ?',
+        options: [
+          'une proposition',
+          'un cas',
+          'une déclinaison',
+          'une conjonction',
+        ],
+        reponseCorrecte: 'une proposition',
+      ),
+    ),
+    EtapeTexte(
+      (context) => [
+        titreExplication('La phrase simple'),
+        paragrapheExplication(
+          'Une phrase simple ne contient qu\'un seul verbe conjugué : '
+          'c\'est une proposition indépendante à elle seule.\n\n'
+          'Ex. : Puella cantat. (La jeune fille chante.) → 1 phrase '
+          'simple.',
+        ),
+      ],
+    ),
+    EtapeTexte(
+      (context) => [
+        titreExplication('La phrase complexe'),
+        paragrapheExplication(
+          'Une phrase complexe contient au moins deux verbes conjugués, '
+          'donc au moins deux propositions. Elles peuvent être reliées '
+          'de trois façons :',
+        ),
+      ],
+    ),
+    const EtapeVerification(
+      QuestionLecon(
+        question:
+            'Combien de verbes conjugués (au minimum) contient une phrase '
+            'complexe ?',
+        options: ['0', '1', '2', '3'],
+        reponseCorrecte: '2',
+      ),
+    ),
+    EtapeTexte(
+      (context) => [
+        paragrapheExplication(
+          '1. Par juxtaposition : les propositions sont simplement '
+          'placées l\'une à côté de l\'autre, séparées par une virgule, '
+          'un point-virgule ou deux-points, sans mot de liaison.\n'
+          'Ex. : Puella cantat, puer ludit. (La jeune fille chante, le '
+          'garçon joue.)',
+        ),
+      ],
+    ),
+    const EtapeVerification(
+      QuestionLecon(
+        question:
+            '« Puella cantat, puer ludit. » : ces deux propositions sont '
+            'reliées par...',
+        options: [
+          'juxtaposition',
+          'coordination',
+          'subordination',
+          'aucun lien',
+        ],
+        reponseCorrecte: 'juxtaposition',
+      ),
+    ),
+    const EtapeVerification(
+      QuestionLecon(
+        question:
+            'Quel signe de ponctuation NE relie PAS des propositions par '
+            'juxtaposition ?',
+        options: [
+          'le point d\'interrogation',
+          'la virgule',
+          'le point-virgule',
+          'les deux-points',
+        ],
+        reponseCorrecte: 'le point d\'interrogation',
+      ),
+    ),
+    EtapeTexte(
+      (context) => [
+        paragrapheExplication(
+          '2. Par coordination : les propositions sont reliées par une '
+          'conjonction de coordination (mais, ou, et, donc, or, ni, car '
+          '— en latin, notamment et, -que, nec/neque).\n'
+          'Ex. : Dominus servum vocat et servus venit. (Le maître appelle '
+          'l\'esclave et l\'esclave vient.)',
+        ),
+      ],
+    ),
+    const EtapeVerification(
+      QuestionLecon(
+        question:
+            '« Dominus servum vocat et servus venit. » : ces deux '
+            'propositions sont reliées par...',
+        options: [
+          'juxtaposition',
+          'coordination',
+          'subordination',
+          'aucun lien',
+        ],
+        reponseCorrecte: 'coordination',
+      ),
+    ),
+    EtapeTexte(
+      (context) => [
+        paragrapheExplication(
+          '3. Par subordination : une proposition (la subordonnée) '
+          'dépend d\'une autre (la principale) et ne peut pas exister '
+          'seule, introduite par une conjonction de subordination '
+          '(quand, parce que, puisque...). Tu apprendras les '
+          'conjonctions de subordination latines plus tard dans ton '
+          'apprentissage.',
+        ),
+      ],
+    ),
+    const EtapeVerification(
+      QuestionLecon(
+        question:
+            'Dans une phrase reliée par subordination, comment appelle-'
+            't-on la proposition qui ne peut pas exister seule ?',
+        options: [
+          'la subordonnée',
+          'la principale',
+          'l\'indépendante',
+          'l\'apposition',
+        ],
+        reponseCorrecte: 'la subordonnée',
+      ),
+    ),
+    EtapeTexte(
+      (context) => [
+        titreExplication('Une curiosité : la scriptio continua'),
+        paragrapheExplication(
+          'Dans l\'Antiquité, les Romains n\'utilisaient ni espace entre '
+          'les mots ni ponctuation (à l\'exception du point) : c\'est la '
+          'scriptio continua. C\'est en partie pour cela que le latin '
+          's\'appuie autant sur des mots de liaison (et, -que, nec, sed, '
+          'nam...) pour structurer la phrase à l\'oral comme à l\'écrit.',
+        ),
+      ],
+    ),
+    const EtapeVerification(
+      QuestionLecon(
+        question:
+            'Comment appelle-t-on l\'écriture latine antique, sans espace '
+            'entre les mots ni ponctuation ?',
+        options: [
+          'la scriptio continua',
+          'l\'oratio recta',
+          'la lingua latina',
+          'le cursus honorum',
+        ],
+        reponseCorrecte: 'la scriptio continua',
+      ),
+    ),
+  ],
   exercices: const [
     QuestionLecon(
       question:
@@ -740,6 +1041,147 @@ final Lecon leconConjonctions = Lecon(
       'Répété devant chaque terme coordonné, et marque une insistance : '
       '« à la fois... et... », « aussi bien... que... ».\n'
       'Ex. : Et dominus et servus... (À la fois le maître et l\'esclave...)',
+    ),
+  ],
+  etapes: [
+    EtapeTexte(
+      (context) => [
+        paragrapheExplication(
+          'Les conjonctions de coordination unissent des mots, des '
+          'groupes de mots ou des propositions de même nature et de même '
+          'fonction.',
+        ),
+      ],
+    ),
+    EtapeTexte(
+      (context) => [
+        titreExplication('L\'union sans négation : et / -que'),
+        paragrapheExplication(
+          'et se place avant le second élément coordonné, comme en '
+          'français.\n'
+          'Ex. : dominus et filius (le maître et le fils).\n\n'
+          '-que est enclitique : il se soude à la fin du premier mot de '
+          'l\'élément qu\'il coordonne (jamais au premier élément de la '
+          'phrase).\n'
+          'Ex. : dominus filiusque (le maître et le fils).',
+        ),
+      ],
+    ),
+    const EtapeVerification(
+      QuestionLecon(
+        question:
+            'Quelle conjonction de coordination latine « et » se soude au '
+            'mot qu\'elle coordonne ?',
+        options: ['et', '-que', 'sed', 'nam'],
+        reponseCorrecte: '-que',
+      ),
+    ),
+    const EtapeVerification(
+      QuestionLecon(
+        question: '« Dominus filiusque » signifie...',
+        options: [
+          'Le maître et le fils',
+          'Le maître du fils',
+          'Ni le maître ni le fils',
+          'Le maître, ou le fils',
+        ],
+        reponseCorrecte: 'Le maître et le fils',
+      ),
+    ),
+    EtapeTexte(
+      (context) => [
+        titreExplication('L\'union avec négation : neque / nec'),
+        paragrapheExplication(
+          '« et ... ne ... pas » se dit toujours neque (ou nec) : '
+          'l\'emploi de non après et ou -que est incorrect en latin. On '
+          'trouve le plus souvent neque devant une voyelle, nec devant '
+          'une consonne.\n'
+          'Ex. : Dormit nec servos audit. (Il dort et n\'entend pas les '
+          'esclaves.)\n\n'
+          'nec/neque ... nec/neque ... signifie « ni ... ni ... ne ».\n'
+          'Ex. : Nec dominus neque amicus venit. (Ni le maître ni l\'ami '
+          'ne viennent.)',
+        ),
+      ],
+    ),
+    const EtapeVerification(
+      QuestionLecon(
+        question: 'Comment dit-on toujours « et ... ne ... pas » en latin ?',
+        options: ['et non', 'neque (nec)', '-que non', 'sed non'],
+        reponseCorrecte: 'neque (nec)',
+      ),
+    ),
+    const EtapeVerification(
+      QuestionLecon(
+        question: 'Devant une consonne, on préfère en général...',
+        options: ['neque', 'nec', 'et', '-que'],
+        reponseCorrecte: 'nec',
+      ),
+    ),
+    const EtapeVerification(
+      QuestionLecon(
+        question: '« Nec dominus neque amicus venit » signifie...',
+        options: [
+          'Ni le maître ni l\'ami ne viennent',
+          'Le maître et l\'ami viennent',
+          'Le maître vient, mais pas l\'ami',
+          'L\'ami du maître vient',
+        ],
+        reponseCorrecte: 'Ni le maître ni l\'ami ne viennent',
+      ),
+    ),
+    EtapeTexte(
+      (context) => [
+        titreExplication('Coordonner trois éléments ou plus'),
+        paragrapheExplication(
+          'Dans une énumération de plusieurs termes (3 ou plus), on peut '
+          'utiliser et ou -que :\n'
+          '• et se répète devant chaque terme coordonné ;\n'
+          '• -que se soude uniquement au dernier terme et ne se répète '
+          'pas.\n'
+          'Ex. : dominus et filius et servus = dominus, filius '
+          'servusque (le maître, le fils et l\'esclave).',
+        ),
+      ],
+    ),
+    const EtapeVerification(
+      QuestionLecon(
+        question:
+            'Dans une énumération de 3 termes ou plus reliés par -que, '
+            'combien de fois -que apparaît-il ?',
+        options: [
+          'Une seule fois, sur le dernier terme',
+          'Sur chaque terme',
+          'Jamais, seulement et',
+          'Sur le premier terme seulement',
+        ],
+        reponseCorrecte: 'Une seule fois, sur le dernier terme',
+      ),
+    ),
+    EtapeTexte(
+      (context) => [
+        titreExplication('Insistance : et... et...'),
+        paragrapheExplication(
+          'Répété devant chaque terme coordonné, et marque une '
+          'insistance : « à la fois... et... », « aussi bien... que... ».\n'
+          'Ex. : Et dominus et servus... (À la fois le maître et '
+          'l\'esclave...)',
+        ),
+      ],
+    ),
+    const EtapeVerification(
+      QuestionLecon(
+        question:
+            'Que marque « et » répété devant chaque terme coordonné '
+            '(et... et...) ?',
+        options: [
+          'une insistance',
+          'une négation',
+          'une question',
+          'une subordination',
+        ],
+        reponseCorrecte: 'une insistance',
+      ),
     ),
   ],
   exercices: const [
@@ -2202,6 +2644,105 @@ final Lecon leconNeutre2eDecl = Lecon(
     titreExplication('oppidum, i, n. (= bellum, i, n.)'),
     tableauDeclinaison(declinaisons[2]),
   ],
+  etapes: [
+    EtapeTexte(
+      (context) => [
+        paragrapheExplication(
+          'Le latin possède 3 genres : masculin, féminin et neutre.\n\n'
+          'Il n\'y a pas de noms neutres à la 1re déclinaison : ils sont '
+          'féminins (puella, ae, f.) et parfois masculins (nauta, ae, m. '
+          '— le marin).\n\n'
+          'Les noms de la 2e déclinaison, eux, sont masculins (lupus, i, '
+          'm.) ou neutres (oppidum, i, n. — la place forte). '
+          'Quelques-uns sont féminins (Aegyptus, i, f.).',
+        ),
+      ],
+    ),
+    const EtapeVerification(
+      QuestionLecon(
+        question: 'Combien de genres le latin possède-t-il ?',
+        options: ['2', '3', '4', '5'],
+        reponseCorrecte: '3',
+      ),
+    ),
+    const EtapeVerification(
+      QuestionLecon(
+        question: 'La 1re déclinaison comprend-elle des noms neutres ?',
+        options: [
+          'Non, jamais',
+          'Oui, tous les noms en -a sont neutres',
+          'Oui, mais seulement au pluriel',
+          'Oui, la moitié d\'entre eux',
+        ],
+        reponseCorrecte: 'Non, jamais',
+      ),
+    ),
+    EtapeTexte(
+      (context) => [
+        titreExplication('La règle des neutres'),
+        paragrapheExplication(
+          'Pour les noms neutres de la 2e déclinaison, la terminaison est '
+          '-um au singulier et -a au pluriel.\n\n'
+          'Règle valable pour TOUS les neutres, à toutes les '
+          'déclinaisons : le nominatif, le vocatif et l\'accusatif ont '
+          'toujours la même forme. Aux autres cas (génitif, datif, '
+          'ablatif), les neutres se déclinent exactement comme lupus.',
+        ),
+      ],
+    ),
+    const EtapeVerification(
+      QuestionLecon(
+        question:
+            'Quelle est la terminaison des neutres de la 2e déclinaison au '
+            'singulier ?',
+        options: ['-us', '-um', '-a', '-i'],
+        reponseCorrecte: '-um',
+      ),
+    ),
+    const EtapeVerification(
+      QuestionLecon(
+        question:
+            'Quelle est la terminaison des neutres de la 2e déclinaison au '
+            'pluriel ?',
+        options: ['-us', '-um', '-a', '-orum'],
+        reponseCorrecte: '-a',
+      ),
+    ),
+    const EtapeVerification(
+      QuestionLecon(
+        question:
+            'Pour TOUS les neutres (à toutes les déclinaisons), quels cas '
+            'ont toujours la même forme ?',
+        options: [
+          'Nominatif, vocatif, accusatif',
+          'Génitif, datif, ablatif',
+          'Nominatif et génitif seulement',
+          'Tous les cas sont différents',
+        ],
+        reponseCorrecte: 'Nominatif, vocatif, accusatif',
+      ),
+    ),
+    EtapeTexte(
+      (context) => [
+        titreExplication('oppidum, i, n. (= bellum, i, n.)'),
+        tableauDeclinaison(declinaisons[2]),
+      ],
+    ),
+    const EtapeVerification(
+      QuestionLecon(
+        question: 'Quel est le génitif singulier de oppidum ?',
+        options: ['oppidum', 'oppidi', 'oppido', 'oppida'],
+        reponseCorrecte: 'oppidi',
+      ),
+    ),
+    const EtapeVerification(
+      QuestionLecon(
+        question: 'Quel est le nominatif pluriel de oppidum ?',
+        options: ['oppidum', 'oppidi', 'oppida', 'oppidorum'],
+        reponseCorrecte: 'oppida',
+      ),
+    ),
+  ],
   exercices: const [
     QuestionLecon(
       question: 'Combien de genres le latin possède-t-il ?',
@@ -2315,6 +2856,153 @@ final Lecon leconAdjectifs1reClasse = Lecon(
       'bonum = le bien · bona = les biens\n'
       'malum = le mal · mala = les maux\n'
       'multa = beaucoup (de choses) · cuncta = toutes les choses',
+    ),
+  ],
+  etapes: [
+    EtapeTexte(
+      (context) => [
+        paragrapheExplication(
+          'L\'adjectif latin s\'accorde en genre, en nombre et en cas '
+          'avec le nom auquel il se rapporte. Comme en français, il peut '
+          'être :\n\n'
+          '• épithète : Bonus puer adest. (Le bon garçon est là.)\n'
+          '• attribut : Puer bonus est. (Le garçon est bon.)',
+        ),
+      ],
+    ),
+    EtapeTexte(
+      (context) => [
+        titreExplication('Trois déclinaisons pour un seul adjectif'),
+        paragrapheExplication(
+          'Les adjectifs de la 1re classe suivent, au masculin et au '
+          'neutre, la déclinaison des noms de la 2e déclinaison (lupus, '
+          'i, m. et oppidum, i, n.), et au féminin, celle de la 1re '
+          'déclinaison (puella, ae, f.) :\n\n'
+          'masculin : bon-us → se décline comme lupus\n'
+          'féminin : bon-a → se décline comme puella\n'
+          'neutre : bon-um → se décline comme oppidum',
+        ),
+      ],
+    ),
+    const EtapeVerification(
+      QuestionLecon(
+        question:
+            'Au masculin, un adjectif de la 1re classe (comme bonus) se '
+            'décline comme...',
+        options: ['puella', 'lupus', 'oppidum', 'dominus et puella à la fois'],
+        reponseCorrecte: 'lupus',
+      ),
+    ),
+    const EtapeVerification(
+      QuestionLecon(
+        question:
+            'Au féminin, un adjectif de la 1re classe (comme bona) se '
+            'décline comme...',
+        options: ['puella', 'lupus', 'oppidum', 'vir'],
+        reponseCorrecte: 'puella',
+      ),
+    ),
+    const EtapeVerification(
+      QuestionLecon(
+        question:
+            'Au neutre, un adjectif de la 1re classe (comme bonum) se '
+            'décline comme...',
+        options: ['puella', 'lupus', 'oppidum', 'ager'],
+        reponseCorrecte: 'oppidum',
+      ),
+    ),
+    EtapeTexte(
+      (context) => [
+        paragrapheExplication(
+          'Le radical de l\'adjectif s\'obtient en enlevant la '
+          'terminaison -a au nominatif féminin singulier.\n\n'
+          'bonus, bona, bonum → radical bon-\n'
+          'pulcher, pulchra, pulchrum → radical pulchr-\n'
+          'miser, misera, miserum → radical miser-',
+        ),
+      ],
+    ),
+    const EtapeVerification(
+      QuestionLecon(
+        question:
+            'Comment obtient-on le radical d\'un adjectif de la 1re '
+            'classe ?',
+        options: [
+          'En enlevant -a au nominatif féminin singulier',
+          'En enlevant -us au nominatif masculin singulier',
+          'En enlevant -um au nominatif neutre',
+          'En gardant le mot tel quel',
+        ],
+        reponseCorrecte: 'En enlevant -a au nominatif féminin singulier',
+      ),
+    ),
+    EtapeTexte(
+      (context) => [
+        titreExplication('L\'adjectif substantivé'),
+        paragrapheExplication(
+          'Lorsqu\'un adjectif est employé seul, sans nom qu\'il '
+          'accompagne, on dit qu\'il est substantivé : il a alors la '
+          'valeur d\'un nom, masculin, féminin ou neutre.',
+        ),
+      ],
+    ),
+    const EtapeVerification(
+      QuestionLecon(
+        question: 'Qu\'appelle-t-on un adjectif « substantivé » ?',
+        options: [
+          'Un adjectif employé seul, avec la valeur d\'un nom',
+          'Un adjectif toujours au pluriel',
+          'Un adjectif qui n\'a pas de féminin',
+          'Un adjectif emprunté au grec',
+        ],
+        reponseCorrecte: 'Un adjectif employé seul, avec la valeur d\'un nom',
+      ),
+    ),
+    EtapeTexte(
+      (context) => [
+        paragrapheExplication(
+          'Les emplois les plus fréquents :\n\n'
+          'bonus = un homme bon · boni = les gens de bien\n'
+          'multi = beaucoup de gens · multae = beaucoup de femmes\n'
+          'propinqui = les proches parents · nostri = les nôtres\n\n'
+          'Au neutre :\n'
+          'bonum = le bien · bona = les biens\n'
+          'malum = le mal · mala = les maux\n'
+          'multa = beaucoup (de choses) · cuncta = toutes les choses',
+        ),
+      ],
+    ),
+    const EtapeVerification(
+      QuestionLecon(
+        question: 'Que signifie « boni » (adjectif substantivé) ?',
+        options: ['les gens de bien', 'le bien', 'les biens', 'un homme bon'],
+        reponseCorrecte: 'les gens de bien',
+      ),
+    ),
+    const EtapeVerification(
+      QuestionLecon(
+        question:
+            'Que signifie « bona » (adjectif substantivé, neutre pluriel) ?',
+        options: [
+          'les biens',
+          'une bonne chose',
+          'les gens de bien',
+          'beaucoup de femmes',
+        ],
+        reponseCorrecte: 'les biens',
+      ),
+    ),
+    const EtapeVerification(
+      QuestionLecon(
+        question: 'Que signifie « multi » (adjectif substantivé) ?',
+        options: [
+          'beaucoup de gens',
+          'beaucoup de choses',
+          'les proches parents',
+          'les nôtres',
+        ],
+        reponseCorrecte: 'beaucoup de gens',
+      ),
     ),
   ],
   exercices: const [
@@ -2463,6 +3151,166 @@ final Lecon leconVerbeLatin = Lecon(
       tableauConjugaison(conj),
       const SizedBox(height: 12),
     ],
+  ],
+  etapes: [
+    EtapeTexte(
+      (context) => [
+        titreExplication('Les temps primitifs'),
+        paragrapheExplication(
+          'Les verbes latins se présentent avec 5 formes, appelées temps '
+          'primitifs : amo, as, are, avi, atum « aimer ». Elles indiquent '
+          'les trois radicaux nécessaires pour former tous les modes et '
+          'tous les temps du latin :\n\n'
+          '• amo, as, are → le radical du présent (ou infectum) : ama-\n'
+          '• amavi → le radical du passé (ou perfectum) : amav-\n'
+          '• amatum → le radical du supin : amat-',
+        ),
+        paragrapheExplication(
+          'Certains verbes, dont « être » et ses composés, n\'ont pas de '
+          'supin : sum, es, esse, fui, Ø.',
+        ),
+      ],
+    ),
+    const EtapeVerification(
+      QuestionLecon(
+        question:
+            'Combien de temps primitifs présente un verbe latin comme amo, '
+            'as, are, avi, atum ?',
+        options: ['3', '4', '5', '6'],
+        reponseCorrecte: '5',
+      ),
+    ),
+    const EtapeVerification(
+      QuestionLecon(
+        question: 'Que donne le radical du présent (amo, as, are) ?',
+        options: ['ama-', 'amav-', 'amat-', 'am-'],
+        reponseCorrecte: 'ama-',
+      ),
+    ),
+    const EtapeVerification(
+      QuestionLecon(
+        question: 'Quel verbe très courant n\'a pas de supin ?',
+        options: ['amo', 'sum', 'audio', 'mitto'],
+        reponseCorrecte: 'sum',
+      ),
+    ),
+    EtapeTexte(
+      (context) => [
+        titreExplication('Les 5 modèles de conjugaison'),
+        paragrapheExplication(
+          'conjugaisons — verbes en — modèles\n\n'
+          '1re — -o, -as, -are — amo, as, are, avi, atum « aimer »\n'
+          '2e — -eo, -es, -ere — moneo, es, ere, monui, monitum « avertir »\n'
+          '3e — -o, -is, -ere — mitto, is, ere, misi, missum « envoyer »\n'
+          '4e — -io, -is, -ere — capio, is, ere, cepi, captum « prendre »\n'
+          '5e — -io, -is, -ire — audio, is, ire, audivi, auditum « écouter »',
+        ),
+      ],
+    ),
+    const EtapeVerification(
+      QuestionLecon(
+        question:
+            'À quelle conjugaison appartient un verbe en -o, -is, -ere '
+            'comme mitto ?',
+        options: ['1re', '2e', '3e', '4e'],
+        reponseCorrecte: '3e',
+      ),
+    ),
+    const EtapeVerification(
+      QuestionLecon(
+        question:
+            'À quelle conjugaison appartient un verbe en -io, -is, -ire '
+            'comme audio ?',
+        options: ['2e', '3e', '4e', '5e'],
+        reponseCorrecte: '5e',
+      ),
+    ),
+    EtapeTexte(
+      (context) => [
+        paragrapheExplication(
+          'Aux 1re, 2e et 5e conjugaisons, le radical se termine par une '
+          'voyelle longue et stable (amā-, monē-, audī- — il suffit '
+          'd\'enlever -re à l\'infinitif).\n\n'
+          'Aux 3e et 4e conjugaisons, en -ĕre, le radical de la 3e se '
+          'termine par une consonne (mitt-), celui de la 4e par la '
+          'voyelle -i (capi-).',
+        ),
+      ],
+    ),
+    EtapeTexte(
+      (context) => [
+        titreExplication('L\'indicatif présent'),
+        paragrapheExplication(
+          'Comme en français, l\'indicatif présent énonce un fait ou une '
+          'action du présent, ou un fait général / une vérité générale.\n\n'
+          'Sauf pour insister, le latin ne connaît pas de pronom '
+          'personnel sujet (je, tu, il...), puisque les terminaisons '
+          '-o/m, -s, -t, -mus, -tis, -nt renseignent déjà sur la '
+          'personne.',
+        ),
+      ],
+    ),
+    const EtapeVerification(
+      QuestionLecon(
+        question:
+            'Quelle terminaison de l\'indicatif présent correspond à '
+            '« nous » ?',
+        options: ['-t', '-mus', '-tis', '-nt'],
+        reponseCorrecte: '-mus',
+      ),
+    ),
+    const EtapeVerification(
+      QuestionLecon(
+        question:
+            'Pourquoi le latin utilise-t-il rarement un pronom sujet (je, '
+            'tu...) ?',
+        options: [
+          'Les terminaisons du verbe indiquent déjà la personne',
+          'Le latin n\'a pas de pronoms',
+          'C\'est une règle sans raison particulière',
+          'Seuls les verbes à l\'impératif en ont besoin',
+        ],
+        reponseCorrecte: 'Les terminaisons du verbe indiquent déjà la personne',
+      ),
+    ),
+    EtapeTexte(
+      (context) => [
+        for (final conj in conjugaisons.take(1)) ...[
+          tableauConjugaison(conj),
+          const SizedBox(height: 12),
+        ],
+      ],
+    ),
+    EtapeTexte(
+      (context) => [
+        for (final conj in conjugaisons.skip(1).take(2)) ...[
+          tableauConjugaison(conj),
+          const SizedBox(height: 12),
+        ],
+      ],
+    ),
+    const EtapeVerification(
+      QuestionLecon(
+        question: 'Quelle est la forme de « nous envoyons » (mittere) ?',
+        options: ['mittimus', 'mittitis', 'mittunt', 'mittimur'],
+        reponseCorrecte: 'mittimus',
+      ),
+    ),
+    EtapeTexte(
+      (context) => [
+        for (final conj in conjugaisons.skip(3)) ...[
+          tableauConjugaison(conj),
+          const SizedBox(height: 12),
+        ],
+      ],
+    ),
+    const EtapeVerification(
+      QuestionLecon(
+        question: 'Quelle est la forme de « ils prennent » (capere) ?',
+        options: ['capiunt', 'capitis', 'capimus', 'capiet'],
+        reponseCorrecte: 'capiunt',
+      ),
+    ),
   ],
   exercices: const [
     QuestionLecon(
