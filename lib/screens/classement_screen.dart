@@ -4,6 +4,7 @@ import 'package:itinera/main.dart';
 import 'package:itinera/screens/defi_quiz_screen.dart';
 import 'package:itinera/services/duel_service.dart';
 import 'package:itinera/services/social_service.dart';
+import 'package:itinera/widgets/avatar_glyphe.dart';
 
 class ClassementScreen extends StatefulWidget {
   final String monUid;
@@ -122,7 +123,7 @@ class _ClassementScreenState extends State<ClassementScreen> {
                     leading: _MedailleOuRang(rang: rang),
                     title: Row(
                       children: [
-                        Text(profil.avatarEmoji, style: const TextStyle(fontSize: 20)),
+                        AvatarGlyphe(valeur: profil.avatarEmoji, taille: 28),
                         const SizedBox(width: 8),
                         Expanded(
                           child: Text(

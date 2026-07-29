@@ -9,6 +9,7 @@ import 'package:itinera/screens/succes_screen.dart';
 import 'package:itinera/services/auth_service.dart';
 import 'package:itinera/services/duel_service.dart';
 import 'package:itinera/services/social_service.dart';
+import 'package:itinera/widgets/avatar_glyphe.dart';
 
 class CompteScreen extends StatefulWidget {
   const CompteScreen({super.key});
@@ -355,7 +356,14 @@ class _EcranProfilState extends State<_EcranProfil> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text('${profil.avatarEmoji}  ${profil.displayName}'),
+        title: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            AvatarGlyphe(valeur: profil.avatarEmoji, taille: 28),
+            const SizedBox(width: 8),
+            Flexible(child: Text(profil.displayName)),
+          ],
+        ),
         content: Text(
           '🔥 ${profil.streak} · 🏆 ${profil.achievementsCount}',
         ),
@@ -426,9 +434,9 @@ class _EcranProfilState extends State<_EcranProfil> {
                       children: trouves
                           .map(
                             (p) => ListTile(
-                              leading: Text(
-                                p.avatarEmoji,
-                                style: const TextStyle(fontSize: 24),
+                              leading: AvatarGlyphe(
+                                valeur: p.avatarEmoji,
+                                taille: 32,
                               ),
                               title: Text(p.displayName),
                               subtitle: Text('🔥 ${p.streak} · 🏆 ${p.achievementsCount}'),
@@ -470,11 +478,11 @@ class _EcranProfilState extends State<_EcranProfil> {
             child: Column(
               children: [
                 CircleAvatar(
-                  radius: 32,
+                  radius: 38,
                   backgroundColor: accentViolet.withValues(alpha: 0.15),
-                  child: Text(
-                    emojiAvatarEquipe(),
-                    style: const TextStyle(fontSize: 30),
+                  child: AvatarGlyphe(
+                    valeur: emojiAvatarEquipe(),
+                    taille: 46,
                   ),
                 ),
                 const SizedBox(height: 8),

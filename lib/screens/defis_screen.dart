@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:itinera/main.dart' show texteAttenue;
 import 'package:itinera/screens/defi_quiz_screen.dart';
 import 'package:itinera/services/duel_service.dart';
+import 'package:itinera/widgets/avatar_glyphe.dart';
 
 class DefisScreen extends StatefulWidget {
   final String monUid;
@@ -91,7 +92,7 @@ class _DefisScreenState extends State<DefisScreen> {
             final defi = defis[i];
             return Card(
               child: ListTile(
-                leading: Text(defi.fromAvatar, style: const TextStyle(fontSize: 24)),
+                leading: AvatarGlyphe(valeur: defi.fromAvatar, taille: 32),
                 title: Text(defi.fromNom),
                 subtitle: Text('Son score : ${defi.scoreFrom} / ${defi.mots.length}'),
                 trailing: const Icon(Icons.play_arrow),
@@ -129,7 +130,7 @@ class _DefisScreenState extends State<DefisScreen> {
             final defi = defis[i];
             return Card(
               child: ListTile(
-                leading: Text(defi.toAvatar, style: const TextStyle(fontSize: 24)),
+                leading: AvatarGlyphe(valeur: defi.toAvatar, taille: 32),
                 title: Text(defi.toNom),
                 subtitle: Text(
                   'Ton score : ${defi.scoreFrom} / ${defi.mots.length} · en attente de réponse',
@@ -189,9 +190,9 @@ class _DefisScreenState extends State<DefisScreen> {
 
               return Card(
                 child: ListTile(
-                  leading: Text(
-                    defi.adversaireAvatar(widget.monUid),
-                    style: const TextStyle(fontSize: 24),
+                  leading: AvatarGlyphe(
+                    valeur: defi.adversaireAvatar(widget.monUid),
+                    taille: 32,
                   ),
                   title: Text(defi.adversaireNom(widget.monUid)),
                   subtitle: Text('$monScore - $scoreAdversaire'),

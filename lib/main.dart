@@ -273,6 +273,9 @@ bool depenserCoins(int montant) {
 class ArticleBoutique {
   final String id;
   final String nom;
+  // Historiquement un vrai emoji ; peut aussi être un identifiant
+  // 'chatpfp:N' résolu en image par AvatarGlyphe (voir widgets/avatar_glyphe.dart)
+  // pour les têtes de chat achetables.
   final String emoji;
   final int prix;
   final bool estAvatar;
@@ -286,29 +289,24 @@ class ArticleBoutique {
   });
 }
 
+// Seuls des avatars "chat" (deux planches fournies par l'utilisateur,
+// recadrées par AvatarGlyphe) sont proposés — les anciens avatars emoji
+// (hibou, temple, aigle...) ont été retirés à la demande de l'utilisateur.
 const articlesBoutique = [
-  ArticleBoutique(id: 'avatar_hibou', nom: 'Hibou sage', emoji: '🦉', prix: 50),
-  ArticleBoutique(id: 'avatar_temple', nom: 'Temple', emoji: '🏛️', prix: 100),
-  ArticleBoutique(id: 'avatar_aigle', nom: 'Aigle', emoji: '🦅', prix: 150),
-  ArticleBoutique(id: 'avatar_louve', nom: 'Louve', emoji: '🐺', prix: 200),
-  ArticleBoutique(
-    id: 'avatar_gladiateur',
-    nom: 'Gladiateur',
-    emoji: '⚔️',
-    prix: 250,
-  ),
-  ArticleBoutique(
-    id: 'avatar_legionnaire',
-    nom: 'Légionnaire',
-    emoji: '🛡️',
-    prix: 300,
-  ),
-  ArticleBoutique(
-    id: 'avatar_empereur',
-    nom: 'Empereur',
-    emoji: '👑',
-    prix: 400,
-  ),
+  ArticleBoutique(id: 'avatar_chat_coeur', nom: 'Chat câlin', emoji: 'chatpfp:0', prix: 60),
+  ArticleBoutique(id: 'avatar_chat_etoile', nom: 'Chat émerveillé', emoji: 'chatpfp:7', prix: 90),
+  ArticleBoutique(id: 'avatar_chat_lune', nom: 'Chat rêveur', emoji: 'chatpfp:13', prix: 120),
+  ArticleBoutique(id: 'avatar_chat_dodo', nom: 'Chat endormi', emoji: 'chatpfp:14', prix: 140),
+  ArticleBoutique(id: 'avatar_chat_amour', nom: 'Chat amoureux', emoji: 'chatpfp:18', prix: 170),
+  ArticleBoutique(id: 'avatar_chat_pelote', nom: 'Chat en boule', emoji: 'chatpfp:22', prix: 190),
+  ArticleBoutique(id: 'avatar_chat_sauvage', nom: 'Chat sauvage', emoji: 'chatpfp:27', prix: 220),
+  ArticleBoutique(id: 'avatar_chat_classique', nom: 'Chat classique', emoji: 'chatpfp:37', prix: 260),
+  ArticleBoutique(id: 'avatar_chat_oreilles', nom: 'Chat mutin', emoji: 'chatlecons:0', prix: 110),
+  ArticleBoutique(id: 'avatar_chat_photographe', nom: 'Chat photographe', emoji: 'chatlecons:1', prix: 150),
+  ArticleBoutique(id: 'avatar_chat_yinyang', nom: 'Chat yin-yang', emoji: 'chatlecons:2', prix: 180),
+  ArticleBoutique(id: 'avatar_chat_boule', nom: 'Chat tout rond', emoji: 'chatlecons:3', prix: 200),
+  ArticleBoutique(id: 'avatar_chat_musicien', nom: 'Chat mélomane', emoji: 'chatlecons:4', prix: 230),
+  ArticleBoutique(id: 'avatar_chat_minimal', nom: 'Chat minimal', emoji: 'chatlecons:5', prix: 130),
   ArticleBoutique(
     id: 'gel_serie',
     nom: 'Gel de série',

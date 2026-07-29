@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:itinera/main.dart';
+import 'package:itinera/widgets/avatar_glyphe.dart';
 
 // ============================================================
 // BOUTIQUE
@@ -61,10 +62,7 @@ class _BoutiqueScreenState extends State<BoutiqueScreen> {
           for (final article in articlesBoutique) ...[
             Card(
               child: ListTile(
-                leading: Text(
-                  article.emoji,
-                  style: const TextStyle(fontSize: 28),
-                ),
+                leading: AvatarGlyphe(valeur: article.emoji, taille: 40),
 
                 title: Text(article.nom),
 
