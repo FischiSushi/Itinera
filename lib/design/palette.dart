@@ -10,8 +10,8 @@ import 'package:flutter/material.dart';
 // palette. Chaque écran migré importe ce fichier et applique les couleurs
 // explicitement jusqu'à ce que tout l'app soit passé dessus.
 
-const designFond = Color(0xFF1D1B31);
-const designFondProfond = Color(0xFF16142A);
+const designFond = Color(0xFF241934);
+const designFondProfond = Color(0xFF170F22);
 const designBlanc = Color(0xFFFDFBF5);
 const designAccent = Color(0xFFF3A9C6);
 const designOr = Color(0xFFE8BE6E);
@@ -21,8 +21,11 @@ const designOr = Color(0xFFE8BE6E);
 const designOrTexte = Color(0xFF9C6F1B);
 const designNoir = Color(0xFF241F3D);
 
+// Pas de fondu : mêmes deux couleurs identiques pour laisser le type
+// LinearGradient (utilisé partout via `gradient: designGradientFond`) mais
+// obtenir un fond bien uni.
 const designGradientFond = LinearGradient(
   begin: Alignment.topCenter,
   end: Alignment.bottomCenter,
-  colors: [designFond, designFondProfond],
+  colors: [designFond, designFond],
 );

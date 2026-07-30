@@ -265,13 +265,7 @@ class _AccueilScreenState extends State<AccueilScreen> {
           // Paramètres > Apparence) vient se superposer par-dessus.
           const Positioned.fill(
             child: DecoratedBox(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [designFond, designFondProfond],
-                ),
-              ),
+              decoration: BoxDecoration(gradient: designGradientFond),
             ),
           ),
           if (etoiles) ...[
