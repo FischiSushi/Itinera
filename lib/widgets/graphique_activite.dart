@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:itinera/main.dart' show accentViolet, texteAttenue, surfaceWidget;
+import 'package:itinera/design/palette.dart';
 
 // Petit graphique en barres : révisions par jour sur les N derniers jours.
 // Série unique (pas de légende nécessaire) — le jour en cours ressort dans
@@ -35,7 +35,7 @@ class _GraphiqueActiviteState extends State<GraphiqueActivite> {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: surfaceWidget,
+        color: designBlanc,
         borderRadius: BorderRadius.circular(16),
       ),
       child: Column(
@@ -46,11 +46,11 @@ class _GraphiqueActiviteState extends State<GraphiqueActivite> {
             children: [
               const Text(
                 'Activité récente',
-                style: TextStyle(fontWeight: FontWeight.bold),
+                style: TextStyle(fontWeight: FontWeight.bold, color: designNoir),
               ),
               Text(
                 '$total révisions',
-                style: TextStyle(color: texteAttenue, fontSize: 12),
+                style: TextStyle(color: designNoir.withValues(alpha: 0.6), fontSize: 12),
               ),
             ],
           ),
@@ -59,7 +59,7 @@ class _GraphiqueActiviteState extends State<GraphiqueActivite> {
             indexAffiche == dernierIndex
                 ? '${valeurs[indexAffiche]} aujourd\'hui'
                 : '${valeurs[indexAffiche]} le ${_dateDuJour(indexAffiche).day}/${_dateDuJour(indexAffiche).month}',
-            style: TextStyle(color: texteAttenue, fontSize: 12),
+            style: TextStyle(color: designNoir.withValues(alpha: 0.6), fontSize: 12),
           ),
           const SizedBox(height: 14),
           SizedBox(
@@ -83,8 +83,8 @@ class _GraphiqueActiviteState extends State<GraphiqueActivite> {
                                 : 4 + (valeurs[i] / maxValeur) * 60,
                             decoration: BoxDecoration(
                               color: i == indexAffiche
-                                  ? accentViolet
-                                  : accentViolet.withValues(alpha: 0.3),
+                                  ? designAccent
+                                  : designAccent.withValues(alpha: 0.3),
                               borderRadius: const BorderRadius.vertical(
                                 top: Radius.circular(4),
                               ),
@@ -96,8 +96,8 @@ class _GraphiqueActiviteState extends State<GraphiqueActivite> {
                             style: TextStyle(
                               fontSize: 10,
                               color: i == dernierIndex
-                                  ? accentViolet
-                                  : texteAttenue,
+                                  ? designAccent
+                                  : designNoir.withValues(alpha: 0.6),
                               fontWeight: i == dernierIndex
                                   ? FontWeight.bold
                                   : FontWeight.normal,

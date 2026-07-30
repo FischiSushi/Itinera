@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'package:itinera/lecons_grammaire_data.dart';
 import 'package:itinera/main.dart';
+import 'package:itinera/design/palette.dart';
+import 'package:itinera/design/widgets.dart';
 import 'package:itinera/screens/succes_screen.dart';
 import 'package:itinera/vocabulaire_data.dart';
 import 'package:itinera/widgets/graphique_activite.dart';
@@ -43,7 +45,10 @@ class _StatistiquesScreenState extends State<StatistiquesScreen> {
     final succesTermines = succesDebloques().length;
 
     return Scaffold(
+      backgroundColor: designFond,
       appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        foregroundColor: Colors.white,
         title: const Text('Statistiques'),
         actions: [
           IconButton(
@@ -57,121 +62,154 @@ class _StatistiquesScreenState extends State<StatistiquesScreen> {
         ],
       ),
 
-      body: ListView(
-        padding: const EdgeInsets.all(20),
+      body: DecoratedBox(
+        decoration: const BoxDecoration(gradient: designGradientFond),
+        child: ListView(
+          padding: const EdgeInsets.all(20),
 
-        children: [
-          Row(
-            children: [
-              statTile(
-                icone: Icons.school,
-                valeur: '$totalMots',
-                label: 'mots au total',
+          children: [
+            CarteDesign(
+              child: Row(
+                children: [
+                  statTileDesign(
+                    icone: Icons.school,
+                    valeur: '$totalMots',
+                    label: 'mots au total',
+                  ),
+                  const SizedBox(width: 12),
+                  statTileDesign(
+                    icone: Icons.check_circle,
+                    valeur: '$totalAppris',
+                    label: 'déjà appris',
+                  ),
+                  const SizedBox(width: 12),
+                  statTileDesign(
+                    icone: Icons.refresh,
+                    valeur: '$totalARevoir',
+                    label: 'à revoir',
+                  ),
+                ],
               ),
-              const SizedBox(width: 12),
-              statTile(
-                icone: Icons.check_circle,
-                valeur: '$totalAppris',
-                label: 'déjà appris',
+            ),
+
+            const SizedBox(height: 20),
+
+            GraphiqueActivite(revisionsParJour: historiqueRevisions()),
+
+            const SizedBox(height: 28),
+
+            const Text(
+              'Progression par unité',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
               ),
-              const SizedBox(width: 12),
-              statTile(
-                icone: Icons.refresh,
-                valeur: '$totalARevoir',
-                label: 'à revoir',
-              ),
-            ],
-          ),
+            ),
 
-          const SizedBox(height: 20),
-
-          GraphiqueActivite(revisionsParJour: historiqueRevisions()),
-
-          const SizedBox(height: 28),
-
-          const Text(
-            'Progression par unité',
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-          ),
-
-          const SizedBox(height: 12),
-
-          for (final unite in unites) ...[
-            _barreProgressionUnite(unite),
             const SizedBox(height: 12),
-          ],
 
-          const SizedBox(height: 16),
+            for (final unite in unites) ...[
+              _barreProgressionUnite(unite),
+              const SizedBox(height: 12),
+            ],
 
-          const Text(
-            'Leçons de grammaire',
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-          ),
+            const SizedBox(height: 16),
 
-          const SizedBox(height: 12),
-
-          Container(
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: surfaceWidget,
-              borderRadius: BorderRadius.circular(16),
+            const Text(
+              'Leçons de grammaire',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
             ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text(
-                      'Parcours terminé',
-                      style: TextStyle(fontWeight: FontWeight.bold),
+
+            const SizedBox(height: 12),
+
+            CarteDesign(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        'Parcours terminé',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: designNoir,
+                        ),
+                      ),
+                      Text(
+                        '$leconsTerminees / $totalLecons',
+                        style: const TextStyle(color: designNoir),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: LinearProgressIndicator(
+                      value: totalLecons == 0
+                          ? 0
+                          : leconsTerminees / totalLecons,
+                      minHeight: 8,
+                      backgroundColor: designNoir.withValues(alpha: 0.08),
+                      valueColor: const AlwaysStoppedAnimation(designAccent),
                     ),
-                    Text('$leconsTerminees / $totalLecons'),
-                  ],
-                ),
-                const SizedBox(height: 8),
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(8),
-                  child: LinearProgressIndicator(
-                    value: totalLecons == 0
-                        ? 0
-                        : leconsTerminees / totalLecons,
-                    minHeight: 8,
-                    backgroundColor: fond,
-                    valueColor: const AlwaysStoppedAnimation(accentViolet),
                   ),
+                ],
+              ),
+            ),
+
+            const SizedBox(height: 28),
+
+            const Text(
+              'Succès',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+            ),
+
+            const SizedBox(height: 12),
+
+            Material(
+              color: designBlanc,
+              borderRadius: BorderRadius.circular(20),
+              child: ListTile(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
                 ),
-              ],
+                leading: const Icon(Icons.emoji_events, color: designOrTexte),
+                title: Text(
+                  '$succesTermines / $succesTotal débloqués',
+                  style: const TextStyle(color: designNoir),
+                ),
+                subtitle: Text(
+                  'Voir tous les succès',
+                  style: TextStyle(color: designNoir.withValues(alpha: 0.6)),
+                ),
+                trailing: Icon(
+                  Icons.arrow_forward_ios,
+                  size: 16,
+                  color: designNoir.withValues(alpha: 0.4),
+                ),
+                onTap: () async {
+                  await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const SuccesScreen(),
+                    ),
+                  );
+                  setState(() {});
+                },
+              ),
             ),
-          ),
-
-          const SizedBox(height: 28),
-
-          const Text(
-            'Succès',
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-          ),
-
-          const SizedBox(height: 12),
-
-          Card(
-            child: ListTile(
-              leading: const Icon(Icons.emoji_events, color: orAntique),
-              title: Text('$succesTermines / $succesTotal débloqués'),
-              subtitle: const Text('Voir tous les succès'),
-              trailing: const Icon(Icons.arrow_forward_ios),
-              onTap: () async {
-                await Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const SuccesScreen(),
-                  ),
-                );
-                setState(() {});
-              },
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -188,14 +226,7 @@ class _StatistiquesScreenState extends State<StatistiquesScreen> {
     final total = motsDeCetteUnite.length;
     final pourcentage = total == 0 ? 0.0 : apprisDeCetteUnite / total;
 
-    return Container(
-      padding: const EdgeInsets.all(16),
-
-      decoration: BoxDecoration(
-        color: surfaceWidget,
-        borderRadius: BorderRadius.circular(16),
-      ),
-
+    return CarteDesign(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
 
@@ -207,10 +238,16 @@ class _StatistiquesScreenState extends State<StatistiquesScreen> {
               Expanded(
                 child: Text(
                   nomAffiche(unite),
-                  style: const TextStyle(fontWeight: FontWeight.bold),
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: designNoir,
+                  ),
                 ),
               ),
-              Text('$apprisDeCetteUnite / $total'),
+              Text(
+                '$apprisDeCetteUnite / $total',
+                style: const TextStyle(color: designNoir),
+              ),
             ],
           ),
 
@@ -222,8 +259,8 @@ class _StatistiquesScreenState extends State<StatistiquesScreen> {
             child: LinearProgressIndicator(
               value: pourcentage,
               minHeight: 8,
-              backgroundColor: fond,
-              valueColor: const AlwaysStoppedAnimation(accentViolet),
+              backgroundColor: designNoir.withValues(alpha: 0.08),
+              valueColor: const AlwaysStoppedAnimation(designAccent),
             ),
           ),
         ],

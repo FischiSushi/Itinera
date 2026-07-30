@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:itinera/main.dart';
 import 'package:itinera/vocabulaire_data.dart';
 import 'package:itinera/design/palette.dart';
+import 'package:itinera/design/widgets.dart';
 import 'package:itinera/screens/ajouter_vocabulaire_screen.dart';
 import 'package:itinera/screens/recherche_screen.dart';
 import 'package:itinera/screens/vocabulaire_liste_screen.dart';
@@ -60,95 +61,6 @@ class _UniteScreenState extends State<UniteScreen> {
   List<Vocabulaire> vocabulaireARevoir() {
     final maintenant = DateTime.now().toUtc();
     return vocabulaire.where((mot) => mot.estDu(maintenant)).toList();
-  }
-
-  Widget _statTileDesign({
-    required IconData icone,
-    required String valeur,
-    required String label,
-  }) {
-    return Expanded(
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 8),
-        decoration: BoxDecoration(
-          color: designNoir.withValues(alpha: 0.05),
-          borderRadius: BorderRadius.circular(16),
-        ),
-        child: Column(
-          children: [
-            Icon(icone, color: designAccent),
-            const SizedBox(height: 4),
-            Text(
-              valeur,
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 18,
-                color: designNoir,
-              ),
-            ),
-            Text(
-              label,
-              style: TextStyle(
-                fontSize: 12,
-                color: designNoir.withValues(alpha: 0.6),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _carteActionDesign({
-    required IconData icone,
-    required String titre,
-    required String sousTitre,
-    required VoidCallback onTap,
-  }) {
-    return Material(
-      color: designBlanc,
-      borderRadius: BorderRadius.circular(20),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(20),
-        onTap: onTap,
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Row(
-            children: [
-              Icon(icone, color: designAccent),
-              const SizedBox(width: 16),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      titre,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: designNoir,
-                      ),
-                    ),
-                    const SizedBox(height: 2),
-                    Text(
-                      sousTitre,
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: designNoir.withValues(alpha: 0.6),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Icon(
-                Icons.arrow_forward_ios,
-                size: 16,
-                color: designNoir.withValues(alpha: 0.4),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
   }
 
   @override
@@ -247,13 +159,13 @@ class _UniteScreenState extends State<UniteScreen> {
                           const SizedBox(height: 12),
                           Row(
                             children: [
-                              _statTileDesign(
+                              statTileDesign(
                                 icone: Icons.refresh,
                                 valeur: '${compterARevoir()}',
                                 label: 'à revoir',
                               ),
                               const SizedBox(width: 12),
-                              _statTileDesign(
+                              statTileDesign(
                                 icone: Icons.fiber_new,
                                 valeur: '${compterNouveaux()}',
                                 label: 'nouveaux',
@@ -263,7 +175,7 @@ class _UniteScreenState extends State<UniteScreen> {
 
                           const SizedBox(height: 16),
 
-                          _carteActionDesign(
+                          carteActionDesign(
                             icone: Icons.refresh,
                             titre: 'Révision du jour',
                             sousTitre: '${compterARevoir()} cartes à revoir',
@@ -298,7 +210,7 @@ class _UniteScreenState extends State<UniteScreen> {
 
                           const SizedBox(height: 10),
 
-                          _carteActionDesign(
+                          carteActionDesign(
                             icone: Icons.shuffle,
                             titre: 'Session mélangée',
                             sousTitre:
@@ -335,7 +247,7 @@ class _UniteScreenState extends State<UniteScreen> {
 
                           const SizedBox(height: 10),
 
-                          _carteActionDesign(
+                          carteActionDesign(
                             icone: Icons.tune,
                             titre: 'Réviser par difficulté',
                             sousTitre:
