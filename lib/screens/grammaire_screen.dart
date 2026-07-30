@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'package:itinera/grammaire_tableaux_data.dart';
 import 'package:itinera/main.dart';
+import 'package:itinera/design/palette.dart';
+import 'package:itinera/design/widgets.dart';
 import 'package:itinera/screens/declinaisons_screen.dart';
 import 'package:itinera/screens/generateur_declinaison_screen.dart';
 import 'package:itinera/screens/morphologie_screen.dart';
@@ -181,18 +183,23 @@ class GrammaireScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Grammaire')),
+      backgroundColor: designFond,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        foregroundColor: Colors.white,
+        title: const Text('Grammaire'),
+      ),
 
-      body: ListView(
-        padding: const EdgeInsets.all(16),
+      body: DecoratedBox(
+        decoration: const BoxDecoration(gradient: designGradientFond),
+        child: ListView(
+          padding: const EdgeInsets.all(16),
 
-        children: [
-          Card(
-            child: ListTile(
-              leading: const Icon(Icons.rule),
-              title: const Text('Morphologie'),
-              subtitle: const Text('Reconnaître le cas et le nombre'),
-              trailing: const Icon(Icons.arrow_forward_ios),
+          children: [
+            carteActionDesign(
+              icone: Icons.rule,
+              titre: 'Morphologie',
+              sousTitre: 'Reconnaître le cas et le nombre',
               onTap: () {
                 Navigator.push(
                   context,
@@ -202,16 +209,13 @@ class GrammaireScreen extends StatelessWidget {
                 );
               },
             ),
-          ),
 
-          const SizedBox(height: 12),
+            const SizedBox(height: 12),
 
-          Card(
-            child: ListTile(
-              leading: const Icon(Icons.table_chart),
-              title: const Text('Déclinaisons'),
-              subtitle: const Text('Tableaux de référence des 5 déclinaisons'),
-              trailing: const Icon(Icons.arrow_forward_ios),
+            carteActionDesign(
+              icone: Icons.table_chart,
+              titre: 'Déclinaisons',
+              sousTitre: 'Tableaux de référence des 5 déclinaisons',
               onTap: () {
                 Navigator.push(
                   context,
@@ -221,16 +225,13 @@ class GrammaireScreen extends StatelessWidget {
                 );
               },
             ),
-          ),
 
-          const SizedBox(height: 12),
+            const SizedBox(height: 12),
 
-          Card(
-            child: ListTile(
-              leading: const Icon(Icons.text_fields),
-              title: const Text('Stammtrainer (verbes)'),
-              subtitle: const Text('Reconnaître les radicaux des verbes'),
-              trailing: const Icon(Icons.arrow_forward_ios),
+            carteActionDesign(
+              icone: Icons.text_fields,
+              titre: 'Stammtrainer (verbes)',
+              sousTitre: 'Reconnaître les radicaux des verbes',
               onTap: () {
                 Navigator.push(
                   context,
@@ -240,16 +241,14 @@ class GrammaireScreen extends StatelessWidget {
                 );
               },
             ),
-          ),
 
-          const SizedBox(height: 12),
+            const SizedBox(height: 12),
 
-          Card(
-            child: ListTile(
-              leading: const Icon(Icons.auto_awesome_mosaic),
-              title: const Text('Générateur de déclinaisons'),
-              subtitle: const Text('Choisis un nom, vois son tableau complet et teste-toi'),
-              trailing: const Icon(Icons.arrow_forward_ios),
+            carteActionDesign(
+              icone: Icons.auto_awesome_mosaic,
+              titre: 'Générateur de déclinaisons',
+              sousTitre:
+                  'Choisis un nom, vois son tableau complet et teste-toi',
               onTap: () {
                 Navigator.push(
                   context,
@@ -259,16 +258,13 @@ class GrammaireScreen extends StatelessWidget {
                 );
               },
             ),
-          ),
 
-          const SizedBox(height: 12),
+            const SizedBox(height: 12),
 
-          Card(
-            child: ListTile(
-              leading: const Icon(Icons.bolt),
-              title: const Text('Déclinaison rapide'),
-              subtitle: const Text('30 secondes, le plus de bonnes réponses possible'),
-              trailing: const Icon(Icons.arrow_forward_ios),
+            carteActionDesign(
+              icone: Icons.bolt,
+              titre: 'Déclinaison rapide',
+              sousTitre: '30 secondes, le plus de bonnes réponses possible',
               onTap: () {
                 Navigator.push(
                   context,
@@ -278,16 +274,14 @@ class GrammaireScreen extends StatelessWidget {
                 );
               },
             ),
-          ),
 
-          const SizedBox(height: 12),
+            const SizedBox(height: 12),
 
-          Card(
-            child: ListTile(
-              leading: const Icon(Icons.insights),
-              title: const Text('Points faibles'),
-              subtitle: const Text('Tes confusions les plus fréquentes, et de la pratique ciblée'),
-              trailing: const Icon(Icons.arrow_forward_ios),
+            carteActionDesign(
+              icone: Icons.insights,
+              titre: 'Points faibles',
+              sousTitre:
+                  'Tes confusions les plus fréquentes, et de la pratique ciblée',
               onTap: () {
                 Navigator.push(
                   context,
@@ -297,8 +291,8 @@ class GrammaireScreen extends StatelessWidget {
                 );
               },
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

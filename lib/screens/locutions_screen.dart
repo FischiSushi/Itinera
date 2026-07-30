@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:itinera/locutions_data.dart';
-import 'package:itinera/main.dart';
+import 'package:itinera/design/palette.dart';
 
 class LocutionsScreen extends StatelessWidget {
   const LocutionsScreen({super.key});
@@ -9,54 +9,76 @@ class LocutionsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Phrases & proverbes')),
+      backgroundColor: designFond,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        foregroundColor: Colors.white,
+        title: const Text('Phrases & proverbes'),
+      ),
 
-      body: ListView.builder(
-        padding: const EdgeInsets.all(16),
+      body: DecoratedBox(
+        decoration: const BoxDecoration(gradient: designGradientFond),
+        child: ListView.builder(
+          padding: const EdgeInsets.all(16),
 
-        itemCount: locutions.length,
+          itemCount: locutions.length,
 
-        itemBuilder: (context, index) {
-          final locution = locutions[index];
+          itemBuilder: (context, index) {
+            final locution = locutions[index];
 
-          return Card(
-            margin: const EdgeInsets.only(bottom: 12),
-            clipBehavior: Clip.antiAlias,
+            return Container(
+              margin: const EdgeInsets.only(bottom: 12),
+              clipBehavior: Clip.antiAlias,
+              decoration: BoxDecoration(
+                color: designBlanc,
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Theme(
+                data: Theme.of(
+                  context,
+                ).copyWith(dividerColor: Colors.transparent),
+                child: ExpansionTile(
+                  iconColor: designAccent,
+                  collapsedIconColor: designNoir.withValues(alpha: 0.6),
+                  title: Text(
+                    locution.latin,
+                    style: const TextStyle(
+                      fontSize: 17,
+                      fontWeight: FontWeight.bold,
+                      color: designNoir,
+                    ),
+                  ),
 
-            child: ExpansionTile(
-              title: Text(
-                locution.latin,
-                style: const TextStyle(
-                  fontSize: 17,
-                  fontWeight: FontWeight.bold,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            locution.francais,
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                              color: designNoir,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            locution.contexte,
+                            style: TextStyle(
+                              color: designNoir.withValues(alpha: 0.6),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
               ),
-
-              children: [
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        locution.francais,
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        locution.contexte,
-                        style: const TextStyle(color: texteAttenue),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
     );
   }

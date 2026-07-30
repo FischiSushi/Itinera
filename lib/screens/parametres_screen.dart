@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'package:itinera/main.dart';
+import 'package:itinera/design/palette.dart';
+import 'package:itinera/design/widgets.dart';
 import 'package:itinera/services/backup_service.dart';
 import 'package:itinera/services/notification_service.dart';
 
@@ -148,79 +150,123 @@ class _ParametresScreenState extends State<ParametresScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Paramètres')),
-      body: AbsorbPointer(
-        absorbing: _enCours,
-        child: Opacity(
-          opacity: _enCours ? 0.6 : 1,
-          child: ListView(
-            padding: const EdgeInsets.all(16),
-            children: [
-              Card(
-                child: Column(
-                  children: [
-                    SwitchListTile(
-                      secondary: const Icon(Icons.notifications_active),
-                      title: const Text('Rappel quotidien'),
-                      subtitle: const Text('Un message pour ne pas perdre ta série'),
-                      value: _rappelActif,
-                      onChanged: _basculerRappel,
+      backgroundColor: designFond,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        foregroundColor: Colors.white,
+        title: const Text('Paramètres'),
+      ),
+      body: DecoratedBox(
+        decoration: const BoxDecoration(gradient: designGradientFond),
+        child: AbsorbPointer(
+          absorbing: _enCours,
+          child: Opacity(
+            opacity: _enCours ? 0.6 : 1,
+            child: ListView(
+              padding: const EdgeInsets.all(16),
+              children: [
+                CarteDesign(
+                  padding: EdgeInsets.zero,
+                  child: Column(
+                    children: [
+                      SwitchListTile(
+                        secondary: const Icon(
+                          Icons.notifications_active,
+                          color: designAccent,
+                        ),
+                        title: const Text(
+                          'Rappel quotidien',
+                          style: TextStyle(color: designNoir),
+                        ),
+                        subtitle: Text(
+                          'Un message pour ne pas perdre ta série',
+                          style: TextStyle(color: designNoir.withValues(alpha: 0.6)),
+                        ),
+                        activeThumbColor: designAccent,
+                        value: _rappelActif,
+                        onChanged: _basculerRappel,
+                      ),
+                      if (_rappelActif) ...[
+                        Divider(height: 1, color: designNoir.withValues(alpha: 0.1)),
+                        ListTile(
+                          leading: const Icon(Icons.access_time, color: designAccent),
+                          title: const Text(
+                            'Heure du rappel',
+                            style: TextStyle(color: designNoir),
+                          ),
+                          trailing: Text(
+                            _heureRappel.format(context),
+                            style: const TextStyle(color: designNoir),
+                          ),
+                          onTap: _choisirHeure,
+                        ),
+                      ],
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 20),
+                const Text(
+                  'Apparence',
+                  style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+                ),
+                const SizedBox(height: 8),
+                CarteDesign(
+                  padding: EdgeInsets.zero,
+                  child: SwitchListTile(
+                    secondary: const Icon(Icons.auto_awesome, color: designAccent),
+                    title: const Text(
+                      'Fond étoilé',
+                      style: TextStyle(color: designNoir),
                     ),
-                    if (_rappelActif) ...[
-                      const Divider(height: 1),
+                    subtitle: Text(
+                      'Photo de ciel étoilé derrière le Parcours (sinon, fond uni)',
+                      style: TextStyle(color: designNoir.withValues(alpha: 0.6)),
+                    ),
+                    activeThumbColor: designAccent,
+                    value: _fondEtoileActif,
+                    onChanged: _basculerFondEtoile,
+                  ),
+                ),
+                const SizedBox(height: 20),
+                const Text(
+                  'Sauvegarde',
+                  style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+                ),
+                const SizedBox(height: 8),
+                CarteDesign(
+                  padding: EdgeInsets.zero,
+                  child: Column(
+                    children: [
                       ListTile(
-                        leading: const Icon(Icons.access_time),
-                        title: const Text('Heure du rappel'),
-                        trailing: Text(_heureRappel.format(context)),
-                        onTap: _choisirHeure,
+                        leading: const Icon(Icons.upload, color: designAccent),
+                        title: const Text(
+                          'Exporter ma progression',
+                          style: TextStyle(color: designNoir),
+                        ),
+                        subtitle: Text(
+                          'Envoie un fichier de sauvegarde (Drive, mail...)',
+                          style: TextStyle(color: designNoir.withValues(alpha: 0.6)),
+                        ),
+                        onTap: _exporter,
+                      ),
+                      Divider(height: 1, color: designNoir.withValues(alpha: 0.1)),
+                      ListTile(
+                        leading: const Icon(Icons.download, color: designAccent),
+                        title: const Text(
+                          'Importer une sauvegarde',
+                          style: TextStyle(color: designNoir),
+                        ),
+                        subtitle: Text(
+                          'Remplace la progression actuelle',
+                          style: TextStyle(color: designNoir.withValues(alpha: 0.6)),
+                        ),
+                        onTap: _importer,
                       ),
                     ],
-                  ],
-                ),
-              ),
-              const SizedBox(height: 20),
-              Text(
-                'Apparence',
-                style: TextStyle(fontWeight: FontWeight.bold, color: texteAttenue),
-              ),
-              const SizedBox(height: 8),
-              Card(
-                child: SwitchListTile(
-                  secondary: const Icon(Icons.auto_awesome),
-                  title: const Text('Fond étoilé'),
-                  subtitle: const Text(
-                    'Photo de ciel étoilé derrière le Parcours (sinon, fond uni)',
                   ),
-                  value: _fondEtoileActif,
-                  onChanged: _basculerFondEtoile,
                 ),
-              ),
-              const SizedBox(height: 20),
-              Text(
-                'Sauvegarde',
-                style: TextStyle(fontWeight: FontWeight.bold, color: texteAttenue),
-              ),
-              const SizedBox(height: 8),
-              Card(
-                child: Column(
-                  children: [
-                    ListTile(
-                      leading: const Icon(Icons.upload),
-                      title: const Text('Exporter ma progression'),
-                      subtitle: const Text('Envoie un fichier de sauvegarde (Drive, mail...)'),
-                      onTap: _exporter,
-                    ),
-                    const Divider(height: 1),
-                    ListTile(
-                      leading: const Icon(Icons.download),
-                      title: const Text('Importer une sauvegarde'),
-                      subtitle: const Text('Remplace la progression actuelle'),
-                      onTap: _importer,
-                    ),
-                  ],
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
