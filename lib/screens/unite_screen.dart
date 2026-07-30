@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:itinera/main.dart';
 import 'package:itinera/vocabulaire_data.dart';
+import 'package:itinera/design/palette.dart';
 import 'package:itinera/screens/ajouter_vocabulaire_screen.dart';
 import 'package:itinera/screens/recherche_screen.dart';
 import 'package:itinera/screens/vocabulaire_liste_screen.dart';
@@ -61,10 +62,102 @@ class _UniteScreenState extends State<UniteScreen> {
     return vocabulaire.where((mot) => mot.estDu(maintenant)).toList();
   }
 
+  Widget _statTileDesign({
+    required IconData icone,
+    required String valeur,
+    required String label,
+  }) {
+    return Expanded(
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 8),
+        decoration: BoxDecoration(
+          color: designNoir.withValues(alpha: 0.05),
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: Column(
+          children: [
+            Icon(icone, color: designAccent),
+            const SizedBox(height: 4),
+            Text(
+              valeur,
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
+                color: designNoir,
+              ),
+            ),
+            Text(
+              label,
+              style: TextStyle(
+                fontSize: 12,
+                color: designNoir.withValues(alpha: 0.6),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _carteActionDesign({
+    required IconData icone,
+    required String titre,
+    required String sousTitre,
+    required VoidCallback onTap,
+  }) {
+    return Material(
+      color: designBlanc,
+      borderRadius: BorderRadius.circular(20),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(20),
+        onTap: onTap,
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Row(
+            children: [
+              Icon(icone, color: designAccent),
+              const SizedBox(width: 16),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      titre,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: designNoir,
+                      ),
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      sousTitre,
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: designNoir.withValues(alpha: 0.6),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Icon(
+                Icons.arrow_forward_ios,
+                size: 16,
+                color: designNoir.withValues(alpha: 0.4),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: designFond,
       appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        foregroundColor: Colors.white,
         title: const Text('Vocabulaire latin'),
         actions: [
           IconButton(
@@ -82,6 +175,8 @@ class _UniteScreenState extends State<UniteScreen> {
       ),
 
       floatingActionButton: FloatingActionButton.extended(
+        backgroundColor: designAccent,
+        foregroundColor: Colors.white,
         icon: const Icon(Icons.add),
         label: const Text('Ajouter un mot'),
         onPressed: () async {
@@ -99,119 +194,98 @@ class _UniteScreenState extends State<UniteScreen> {
         },
       ),
 
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                InkWell(
-                  onTap: () =>
-                      setState(() => _actionsOuvertes = !_actionsOuvertes),
-                  child: Row(
-                    children: [
-                      const Expanded(
-                        child: Text(
-                          'Réviser',
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                      AnimatedRotation(
-                        turns: _actionsOuvertes ? 0.5 : 0,
-                        duration: const Duration(milliseconds: 200),
-                        child: const Icon(Icons.expand_more),
-                      ),
-                    ],
-                  ),
+      body: DecoratedBox(
+        decoration: const BoxDecoration(gradient: designGradientFond),
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: designBlanc,
+                  borderRadius: BorderRadius.circular(28),
                 ),
-                AnimatedCrossFade(
-                  duration: const Duration(milliseconds: 220),
-                  crossFadeState: _actionsOuvertes
-                      ? CrossFadeState.showSecond
-                      : CrossFadeState.showFirst,
-                  firstChild: const SizedBox(width: double.infinity),
-                  secondChild: Column(
-                    children: [
-                      const SizedBox(height: 12),
-                      Row(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    InkWell(
+                      onTap: () => setState(
+                        () => _actionsOuvertes = !_actionsOuvertes,
+                      ),
+                      child: Row(
                         children: [
-                          statTile(
-                            icone: Icons.refresh,
-                            valeur: '${compterARevoir()}',
-                            label: 'à revoir',
+                          const Expanded(
+                            child: Text(
+                              'Réviser',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: designNoir,
+                              ),
+                            ),
                           ),
-                          const SizedBox(width: 12),
-                          statTile(
-                            icone: Icons.fiber_new,
-                            valeur: '${compterNouveaux()}',
-                            label: 'nouveaux',
+                          AnimatedRotation(
+                            turns: _actionsOuvertes ? 0.5 : 0,
+                            duration: const Duration(milliseconds: 200),
+                            child: const Icon(
+                              Icons.expand_more,
+                              color: designNoir,
+                            ),
                           ),
                         ],
                       ),
-
-                      const SizedBox(height: 16),
-
-                      Card(
-                        child: ListTile(
-                          leading: const Icon(Icons.refresh),
-                          title: const Text('Révision du jour'),
-                          subtitle: Text('${compterARevoir()} cartes à revoir'),
-                          trailing: const Icon(Icons.arrow_forward_ios),
-                          onTap: () async {
-                            final cartesARevoir = vocabulaireARevoir();
-
-                            if (cartesARevoir.isEmpty) return;
-
-                            final direction = await choisirDirection(context);
-
-                            if (direction == null || !context.mounted) return;
-
-                            await Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) {
-                                  return VocabulaireScreen(
-                                    vocabulaire: cartesARevoir,
-                                    startIndex: 0,
-                                    direction: direction,
-                                  );
-                                },
+                    ),
+                    AnimatedCrossFade(
+                      duration: const Duration(milliseconds: 220),
+                      crossFadeState: _actionsOuvertes
+                          ? CrossFadeState.showSecond
+                          : CrossFadeState.showFirst,
+                      firstChild: const SizedBox(width: double.infinity),
+                      secondChild: Column(
+                        children: [
+                          const SizedBox(height: 12),
+                          Row(
+                            children: [
+                              _statTileDesign(
+                                icone: Icons.refresh,
+                                valeur: '${compterARevoir()}',
+                                label: 'à revoir',
                               ),
-                            );
-                            setState(() {});
-                          },
-                        ),
-                      ),
-
-                      const SizedBox(height: 12),
-
-                      Card(
-                        child: ListTile(
-                          leading: const Icon(Icons.shuffle),
-                          title: const Text('Session mélangée'),
-                          subtitle: Text(
-                            '${vocabulaireARevoir().length} cartes, toutes unités mélangées',
+                              const SizedBox(width: 12),
+                              _statTileDesign(
+                                icone: Icons.fiber_new,
+                                valeur: '${compterNouveaux()}',
+                                label: 'nouveaux',
+                              ),
+                            ],
                           ),
-                          trailing: const Icon(Icons.arrow_forward_ios),
-                          onTap: () async {
-                            final cartesMelangees = vocabulaireARevoir()
-                              ..shuffle();
 
-                            if (cartesMelangees.isNotEmpty) {
-                              final direction = await choisirDirection(context);
+                          const SizedBox(height: 16),
 
-                              if (direction == null || !context.mounted) return;
+                          _carteActionDesign(
+                            icone: Icons.refresh,
+                            titre: 'Révision du jour',
+                            sousTitre: '${compterARevoir()} cartes à revoir',
+                            onTap: () async {
+                              final cartesARevoir = vocabulaireARevoir();
+
+                              if (cartesARevoir.isEmpty) return;
+
+                              final direction = await choisirDirection(
+                                context,
+                              );
+
+                              if (direction == null || !context.mounted) {
+                                return;
+                              }
 
                               await Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) {
                                     return VocabulaireScreen(
-                                      vocabulaire: cartesMelangees,
+                                      vocabulaire: cartesARevoir,
                                       startIndex: 0,
                                       direction: direction,
                                     );
@@ -219,103 +293,148 @@ class _UniteScreenState extends State<UniteScreen> {
                                 ),
                               );
                               setState(() {});
-                            }
-                          },
-                        ),
-                      ),
-
-                      const SizedBox(height: 12),
-
-                      Card(
-                        child: ListTile(
-                          leading: const Icon(Icons.tune),
-                          title: const Text('Réviser par difficulté'),
-                          subtitle: const Text(
-                            'Uniquement les mots faciles, moyens ou difficiles',
+                            },
                           ),
-                          trailing: const Icon(Icons.arrow_forward_ios),
-                          onTap: () async {
-                            await choisirEtReviserParDifficulte(context);
-                            setState(() {});
-                          },
-                        ),
+
+                          const SizedBox(height: 10),
+
+                          _carteActionDesign(
+                            icone: Icons.shuffle,
+                            titre: 'Session mélangée',
+                            sousTitre:
+                                '${vocabulaireARevoir().length} cartes, toutes unités mélangées',
+                            onTap: () async {
+                              final cartesMelangees = vocabulaireARevoir()
+                                ..shuffle();
+
+                              if (cartesMelangees.isNotEmpty) {
+                                final direction = await choisirDirection(
+                                  context,
+                                );
+
+                                if (direction == null || !context.mounted) {
+                                  return;
+                                }
+
+                                await Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) {
+                                      return VocabulaireScreen(
+                                        vocabulaire: cartesMelangees,
+                                        startIndex: 0,
+                                        direction: direction,
+                                      );
+                                    },
+                                  ),
+                                );
+                                setState(() {});
+                              }
+                            },
+                          ),
+
+                          const SizedBox(height: 10),
+
+                          _carteActionDesign(
+                            icone: Icons.tune,
+                            titre: 'Réviser par difficulté',
+                            sousTitre:
+                                'Uniquement les mots faciles, moyens ou difficiles',
+                            onTap: () async {
+                              await choisirEtReviserParDifficulte(context);
+                              setState(() {});
+                            },
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-              ],
+              ),
             ),
-          ),
 
-          Expanded(
-            child: ListView.builder(
-              controller: _scrollControllerUnites,
-              padding: const EdgeInsets.all(16),
+            Expanded(
+              child: ListView.builder(
+                controller: _scrollControllerUnites,
+                padding: const EdgeInsets.all(16),
 
-              itemCount: unites.length,
+                itemCount: unites.length,
 
-              itemBuilder: (context, index) {
-                final unite = unites[index];
+                itemBuilder: (context, index) {
+                  final unite = unites[index];
 
-                final maintenant = DateTime.now().toUtc();
+                  final maintenant = DateTime.now().toUtc();
 
-                final nombreVocabulaire = vocabulaire
-                    .where((mot) => mot.unite == unite)
-                    .length;
+                  final nombreVocabulaire = vocabulaire
+                      .where((mot) => mot.unite == unite)
+                      .length;
 
-                final nombreARevoir = vocabulaire
-                    .where(
-                      (mot) => mot.unite == unite && mot.estDu(maintenant),
-                    )
-                    .length;
+                  final nombreARevoir = vocabulaire
+                      .where(
+                        (mot) => mot.unite == unite && mot.estDu(maintenant),
+                      )
+                      .length;
 
-                return Card(
-                  margin: const EdgeInsets.only(bottom: 12),
+                  return Container(
+                    margin: const EdgeInsets.only(bottom: 12),
+                    child: Material(
+                      color: designBlanc,
+                      borderRadius: BorderRadius.circular(20),
+                      child: ListTile(
+                      contentPadding: const EdgeInsets.all(16),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
 
-                  child: ListTile(
-                    contentPadding: const EdgeInsets.all(16),
+                      leading: CircleAvatar(
+                        backgroundColor: designAccent,
+                        foregroundColor: Colors.white,
+                        child: Text('$index'),
+                      ),
 
-                    leading: CircleAvatar(
-                      backgroundColor: accentViolet,
-                      foregroundColor: texteClair,
-                      child: Text('$index'),
-                    ),
+                      title: Text(
+                        nomAffiche(unite),
+                        style: const TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: designNoir,
+                        ),
+                      ),
 
-                    title: Text(
-                      nomAffiche(unite),
-                      style: const TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
+                      subtitle: Text(
+                        '$nombreVocabulaire mots · $nombreARevoir à revoir',
+                        style: TextStyle(color: designNoir.withValues(alpha: 0.6)),
+                      ),
+
+                      trailing: Icon(
+                        Icons.arrow_forward_ios,
+                        size: 16,
+                        color: designNoir.withValues(alpha: 0.4),
+                      ),
+
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return VocabulaireListeScreen(unite: unite);
+                            },
+                          ),
+                        );
+                      },
+
+                      onLongPress: () async {
+                        await gererUnite(context, unite);
+                        setState(() {});
+                      },
                       ),
                     ),
-
-                    subtitle: Text(
-                      '$nombreVocabulaire mots · $nombreARevoir à revoir',
-                    ),
-
-                    trailing: const Icon(Icons.arrow_forward_ios),
-
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) {
-                            return VocabulaireListeScreen(unite: unite);
-                          },
-                        ),
-                      );
-                    },
-
-                    onLongPress: () async {
-                      await gererUnite(context, unite);
-                      setState(() {});
-                    },
-                  ),
-                );
-              },
+                  );
+                },
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

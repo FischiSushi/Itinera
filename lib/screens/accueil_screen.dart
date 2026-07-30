@@ -14,29 +14,16 @@ import 'package:itinera/screens/recherche_lecons_screen.dart';
 import 'package:itinera/screens/selecteur_unite_screen.dart';
 import 'package:itinera/widgets/avatar_glyphe.dart';
 import 'package:itinera/widgets/blob_shape.dart';
+import 'package:itinera/design/palette.dart';
 
 // ============================================================
 // PARCOURS DE LEÇONS : ÉCRAN DU CHEMIN
 // ============================================================
 //
-// PROTOTYPE VISUEL — palette "blob" (fond marine profond, panneaux blancs à
-// contour organique, accent rose, mascotte chouette au style "silhouette +
-// yeux en amande" repris d'une planche de chats de référence) inspirée de
-// références fournies par l'utilisateur. Volontairement isolée dans ce seul
-// écran via des constantes locales (_protoXxx) plutôt que dans le thème
-// global : le reste de l'app garde son apparence actuelle tant que cette
-// direction n'est pas validée.
-
-const _protoFond = Color(0xFF1D1B31);
-const _protoFondProfond = Color(0xFF16142A);
-const _protoBlanc = Color(0xFFFDFBF5);
-const _protoAccent = Color(0xFFF3A9C6);
-const _protoOr = Color(0xFFE8BE6E);
-// Même famille de or, mais bien plus sombre : _protoOr n'a pas assez de
-// contraste sur le panneau crème (_protoBlanc), seulement sur le fond
-// marine — celui-ci est réservé au texte sur fond clair.
-const _protoOrTexte = Color(0xFF9C6F1B);
-const _protoNoir = Color(0xFF241F3D);
+// Palette "blob" (fond marine profond, panneaux crème à contour organique,
+// accent rose, tête de chat achetable en boutique en guise d'avatar) —
+// voir lib/design/palette.dart pour les couleurs partagées avec les autres
+// écrans migrés vers cette direction visuelle.
 
 class AccueilScreen extends StatefulWidget {
   // Un préfixe de volume (ex. 'Vol. I'), pas une unité précise : toutes
@@ -63,7 +50,7 @@ class _AccueilScreenState extends State<AccueilScreen> {
     required VoidCallback onTap,
   }) {
     return Material(
-      color: _protoNoir.withValues(alpha: 0.06),
+      color: designNoir.withValues(alpha: 0.06),
       borderRadius: BorderRadius.circular(20),
       child: InkWell(
         borderRadius: BorderRadius.circular(20),
@@ -73,14 +60,14 @@ class _AccueilScreenState extends State<AccueilScreen> {
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(icone, size: 16, color: _protoNoir),
+              Icon(icone, size: 16, color: designNoir),
               const SizedBox(width: 6),
               Text(
                 libelle,
                 style: const TextStyle(
                   fontSize: 13,
                   fontWeight: FontWeight.w600,
-                  color: _protoNoir,
+                  color: designNoir,
                 ),
               ),
             ],
@@ -114,7 +101,7 @@ class _AccueilScreenState extends State<AccueilScreen> {
               width: 280,
               padding: const EdgeInsets.all(24),
               decoration: BoxDecoration(
-                color: _protoBlanc,
+                color: designBlanc,
                 borderRadius: BorderRadius.circular(28),
               ),
               child: Column(
@@ -126,13 +113,13 @@ class _AccueilScreenState extends State<AccueilScreen> {
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       color: complete
-                          ? _protoAccent
-                          : _protoAccent.withValues(alpha: 0.18),
+                          ? designAccent
+                          : designAccent.withValues(alpha: 0.18),
                     ),
                     child: Icon(
                       lecon.icone,
                       size: 30,
-                      color: complete ? Colors.white : _protoAccent,
+                      color: complete ? Colors.white : designAccent,
                     ),
                   ),
                   const SizedBox(height: 16),
@@ -142,7 +129,7 @@ class _AccueilScreenState extends State<AccueilScreen> {
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 17,
-                      color: _protoNoir,
+                      color: designNoir,
                     ),
                   ),
                   const SizedBox(height: 6),
@@ -150,7 +137,7 @@ class _AccueilScreenState extends State<AccueilScreen> {
                     lecon.sousTitre,
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      color: _protoNoir.withValues(alpha: 0.6),
+                      color: designNoir.withValues(alpha: 0.6),
                       fontSize: 13,
                     ),
                   ),
@@ -159,7 +146,7 @@ class _AccueilScreenState extends State<AccueilScreen> {
                     width: double.infinity,
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: _protoAccent,
+                        backgroundColor: designAccent,
                         foregroundColor: Colors.white,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(28),
@@ -216,12 +203,12 @@ class _AccueilScreenState extends State<AccueilScreen> {
         children: [
           BlobPanel(
             forme: blobRonde,
-            couleur: _protoAccent.withValues(alpha: 0.16),
+            couleur: designAccent.withValues(alpha: 0.16),
             padding: EdgeInsets.zero,
             child: const SizedBox(width: 52, height: 52),
           ),
           estParDefaut
-              ? const Icon(Icons.account_circle, color: _protoAccent, size: 36)
+              ? const Icon(Icons.account_circle, color: designAccent, size: 36)
               : AvatarGlyphe(valeur: equipe, taille: 44),
         ],
       ),
@@ -251,7 +238,7 @@ class _AccueilScreenState extends State<AccueilScreen> {
                 decoration: BoxDecoration(
                   color: Colors.red,
                   shape: BoxShape.circle,
-                  border: Border.all(color: _protoBlanc, width: 2),
+                  border: Border.all(color: designBlanc, width: 2),
                 ),
               ),
             ),
@@ -271,7 +258,7 @@ class _AccueilScreenState extends State<AccueilScreen> {
     final etoiles = fondEtoileActif();
 
     return Scaffold(
-      backgroundColor: _protoFond,
+      backgroundColor: designFond,
       body: Stack(
         children: [
           // Fond uni par défaut ; la photo de ciel étoilé (réglable dans
@@ -282,7 +269,7 @@ class _AccueilScreenState extends State<AccueilScreen> {
                 gradient: LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
-                  colors: [_protoFond, _protoFondProfond],
+                  colors: [designFond, designFondProfond],
                 ),
               ),
             ),
@@ -315,8 +302,8 @@ class _AccueilScreenState extends State<AccueilScreen> {
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
                     colors: [
-                      _protoFond.withValues(alpha: 0.35),
-                      _protoFondProfond.withValues(alpha: 0.55),
+                      designFond.withValues(alpha: 0.35),
+                      designFondProfond.withValues(alpha: 0.55),
                     ],
                   ),
                 ),
@@ -330,7 +317,7 @@ class _AccueilScreenState extends State<AccueilScreen> {
               padding: const EdgeInsets.fromLTRB(16, 12, 16, 4),
               child: Container(
                 decoration: BoxDecoration(
-                  color: _protoBlanc,
+                  color: designBlanc,
                   borderRadius: BorderRadius.circular(32),
                 ),
                 padding: const EdgeInsets.fromLTRB(20, 18, 20, 20),
@@ -370,7 +357,7 @@ class _AccueilScreenState extends State<AccueilScreen> {
                               style: const TextStyle(
                                 fontStyle: FontStyle.italic,
                                 fontWeight: FontWeight.w700,
-                                color: _protoOrTexte,
+                                color: designOrTexte,
                                 fontSize: 14,
                               ),
                             ),
@@ -379,14 +366,14 @@ class _AccueilScreenState extends State<AccueilScreen> {
                         const SizedBox(width: 12),
                         Icon(
                           Icons.local_fire_department,
-                          color: streak > 0 ? couleurStreak(streak) : _protoNoir.withValues(alpha: 0.3),
+                          color: streak > 0 ? couleurStreak(streak) : designNoir.withValues(alpha: 0.3),
                         ),
                         const SizedBox(width: 4),
                         Text(
                           '$streak',
                           style: const TextStyle(
                             fontWeight: FontWeight.bold,
-                            color: _protoNoir,
+                            color: designNoir,
                           ),
                         ),
                         const SizedBox(width: 14),
@@ -396,7 +383,7 @@ class _AccueilScreenState extends State<AccueilScreen> {
                           '${coins()}',
                           style: const TextStyle(
                             fontWeight: FontWeight.bold,
-                            color: _protoNoir,
+                            color: designNoir,
                           ),
                         ),
                       ],
@@ -407,7 +394,7 @@ class _AccueilScreenState extends State<AccueilScreen> {
                       style: const TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.bold,
-                        color: _protoAccent,
+                        color: designAccent,
                         letterSpacing: 1.2,
                       ),
                     ),
@@ -453,11 +440,11 @@ class _AccueilScreenState extends State<AccueilScreen> {
                               child: LinearProgressIndicator(
                                 value: leconsTermineesVolume / parcours.length,
                                 minHeight: 8,
-                                backgroundColor: _protoNoir.withValues(
+                                backgroundColor: designNoir.withValues(
                                   alpha: 0.1,
                                 ),
                                 valueColor: const AlwaysStoppedAnimation(
-                                  _protoAccent,
+                                  designAccent,
                                 ),
                               ),
                             ),
@@ -468,7 +455,7 @@ class _AccueilScreenState extends State<AccueilScreen> {
                             style: TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.bold,
-                              color: _protoNoir.withValues(alpha: 0.6),
+                              color: designNoir.withValues(alpha: 0.6),
                             ),
                           ),
                         ],
@@ -537,7 +524,7 @@ class _AccueilScreenState extends State<AccueilScreen> {
                                     const Icon(
                                       Icons.circle,
                                       size: 6,
-                                      color: _protoAccent,
+                                      color: designAccent,
                                     ),
                                     const SizedBox(width: 6),
                                     Text(
@@ -583,8 +570,8 @@ class _AccueilScreenState extends State<AccueilScreen> {
                                         decoration: BoxDecoration(
                                           shape: BoxShape.circle,
                                           color: complete
-                                              ? _protoAccent
-                                              : _protoBlanc.withValues(
+                                              ? designAccent
+                                              : designBlanc.withValues(
                                                   alpha: deverrouille ? 1 : 0.4,
                                                 ),
                                           boxShadow: [
@@ -605,8 +592,8 @@ class _AccueilScreenState extends State<AccueilScreen> {
                                           color: deverrouille
                                               ? (complete
                                                     ? Colors.white
-                                                    : _protoNoir)
-                                              : _protoNoir.withValues(
+                                                    : designNoir)
+                                              : designNoir.withValues(
                                                   alpha: 0.4,
                                                 ),
                                         ),
@@ -617,7 +604,7 @@ class _AccueilScreenState extends State<AccueilScreen> {
                                           padding: EdgeInsets.only(top: 4),
                                           child: Icon(
                                             Icons.check_circle,
-                                            color: _protoOr,
+                                            color: designOr,
                                             size: 20,
                                           ),
                                         ),
