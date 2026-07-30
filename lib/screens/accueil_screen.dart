@@ -268,45 +268,61 @@ class _AccueilScreenState extends State<AccueilScreen> {
         .toList();
     final leconsTermineesVolume = parcours.where(leconEstCompletee).length;
     final streak = streakActuel();
+    final etoiles = fondEtoileActif();
 
     return Scaffold(
       backgroundColor: _protoFond,
       body: Stack(
         children: [
-          // La photo d'origine est très sombre (essentiellement noire, avec
-          // de petites étoiles éparses) : on éclaircit un peu le contraste
-          // pour que les étoiles restent visibles une fois le voile posé
-          // dessus, sinon l'ensemble lit comme un simple fond noir uni.
-          Positioned.fill(
-            child: ColorFiltered(
-              colorFilter: const ColorFilter.matrix([
-                1.35, 0, 0, 0, 6,
-                0, 1.35, 0, 0, 6,
-                0, 0, 1.35, 0, 10,
-                0, 0, 0, 1, 0,
-              ]),
-              child: Image.asset(
-                'assets/stars_starry_sky_night_182857_3840x2160.jpg',
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
-          // Voile par-dessus la photo pour que le texte blanc du chemin de
-          // leçons reste lisible sans perdre le ciel étoilé.
-          Positioned.fill(
+          // Fond uni par défaut ; la photo de ciel étoilé (réglable dans
+          // Paramètres > Apparence) vient se superposer par-dessus.
+          const Positioned.fill(
             child: DecoratedBox(
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
-                  colors: [
-                    _protoFond.withValues(alpha: 0.35),
-                    _protoFondProfond.withValues(alpha: 0.55),
-                  ],
+                  colors: [_protoFond, _protoFondProfond],
                 ),
               ),
             ),
           ),
+          if (etoiles) ...[
+            // La photo d'origine est très sombre (essentiellement noire,
+            // avec de petites étoiles éparses) : on éclaircit un peu le
+            // contraste pour que les étoiles restent visibles une fois le
+            // voile posé dessus, sinon l'ensemble lit comme un fond noir uni.
+            Positioned.fill(
+              child: ColorFiltered(
+                colorFilter: const ColorFilter.matrix([
+                  1.35, 0, 0, 0, 6,
+                  0, 1.35, 0, 0, 6,
+                  0, 0, 1.35, 0, 10,
+                  0, 0, 0, 1, 0,
+                ]),
+                child: Image.asset(
+                  'assets/stars_starry_sky_night_182857_3840x2160.jpg',
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+            // Voile par-dessus la photo pour que le texte blanc du chemin
+            // de leçons reste lisible sans perdre le ciel étoilé.
+            Positioned.fill(
+              child: DecoratedBox(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      _protoFond.withValues(alpha: 0.35),
+                      _protoFondProfond.withValues(alpha: 0.55),
+                    ],
+                  ),
+                ),
+            ),
+          ),
+          ],
           SafeArea(
               child: Column(
                 children: [

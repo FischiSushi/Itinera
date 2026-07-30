@@ -320,6 +320,25 @@ const _avatarsPossedesKey = 'avatarsPossedes';
 const _avatarEquipeKey = 'avatarEquipe';
 const _gelsDeSerieKey = 'gelsDeSerie';
 
+// ============================================================
+// APPARENCE
+// ============================================================
+
+const _fondEtoileActifKey = 'fondEtoileActif';
+
+// Activé par défaut : le fond étoilé du Parcours était déjà l'état "normal"
+// avant que ce réglage n'existe, donc une valeur par défaut à true ne
+// change rien pour qui ne touche jamais ce bouton.
+bool fondEtoileActif() {
+  final box = Hive.box('vocabBox');
+  return (box.get(_fondEtoileActifKey) as bool?) ?? true;
+}
+
+void definirFondEtoileActif(bool actif) {
+  final box = Hive.box('vocabBox');
+  box.put(_fondEtoileActifKey, actif);
+}
+
 Set<String> avatarsPossedes() {
   final box = Hive.box('vocabBox');
   return Set<String>.from((box.get(_avatarsPossedesKey) as List?) ?? []);

@@ -17,6 +17,7 @@ class _ParametresScreenState extends State<ParametresScreen> {
 
   late bool _rappelActif;
   late TimeOfDay _heureRappel;
+  late bool _fondEtoileActif;
   bool _enCours = false;
 
   @override
@@ -25,6 +26,7 @@ class _ParametresScreenState extends State<ParametresScreen> {
     _rappelActif = _notifications.rappelActif();
     final heure = _notifications.heureRappel();
     _heureRappel = TimeOfDay(hour: heure.heure, minute: heure.minute);
+    _fondEtoileActif = fondEtoileActif();
   }
 
   Future<void> _basculerRappel(bool valeur) async {
@@ -68,6 +70,11 @@ class _ParametresScreenState extends State<ParametresScreen> {
     if (_rappelActif) {
       await _notifications.activerRappel(heure: choisie.hour, minute: choisie.minute);
     }
+  }
+
+  void _basculerFondEtoile(bool valeur) {
+    definirFondEtoileActif(valeur);
+    setState(() => _fondEtoileActif = valeur);
   }
 
   Future<void> _exporter() async {
@@ -169,6 +176,23 @@ class _ParametresScreenState extends State<ParametresScreen> {
                       ),
                     ],
                   ],
+                ),
+              ),
+              const SizedBox(height: 20),
+              Text(
+                'Apparence',
+                style: TextStyle(fontWeight: FontWeight.bold, color: texteAttenue),
+              ),
+              const SizedBox(height: 8),
+              Card(
+                child: SwitchListTile(
+                  secondary: const Icon(Icons.auto_awesome),
+                  title: const Text('Fond étoilé'),
+                  subtitle: const Text(
+                    'Photo de ciel étoilé derrière le Parcours (sinon, fond uni)',
+                  ),
+                  value: _fondEtoileActif,
+                  onChanged: _basculerFondEtoile,
                 ),
               ),
               const SizedBox(height: 20),

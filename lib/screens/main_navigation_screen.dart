@@ -20,8 +20,16 @@ class MainNavigationScreen extends StatefulWidget {
 class _MainNavigationScreenState extends State<MainNavigationScreen> {
   int _index = 0;
 
-  late final List<Widget> _ecrans = [
-    const AccueilScreen(),
+  // Recréée à chaque build, et surtout PAS const : IndexedStack garde
+  // chaque onglet monté même quand il n'est pas affiché, mais deux
+  // instances `const AccueilScreen()` sont le même objet canonicalisé
+  // (identical() == true), donc Flutter saute le rebuild par optimisation
+  // — sans jamais relire des réglages modifiés ailleurs (ex. le fond
+  // étoilé) en revenant sur l'onglet Parcours. Une instance fraîche à
+  // chaque accès force le rebuild tout en réutilisant le même State (même
+  // type, pas de clé), donc sans perdre l'état interne de l'écran.
+  List<Widget> get _ecrans => [
+    AccueilScreen(),
     const UniteScreen(),
     const TextesHubScreen(),
     const StatistiquesScreen(),
