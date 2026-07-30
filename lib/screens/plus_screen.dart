@@ -3,6 +3,8 @@ import 'package:flutter/services.dart' show Clipboard, ClipboardData;
 
 import 'package:itinera/main.dart';
 import 'package:itinera/textes_data.dart';
+import 'package:itinera/design/palette.dart';
+import 'package:itinera/design/widgets.dart';
 import 'package:itinera/screens/a_propos_luna_screen.dart';
 import 'package:itinera/screens/boutique_screen.dart';
 import 'package:itinera/screens/grammaire_screen.dart';
@@ -27,16 +29,22 @@ class _PlusScreenState extends State<PlusScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Plus')),
+      backgroundColor: designFond,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        foregroundColor: Colors.white,
+        title: const Text('Plus'),
+      ),
 
-      body: ListView(
-        padding: const EdgeInsets.all(16),
-        children: [
-          Card(
-            child: ListTile(
-              leading: const Icon(Icons.local_cafe),
-              title: const Text('Minuteur cozy'),
-              subtitle: const Text('Pomodoro pour rester concentré'),
+      body: DecoratedBox(
+        decoration: const BoxDecoration(gradient: designGradientFond),
+        child: ListView(
+          padding: const EdgeInsets.all(16),
+          children: [
+            carteActionDesign(
+              icone: Icons.local_cafe,
+              titre: 'Minuteur cozy',
+              sousTitre: 'Pomodoro pour rester concentré',
               onTap: () {
                 Navigator.push(
                   context,
@@ -46,15 +54,12 @@ class _PlusScreenState extends State<PlusScreen> {
                 );
               },
             ),
-          ),
-          const SizedBox(height: 12),
-          Card(
-            child: ListTile(
-              leading: const Icon(Icons.emoji_events),
-              title: const Text('Succès'),
-              subtitle: Text(
-                '${succesDebloques().length}/${succesDisponibles.length} débloqués',
-              ),
+            const SizedBox(height: 12),
+            carteActionDesign(
+              icone: Icons.emoji_events,
+              titre: 'Succès',
+              sousTitre:
+                  '${succesDebloques().length}/${succesDisponibles.length} débloqués',
               onTap: () async {
                 await Navigator.push(
                   context,
@@ -63,13 +68,11 @@ class _PlusScreenState extends State<PlusScreen> {
                 setState(() {});
               },
             ),
-          ),
-          const SizedBox(height: 12),
-          Card(
-            child: ListTile(
-              leading: const Icon(Icons.storefront),
-              title: const Text('Boutique'),
-              subtitle: badgeDeniers(coins(), rayon: 10),
+            const SizedBox(height: 12),
+            carteActionDesign(
+              icone: Icons.storefront,
+              titre: 'Boutique',
+              sousTitre: '${coins()} denier${coins() == 1 ? '' : 's'}',
               onTap: () async {
                 await Navigator.push(
                   context,
@@ -80,13 +83,11 @@ class _PlusScreenState extends State<PlusScreen> {
                 setState(() {});
               },
             ),
-          ),
-          const SizedBox(height: 12),
-          Card(
-            child: ListTile(
-              leading: const Icon(Icons.auto_stories),
-              title: const Text('Grammaire'),
-              subtitle: const Text('Apprendre la grammaire latine'),
+            const SizedBox(height: 12),
+            carteActionDesign(
+              icone: Icons.auto_stories,
+              titre: 'Grammaire',
+              sousTitre: 'Apprendre la grammaire latine',
               onTap: () {
                 Navigator.push(
                   context,
@@ -96,15 +97,11 @@ class _PlusScreenState extends State<PlusScreen> {
                 );
               },
             ),
-          ),
-          const SizedBox(height: 12),
-          Card(
-            child: ListTile(
-              leading: const Icon(Icons.format_quote),
-              title: const Text('Phrases & proverbes'),
-              subtitle: const Text(
-                'Des expressions latines utiles dans la vraie vie',
-              ),
+            const SizedBox(height: 12),
+            carteActionDesign(
+              icone: Icons.format_quote,
+              titre: 'Phrases & proverbes',
+              sousTitre: 'Des expressions latines utiles dans la vraie vie',
               onTap: () {
                 Navigator.push(
                   context,
@@ -114,13 +111,11 @@ class _PlusScreenState extends State<PlusScreen> {
                 );
               },
             ),
-          ),
-          const SizedBox(height: 12),
-          Card(
-            child: ListTile(
-              leading: const Icon(Icons.edit),
-              title: const Text('Exercices'),
-              subtitle: const Text('Pratiquer le latin'),
+            const SizedBox(height: 12),
+            carteActionDesign(
+              icone: Icons.edit,
+              titre: 'Exercices',
+              sousTitre: 'Pratiquer le latin',
               onTap: () {
                 Navigator.push(
                   context,
@@ -133,13 +128,11 @@ class _PlusScreenState extends State<PlusScreen> {
                 );
               },
             ),
-          ),
-          const SizedBox(height: 12),
-          Card(
-            child: ListTile(
-              leading: const Icon(Icons.settings),
-              title: const Text('Paramètres'),
-              subtitle: const Text('Rappels, sauvegarde de la progression'),
+            const SizedBox(height: 12),
+            carteActionDesign(
+              icone: Icons.settings,
+              titre: 'Paramètres',
+              sousTitre: 'Rappels, sauvegarde de la progression',
               onTap: () {
                 Navigator.push(
                   context,
@@ -149,10 +142,10 @@ class _PlusScreenState extends State<PlusScreen> {
                 );
               },
             ),
-          ),
-          const SizedBox(height: 20),
-          const _CarteNachhilfe(),
-        ],
+            const SizedBox(height: 20),
+            const _CarteNachhilfe(),
+          ],
+        ),
       ),
     );
   }
