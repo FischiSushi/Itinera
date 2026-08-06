@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'package:itinera/design/palette.dart';
 import 'package:itinera/screens/accueil_screen.dart';
 import 'package:itinera/screens/plus_screen.dart';
 import 'package:itinera/screens/statistiques_screen.dart';
@@ -40,25 +41,49 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: IndexedStack(index: _index, children: _ecrans),
-      bottomNavigationBar: NavigationBar(
-        selectedIndex: _index,
-        onDestinationSelected: (index) => setState(() => _index = index),
-        destinations: const [
-          NavigationDestination(icon: Icon(Icons.route), label: 'Parcours'),
-          NavigationDestination(
-            icon: Icon(Icons.menu_book),
-            label: 'Vocabulaire',
+      bottomNavigationBar: NavigationBarTheme(
+        data: NavigationBarThemeData(
+          backgroundColor: designFondProfond,
+          indicatorColor: designAccent,
+          iconTheme: WidgetStateProperty.resolveWith(
+            (states) => IconThemeData(
+              color: states.contains(WidgetState.selected)
+                  ? Colors.white
+                  : Colors.white.withValues(alpha: 0.55),
+            ),
           ),
-          NavigationDestination(
-            icon: Icon(Icons.import_contacts),
-            label: 'Textes',
+          labelTextStyle: WidgetStateProperty.resolveWith(
+            (states) => TextStyle(
+              fontSize: 12,
+              fontWeight: states.contains(WidgetState.selected)
+                  ? FontWeight.w600
+                  : FontWeight.normal,
+              color: states.contains(WidgetState.selected)
+                  ? Colors.white
+                  : Colors.white.withValues(alpha: 0.55),
+            ),
           ),
-          NavigationDestination(
-            icon: Icon(Icons.bar_chart_rounded),
-            label: 'Stats',
-          ),
-          NavigationDestination(icon: Icon(Icons.more_horiz), label: 'Plus'),
-        ],
+        ),
+        child: NavigationBar(
+          selectedIndex: _index,
+          onDestinationSelected: (index) => setState(() => _index = index),
+          destinations: const [
+            NavigationDestination(icon: Icon(Icons.route), label: 'Parcours'),
+            NavigationDestination(
+              icon: Icon(Icons.menu_book),
+              label: 'Vocabulaire',
+            ),
+            NavigationDestination(
+              icon: Icon(Icons.import_contacts),
+              label: 'Textes',
+            ),
+            NavigationDestination(
+              icon: Icon(Icons.bar_chart_rounded),
+              label: 'Stats',
+            ),
+            NavigationDestination(icon: Icon(Icons.more_horiz), label: 'Plus'),
+          ],
+        ),
       ),
     );
   }

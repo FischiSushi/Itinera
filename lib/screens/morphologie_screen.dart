@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 
 import 'package:itinera/grammaire_tableaux_data.dart';
 import 'package:itinera/latin/erreurs_declinaison.dart';
-import 'package:itinera/main.dart';
+import 'package:itinera/design/palette.dart';
+import 'package:itinera/design/widgets.dart';
 
 // ============================================================
 // GRAMMAIRE : MORPHOLOGIE (JEU)
@@ -127,13 +128,16 @@ class _MorphologieScreenState extends State<MorphologieScreen> {
   }
 
   Widget boutonOption(String option) {
-    Color? couleur;
+    Color fond = designBlanc;
+    Color texte = designNoir;
 
     if (optionChoisie != null) {
       if (option == reponseCorrecte) {
-        couleur = Colors.green;
+        fond = Colors.green;
+        texte = Colors.white;
       } else if (option == optionChoisie) {
-        couleur = Colors.red;
+        fond = Colors.red;
+        texte = Colors.white;
       }
     }
 
@@ -143,9 +147,12 @@ class _MorphologieScreenState extends State<MorphologieScreen> {
         width: double.infinity,
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
-            backgroundColor: couleur,
-            foregroundColor: texteClair,
+            backgroundColor: fond,
+            foregroundColor: texte,
             padding: const EdgeInsets.symmetric(vertical: 16),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+            ),
           ),
           onPressed: () => repondre(option),
           child: Text(option, textAlign: TextAlign.center),
@@ -157,98 +164,107 @@ class _MorphologieScreenState extends State<MorphologieScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: designFond,
       appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        foregroundColor: Colors.white,
         title: Text('Morphologie (${index + 1}/$_totalQuestions)'),
       ),
 
-      body: Padding(
-        padding: const EdgeInsets.all(20),
+      body: DecoratedBox(
+        decoration: BoxDecoration(gradient: designGradientFond),
+        child: Padding(
+          padding: const EdgeInsets.all(20),
 
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
 
-          children: [
-            Text('Score : $score', style: const TextStyle(color: texteAttenue)),
+            children: [
+              Text(
+                'Score : $score',
+                style: const TextStyle(color: Colors.white70),
+              ),
 
-            const SizedBox(height: 8),
+              const SizedBox(height: 8),
 
-            Text(
-              declinaisonActuelle.titre,
-              textAlign: TextAlign.center,
-              style: const TextStyle(color: texteAttenue, fontSize: 12),
-            ),
+              Text(
+                declinaisonActuelle.titre,
+                textAlign: TextAlign.center,
+                style: const TextStyle(color: Colors.white70, fontSize: 12),
+              ),
 
-            const SizedBox(height: 16),
+              const SizedBox(height: 16),
 
-            Card(
-              child: Padding(
+              CarteDesign(
                 padding: const EdgeInsets.all(32),
                 child: Text(
                   formeActuelle,
                   textAlign: TextAlign.center,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 30,
                     fontWeight: FontWeight.bold,
+                    color: designNoir,
                   ),
                 ),
               ),
-            ),
 
-            const SizedBox(height: 8),
-
-            const Text(
-              'Quel cas et quel nombre ?',
-              textAlign: TextAlign.center,
-              style: TextStyle(color: texteAttenue),
-            ),
-
-            const SizedBox(height: 24),
-
-            for (final option in options) boutonOption(option),
-
-            if (optionChoisie != null) ...[
               const SizedBox(height: 8),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Icon(
-                    optionChoisie == reponseCorrecte
-                        ? Icons.check_circle
-                        : Icons.cancel,
-                    color: optionChoisie == reponseCorrecte
-                        ? Colors.green
-                        : Colors.red,
-                  ),
-                  const SizedBox(width: 8),
-                  Flexible(
-                    child: Text(
+
+              const Text(
+                'Quel cas et quel nombre ?',
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.white70),
+              ),
+
+              const SizedBox(height: 24),
+
+              for (final option in options) boutonOption(option),
+
+              if (optionChoisie != null) ...[
+                const SizedBox(height: 8),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Icon(
                       optionChoisie == reponseCorrecte
-                          ? 'Correct !'
-                          : 'Faux — la bonne réponse était : $reponseCorrecte',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: optionChoisie == reponseCorrecte
-                            ? Colors.green
-                            : Colors.red,
+                          ? Icons.check_circle
+                          : Icons.cancel,
+                      color: optionChoisie == reponseCorrecte
+                          ? Colors.green
+                          : Colors.red,
+                    ),
+                    const SizedBox(width: 8),
+                    Flexible(
+                      child: Text(
+                        optionChoisie == reponseCorrecte
+                            ? 'Correct !'
+                            : 'Faux — la bonne réponse était : $reponseCorrecte',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: optionChoisie == reponseCorrecte
+                              ? Colors.green
+                              : Colors.red,
+                        ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-            ],
-
-            const Spacer(),
-
-            if (optionChoisie != null)
-              ElevatedButton(
-                onPressed: suivant,
-                child: Text(
-                  index + 1 >= _totalQuestions ? 'Terminer' : 'Suivant',
+                  ],
                 ),
-              ),
-          ],
+              ],
+
+              const Spacer(),
+
+              if (optionChoisie != null)
+                ElevatedButton(
+                  style: styleBoutonAccent,
+                  onPressed: suivant,
+                  child: Text(
+                    index + 1 >= _totalQuestions ? 'Terminer' : 'Suivant',
+                  ),
+                ),
+            ],
+          ),
         ),
       ),
     );

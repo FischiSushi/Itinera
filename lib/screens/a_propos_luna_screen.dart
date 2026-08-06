@@ -22,7 +22,7 @@ class AProposLunaScreen extends StatelessWidget {
         title: const Text('À propos de Luna'),
       ),
       body: DecoratedBox(
-        decoration: const BoxDecoration(gradient: designGradientFond),
+        decoration: BoxDecoration(gradient: designGradientFond),
         child: ListView(
           padding: const EdgeInsets.all(20),
           children: [
@@ -33,23 +33,35 @@ class AProposLunaScreen extends StatelessWidget {
                 children: [
                   const Text('👋💕', style: TextStyle(fontSize: 28)),
                   const SizedBox(height: 16),
-                  const Text(
+                  Text(
                     'Salut ! Je m\'appelle Luna, je suis en 3e (troisième) au LCD.',
-                    style: TextStyle(fontSize: 16, height: 1.5, color: designNoir),
+                    style: TextStyle(
+                      fontSize: 16,
+                      height: 1.5,
+                      color: designNoir,
+                    ),
                   ),
                   const SizedBox(height: 12),
-                  const Text(
+                  Text(
                     'J\'ai programmé cette application moi-même, parce que '
                     'j\'adore le latin et que je voulais un outil qui m\'aide à '
                     'réviser — et qui puisse aussi être utile à d\'autres élèves.',
-                    style: TextStyle(fontSize: 16, height: 1.5, color: designNoir),
+                    style: TextStyle(
+                      fontSize: 16,
+                      height: 1.5,
+                      color: designNoir,
+                    ),
                   ),
                   const SizedBox(height: 12),
-                  const Text(
+                  Text(
                     'Avec deux camarades, j\'ai remporté le Concours Henri '
                     'Kugener 🏆 : nous avons rédigé un journal sur les femmes et '
                     'l\'amour dans la Rome antique.',
-                    style: TextStyle(fontSize: 16, height: 1.5, color: designNoir),
+                    style: TextStyle(
+                      fontSize: 16,
+                      height: 1.5,
+                      color: designNoir,
+                    ),
                   ),
                 ],
               ),

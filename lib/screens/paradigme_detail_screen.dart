@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'package:itinera/latin/declinaison.dart';
-import 'package:itinera/main.dart' show texteAttenue;
+import 'package:itinera/design/palette.dart';
+import 'package:itinera/design/widgets.dart';
 import 'package:itinera/screens/test_declinaison_screen.dart';
 
 class ParadigmeDetailScreen extends StatelessWidget {
@@ -12,24 +13,38 @@ class ParadigmeDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(paradigme.lemme)),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Card(
-              child: Padding(
-                padding: const EdgeInsets.all(16),
+      backgroundColor: designFond,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        foregroundColor: Colors.white,
+        title: Text(paradigme.lemme),
+      ),
+      body: DecoratedBox(
+        decoration: BoxDecoration(gradient: designGradientFond),
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              CarteDesign(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       '${paradigme.declinaison}e déclinaison',
-                      style: const TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                        fontSize: 17,
+                        fontWeight: FontWeight.bold,
+                        color: designNoir,
+                      ),
                     ),
                     const SizedBox(height: 4),
-                    Text(paradigme.traduction, style: TextStyle(color: texteAttenue)),
+                    Text(
+                      paradigme.traduction,
+                      style: TextStyle(
+                        color: designNoir.withValues(alpha: 0.6),
+                      ),
+                    ),
                     const SizedBox(height: 16),
                     Table(
                       columnWidths: const {
@@ -38,16 +53,28 @@ class ParadigmeDetailScreen extends StatelessWidget {
                         2: FlexColumnWidth(1),
                       },
                       children: [
-                        const TableRow(
+                        TableRow(
                           children: [
-                            SizedBox(),
+                            const SizedBox(),
                             Padding(
-                              padding: EdgeInsets.symmetric(vertical: 6),
-                              child: Text('Singulier', style: TextStyle(fontWeight: FontWeight.bold)),
+                              padding: const EdgeInsets.symmetric(vertical: 6),
+                              child: Text(
+                                'Singulier',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: designNoir,
+                                ),
+                              ),
                             ),
                             Padding(
-                              padding: EdgeInsets.symmetric(vertical: 6),
-                              child: Text('Pluriel', style: TextStyle(fontWeight: FontWeight.bold)),
+                              padding: const EdgeInsets.symmetric(vertical: 6),
+                              child: Text(
+                                'Pluriel',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: designNoir,
+                                ),
+                              ),
                             ),
                           ],
                         ),
@@ -55,16 +82,33 @@ class ParadigmeDetailScreen extends StatelessWidget {
                           TableRow(
                             children: [
                               Padding(
-                                padding: const EdgeInsets.symmetric(vertical: 4),
-                                child: Text(cas.libelle, style: TextStyle(color: texteAttenue)),
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 4,
+                                ),
+                                child: Text(
+                                  cas.libelle,
+                                  style: TextStyle(
+                                    color: designNoir.withValues(alpha: 0.6),
+                                  ),
+                                ),
                               ),
                               Padding(
-                                padding: const EdgeInsets.symmetric(vertical: 4),
-                                child: Text(paradigme.singulier[cas]!),
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 4,
+                                ),
+                                child: Text(
+                                  paradigme.singulier[cas]!,
+                                  style: TextStyle(color: designNoir),
+                                ),
                               ),
                               Padding(
-                                padding: const EdgeInsets.symmetric(vertical: 4),
-                                child: Text(paradigme.pluriel[cas]!),
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 4,
+                                ),
+                                child: Text(
+                                  paradigme.pluriel[cas]!,
+                                  style: TextStyle(color: designNoir),
+                                ),
                               ),
                             ],
                           ),
@@ -73,19 +117,21 @@ class ParadigmeDetailScreen extends StatelessWidget {
                   ],
                 ),
               ),
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton.icon(
-              icon: const Icon(Icons.quiz),
-              label: const Text('Teste-moi'),
-              onPressed: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => TestDeclinaisonScreen(paradigme: paradigme),
+              const SizedBox(height: 20),
+              ElevatedButton.icon(
+                style: styleBoutonAccent,
+                icon: const Icon(Icons.quiz),
+                label: const Text('Teste-moi'),
+                onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        TestDeclinaisonScreen(paradigme: paradigme),
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

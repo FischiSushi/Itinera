@@ -4,6 +4,8 @@ import 'package:itinera/lecons_grammaire_data.dart';
 import 'package:itinera/main.dart';
 import 'package:itinera/vocabulaire_data.dart';
 import 'package:itinera/screens/accueil_screen.dart';
+import 'package:itinera/design/palette.dart';
+import 'package:itinera/design/widgets.dart';
 
 // ============================================================
 // SÉLECTEUR D'UNITÉ (change quel parcours de leçons est affiché)
@@ -28,64 +30,76 @@ class _SelecteurUniteScreenState extends State<SelecteurUniteScreen> {
         .toList();
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Choisir une année')),
+      backgroundColor: designFond,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        foregroundColor: Colors.white,
+        title: const Text('Choisir une année'),
+      ),
 
-      body: ListView.builder(
-        padding: const EdgeInsets.all(16),
+      body: DecoratedBox(
+        decoration: BoxDecoration(gradient: designGradientFond),
+        child: ListView.builder(
+          padding: const EdgeInsets.all(16),
 
-        itemCount: volumes.length,
+          itemCount: volumes.length,
 
-        itemBuilder: (context, index) {
-          final volume = volumes[index];
-          final nombreLecons = construireParcoursComplet()
-              .where((lecon) => volumeDe(lecon.unite) == volume)
-              .length;
-          // Seuls les volumes qui ne font pas partie du programme officiel
-          // (Vol. I/II/III) peuvent être supprimés — typiquement une entrée
-          // créée par erreur via l'ajout de vocabulaire libre.
-          final estSupprimable = !anneesParVolume.containsKey(volume);
+          itemBuilder: (context, index) {
+            final volume = volumes[index];
+            final nombreLecons = construireParcoursComplet()
+                .where((lecon) => volumeDe(lecon.unite) == volume)
+                .length;
+            // Seuls les volumes qui ne font pas partie du programme officiel
+            // (Vol. I/II/III) peuvent être supprimés — typiquement une entrée
+            // créée par erreur via l'ajout de vocabulaire libre.
+            final estSupprimable = !anneesParVolume.containsKey(volume);
 
-          return Card(
-            margin: const EdgeInsets.only(bottom: 12),
-
-            child: ListTile(
-              leading: CircleAvatar(
-                backgroundColor: accentViolet,
-                foregroundColor: texteClair,
-                child: Text('$index'),
-              ),
-              title: Text(
-                anneesParVolume[volume] ?? volume,
-                style: const TextStyle(fontWeight: FontWeight.bold),
-              ),
-              subtitle: Text(
-                nombreLecons > 0
-                    ? '$nombreLecons leçon(s) de grammaire'
-                    : estSupprimable
-                    ? 'Bientôt disponible · appui long pour supprimer'
-                    : 'Bientôt disponible',
-              ),
-              trailing: const Icon(Icons.arrow_forward_ios),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => AccueilScreen(unite: volume),
+            return Padding(
+              padding: const EdgeInsets.only(bottom: 12),
+              child: CarteDesign(
+                padding: EdgeInsets.zero,
+                child: ListTile(
+                  iconColor: designAccent,
+                  textColor: designNoir,
+                  leading: CircleAvatar(
+                    backgroundColor: designAccent,
+                    foregroundColor: Colors.white,
+                    child: Text('$index'),
                   ),
-                );
-              },
-              onLongPress: estSupprimable
-                  ? () async {
-                      final supprime = await confirmerSuppressionVolume(
-                        context,
-                        volume,
-                      );
-                      if (supprime) setState(() {});
-                    }
-                  : null,
-            ),
-          );
-        },
+                  title: Text(
+                    anneesParVolume[volume] ?? volume,
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  subtitle: Text(
+                    nombreLecons > 0
+                        ? '$nombreLecons leçon(s) de grammaire'
+                        : estSupprimable
+                        ? 'Bientôt disponible · appui long pour supprimer'
+                        : 'Bientôt disponible',
+                  ),
+                  trailing: const Icon(Icons.arrow_forward_ios),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => AccueilScreen(unite: volume),
+                      ),
+                    );
+                  },
+                  onLongPress: estSupprimable
+                      ? () async {
+                          final supprime = await confirmerSuppressionVolume(
+                            context,
+                            volume,
+                          );
+                          if (supprime) setState(() {});
+                        }
+                      : null,
+                ),
+              ),
+            );
+          },
+        ),
       ),
     );
   }

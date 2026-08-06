@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'package:itinera/lecons_grammaire_data.dart';
 import 'package:itinera/main.dart';
+import 'package:itinera/design/palette.dart';
+import 'package:itinera/design/widgets.dart';
 
 // ============================================================
 // PARCOURS DE LEÇONS : DÉTAIL D'UNE LEÇON
@@ -129,8 +131,9 @@ class _LeconDetailScreenState extends State<LeconDetailScreen> {
     final etapeCourante = widget.lecon.etapes![indexEtapeGuide];
 
     optionsMelangees = switch (etapeCourante) {
-      EtapeVerification(exercice: QuestionLecon q) => List.of(q.options)
-        ..shuffle(),
+      EtapeVerification(exercice: QuestionLecon q) => List.of(
+        q.options,
+      )..shuffle(),
       _ => [],
     };
   }
@@ -181,13 +184,21 @@ class _LeconDetailScreenState extends State<LeconDetailScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(widget.lecon.titre)),
-      body: switch (etape) {
-        _etapeGuide => _construireGuide(context),
-        _etapeExercices => _construireExercice(context),
-        _etapeFiche => _construireFiche(context),
-        _ => _construireExplication(context),
-      },
+      backgroundColor: designFond,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        foregroundColor: Colors.white,
+        title: Text(widget.lecon.titre),
+      ),
+      body: DecoratedBox(
+        decoration: BoxDecoration(gradient: designGradientFond),
+        child: switch (etape) {
+          _etapeGuide => _construireGuide(context),
+          _etapeExercices => _construireExercice(context),
+          _etapeFiche => _construireFiche(context),
+          _ => _construireExplication(context),
+        },
+      ),
     );
   }
 
@@ -214,6 +225,7 @@ class _LeconDetailScreenState extends State<LeconDetailScreen> {
           child: SizedBox(
             width: double.infinity,
             child: ElevatedButton(
+              style: styleBoutonAccent,
               onPressed: etapeGuideSuivante,
               child: const Text('Continuer'),
             ),
@@ -229,38 +241,26 @@ class _LeconDetailScreenState extends State<LeconDetailScreen> {
   ) {
     final exercice = etapeVerification.exercice;
 
-    return Padding(
+    return SingleChildScrollView(
       padding: const EdgeInsets.all(20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(Icons.bolt, color: accentViolet, size: 18),
-              SizedBox(width: 6),
-              Text(
-                'Vérification rapide',
-                style: TextStyle(
-                  color: accentViolet,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ],
+          Center(
+            child: badgeDesign(icone: Icons.bolt, texte: 'Vérification rapide'),
           ),
 
           const SizedBox(height: 20),
 
-          Card(
-            child: Padding(
-              padding: const EdgeInsets.all(24),
-              child: Text(
-                exercice.question,
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
+          CarteDesign(
+            padding: const EdgeInsets.all(24),
+            child: Text(
+              exercice.question,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: designNoir,
               ),
             ),
           ),
@@ -299,6 +299,7 @@ class _LeconDetailScreenState extends State<LeconDetailScreen> {
           ),
           const SizedBox(height: 16),
           ElevatedButton(
+            style: styleBoutonAccent,
             onPressed: etapeGuideSuivante,
             child: const Text('Continuer'),
           ),
@@ -317,7 +318,7 @@ class _LeconDetailScreenState extends State<LeconDetailScreen> {
             textAlign: TextAlign.center,
             style: const TextStyle(
               fontStyle: FontStyle.italic,
-              color: texteAttenue,
+              color: Colors.white70,
             ),
           ),
           const SizedBox(height: 12),
@@ -344,6 +345,7 @@ class _LeconDetailScreenState extends State<LeconDetailScreen> {
 
         if (!aValideSaisie)
           ElevatedButton(
+            style: styleBoutonAccent,
             onPressed: () => validerSaisieGuide(exercice),
             child: const Text('Vérifier'),
           )
@@ -357,6 +359,7 @@ class _LeconDetailScreenState extends State<LeconDetailScreen> {
           ),
           const SizedBox(height: 16),
           ElevatedButton(
+            style: styleBoutonAccent,
             onPressed: etapeGuideSuivante,
             child: const Text('Continuer'),
           ),
@@ -379,6 +382,7 @@ class _LeconDetailScreenState extends State<LeconDetailScreen> {
           child: SizedBox(
             width: double.infinity,
             child: ElevatedButton(
+              style: styleBoutonAccent,
               onPressed: () => setState(() => etape = _etapeExercices),
               child: const Text('Passer aux exercices'),
             ),
@@ -392,28 +396,27 @@ class _LeconDetailScreenState extends State<LeconDetailScreen> {
     final exercice = widget.lecon.exercices![indexQuestion];
     final total = widget.lecon.exercices!.length;
 
-    return Padding(
+    return SingleChildScrollView(
       padding: const EdgeInsets.all(20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Text(
             'Question ${indexQuestion + 1}/$total · Score : $score',
-            style: const TextStyle(color: texteAttenue),
+            style: const TextStyle(color: Colors.white70),
           ),
 
           const SizedBox(height: 20),
 
-          Card(
-            child: Padding(
-              padding: const EdgeInsets.all(24),
-              child: Text(
-                exercice.question,
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
+          CarteDesign(
+            padding: const EdgeInsets.all(24),
+            child: Text(
+              exercice.question,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: designNoir,
               ),
             ),
           ),
@@ -434,11 +437,7 @@ class _LeconDetailScreenState extends State<LeconDetailScreen> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         for (final option in optionsMelangees) ...[
-          _boutonOptionLecon(
-            option,
-            question.reponseCorrecte,
-            onTap: repondre,
-          ),
+          _boutonOptionLecon(option, question.reponseCorrecte, onTap: repondre),
           const SizedBox(height: 12),
         ],
 
@@ -452,6 +451,7 @@ class _LeconDetailScreenState extends State<LeconDetailScreen> {
           ),
           const SizedBox(height: 16),
           ElevatedButton(
+            style: styleBoutonAccent,
             onPressed: suivantExercice,
             child: Text(
               indexQuestion + 1 >= total ? 'Voir la fiche' : 'Suivant',
@@ -472,7 +472,7 @@ class _LeconDetailScreenState extends State<LeconDetailScreen> {
             textAlign: TextAlign.center,
             style: const TextStyle(
               fontStyle: FontStyle.italic,
-              color: texteAttenue,
+              color: Colors.white70,
             ),
           ),
           const SizedBox(height: 12),
@@ -499,6 +499,7 @@ class _LeconDetailScreenState extends State<LeconDetailScreen> {
 
         if (!aValideSaisie)
           ElevatedButton(
+            style: styleBoutonAccent,
             onPressed: () => validerSaisie(exercice),
             child: const Text('Vérifier'),
           )
@@ -512,6 +513,7 @@ class _LeconDetailScreenState extends State<LeconDetailScreen> {
           ),
           const SizedBox(height: 16),
           ElevatedButton(
+            style: styleBoutonAccent,
             onPressed: suivantExercice,
             child: Text(
               indexQuestion + 1 >= total ? 'Voir la fiche' : 'Suivant',
@@ -554,13 +556,16 @@ class _LeconDetailScreenState extends State<LeconDetailScreen> {
     String reponseCorrecte, {
     required ValueChanged<String> onTap,
   }) {
-    Color? couleur;
+    Color fond = designBlanc;
+    Color texte = designNoir;
 
     if (optionChoisie != null) {
       if (option == reponseCorrecte) {
-        couleur = Colors.green;
+        fond = Colors.green;
+        texte = Colors.white;
       } else if (option == optionChoisie) {
-        couleur = Colors.red;
+        fond = Colors.red;
+        texte = Colors.white;
       }
     }
 
@@ -568,9 +573,12 @@ class _LeconDetailScreenState extends State<LeconDetailScreen> {
       width: double.infinity,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          backgroundColor: couleur,
-          foregroundColor: texteClair,
+          backgroundColor: fond,
+          foregroundColor: texte,
           padding: const EdgeInsets.symmetric(vertical: 16),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
         ),
         onPressed: () => onTap(option),
         child: Text(option, textAlign: TextAlign.center),
@@ -595,6 +603,7 @@ class _LeconDetailScreenState extends State<LeconDetailScreen> {
           child: SizedBox(
             width: double.infinity,
             child: ElevatedButton(
+              style: styleBoutonAccent,
               onPressed: () => Navigator.pop(context),
               child: const Text('Terminer la leçon'),
             ),

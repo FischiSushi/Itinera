@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:pdfx/pdfx.dart';
 
+import 'package:itinera/design/palette.dart';
+
 const _cheminJournalHenriKugener = 'assets/henri_kugener/limited_edition.pdf';
 
 class JournalHenriKugenerScreen extends StatefulWidget {
@@ -31,8 +33,16 @@ class _JournalHenriKugenerScreenState extends State<JournalHenriKugenerScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Lunae, Annae Devaeque')),
-      body: PdfViewPinch(controller: _controleur),
+      backgroundColor: designFond,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        foregroundColor: Colors.white,
+        title: const Text('Lunae, Annae Devaeque'),
+      ),
+      body: DecoratedBox(
+        decoration: BoxDecoration(gradient: designGradientFond),
+        child: PdfViewPinch(controller: _controleur),
+      ),
     );
   }
 }

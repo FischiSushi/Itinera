@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'package:itinera/main.dart';
 import 'package:itinera/screens/ajouter_vocabulaire_screen.dart';
+import 'package:itinera/design/palette.dart';
+import 'package:itinera/design/widgets.dart';
 
 // ============================================================
 // MES TEXTES : ÉCRANS
@@ -47,9 +49,16 @@ class _MesTextesScreenState extends State<MesTextesScreen> {
     final textes = mesTextes();
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Mes textes')),
+      backgroundColor: designFond,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        foregroundColor: Colors.white,
+        title: const Text('Mes textes'),
+      ),
 
       floatingActionButton: FloatingActionButton.extended(
+        backgroundColor: designAccent,
+        foregroundColor: Colors.white,
         icon: const Icon(Icons.add),
         label: const Text('Ajouter un texte'),
         onPressed: () async {
@@ -62,59 +71,67 @@ class _MesTextesScreenState extends State<MesTextesScreen> {
         },
       ),
 
-      body: textes.isEmpty
-          ? Center(
-              child: Padding(
-                padding: const EdgeInsets.all(32),
-                child: Text(
-                  'Pas encore de texte. Ajoute ton premier texte latin à '
-                  'analyser !',
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(color: texteAttenue),
-                ),
-              ),
-            )
-          : ListView.builder(
-              padding: const EdgeInsets.all(16),
-
-              itemCount: textes.length,
-
-              itemBuilder: (context, index) {
-                final texte = textes[index];
-                final nombreMots = texte.texte
-                    .split(RegExp(r'\s+'))
-                    .where((m) => m.isNotEmpty)
-                    .length;
-
-                return Card(
-                  margin: const EdgeInsets.only(bottom: 12),
-                  child: ListTile(
-                    contentPadding: const EdgeInsets.all(16),
-                    title: Text(
-                      texte.titre,
-                      style: const TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    subtitle: Text(
-                      '$nombreMots mots · ${texte.tags.length} annoté(s)',
-                    ),
-                    trailing: IconButton(
-                      icon: const Icon(Icons.delete_outline),
-                      onPressed: () => _supprimer(texte),
-                    ),
-                    onTap: () async {
-                      await Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              AnalyseTexteScreen(texteId: texte.id),
-                        ),
-                      );
-                      setState(() {});
-                    },
+      body: DecoratedBox(
+        decoration: BoxDecoration(gradient: designGradientFond),
+        child: textes.isEmpty
+            ? Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(32),
+                  child: Text(
+                    'Pas encore de texte. Ajoute ton premier texte latin à '
+                    'analyser !',
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(color: Colors.white70),
                   ),
-                );
-              },
-            ),
+                ),
+              )
+            : ListView.builder(
+                padding: const EdgeInsets.all(16),
+
+                itemCount: textes.length,
+
+                itemBuilder: (context, index) {
+                  final texte = textes[index];
+                  final nombreMots = texte.texte
+                      .split(RegExp(r'\s+'))
+                      .where((m) => m.isNotEmpty)
+                      .length;
+
+                  return Padding(
+                    padding: const EdgeInsets.only(bottom: 12),
+                    child: CarteDesign(
+                      padding: EdgeInsets.zero,
+                      child: ListTile(
+                        iconColor: designAccent,
+                        textColor: designNoir,
+                        contentPadding: const EdgeInsets.all(16),
+                        title: Text(
+                          texte.titre,
+                          style: const TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        subtitle: Text(
+                          '$nombreMots mots · ${texte.tags.length} annoté(s)',
+                        ),
+                        trailing: IconButton(
+                          icon: const Icon(Icons.delete_outline),
+                          onPressed: () => _supprimer(texte),
+                        ),
+                        onTap: () async {
+                          await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  AnalyseTexteScreen(texteId: texte.id),
+                            ),
+                          );
+                          setState(() {});
+                        },
+                      ),
+                    ),
+                  );
+                },
+              ),
+      ),
     );
   }
 }
@@ -148,44 +165,55 @@ class _AjouterTexteScreenState extends State<AjouterTexteScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Ajouter un texte')),
+      backgroundColor: designFond,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        foregroundColor: Colors.white,
+        title: const Text('Ajouter un texte'),
+      ),
 
-      body: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Form(
-          key: _formKey,
-          child: ListView(
-            children: [
-              TextFormField(
-                controller: _titreController,
-                decoration: const InputDecoration(labelText: 'Titre'),
-                validator: (valeur) => (valeur == null || valeur.trim().isEmpty)
-                    ? 'Champ requis'
-                    : null,
-              ),
-
-              const SizedBox(height: 16),
-
-              TextFormField(
-                controller: _texteController,
-                decoration: const InputDecoration(
-                  labelText: 'Texte latin',
-                  alignLabelWithHint: true,
+      body: DecoratedBox(
+        decoration: BoxDecoration(gradient: designGradientFond),
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Form(
+            key: _formKey,
+            child: ListView(
+              children: [
+                TextFormField(
+                  controller: _titreController,
+                  decoration: const InputDecoration(labelText: 'Titre'),
+                  validator: (valeur) =>
+                      (valeur == null || valeur.trim().isEmpty)
+                      ? 'Champ requis'
+                      : null,
                 ),
-                maxLines: 12,
-                minLines: 6,
-                validator: (valeur) => (valeur == null || valeur.trim().isEmpty)
-                    ? 'Champ requis'
-                    : null,
-              ),
 
-              const SizedBox(height: 24),
+                const SizedBox(height: 16),
 
-              ElevatedButton(
-                onPressed: _soumettre,
-                child: const Text('Enregistrer'),
-              ),
-            ],
+                TextFormField(
+                  controller: _texteController,
+                  decoration: const InputDecoration(
+                    labelText: 'Texte latin',
+                    alignLabelWithHint: true,
+                  ),
+                  maxLines: 12,
+                  minLines: 6,
+                  validator: (valeur) =>
+                      (valeur == null || valeur.trim().isEmpty)
+                      ? 'Champ requis'
+                      : null,
+                ),
+
+                const SizedBox(height: 24),
+
+                ElevatedButton(
+                  style: styleBoutonAccent,
+                  onPressed: _soumettre,
+                  child: const Text('Enregistrer'),
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -489,8 +517,8 @@ class _AnalyseTexteScreenState extends State<AnalyseTexteScreen> {
                 fontSize: 17,
                 height: 1.6,
                 decoration: fonction != null ? TextDecoration.underline : null,
-                decorationColor: accentViolet,
-                color: fonction != null ? accentViolet : texteClair,
+                decorationColor: designOr,
+                color: fonction != null ? designOr : Colors.white,
                 fontWeight: fonction != null ? FontWeight.bold : null,
               ),
             ),
@@ -500,11 +528,19 @@ class _AnalyseTexteScreenState extends State<AnalyseTexteScreen> {
     }
 
     return Scaffold(
-      appBar: AppBar(title: Text(_texte.titre)),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(20),
-        child: Text.rich(
-          TextSpan(children: spans, style: const TextStyle(height: 1.6)),
+      backgroundColor: designFond,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        foregroundColor: Colors.white,
+        title: Text(_texte.titre),
+      ),
+      body: DecoratedBox(
+        decoration: BoxDecoration(gradient: designGradientFond),
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(20),
+          child: Text.rich(
+            TextSpan(children: spans, style: const TextStyle(height: 1.6)),
+          ),
         ),
       ),
     );

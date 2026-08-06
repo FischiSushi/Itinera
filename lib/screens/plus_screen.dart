@@ -37,7 +37,7 @@ class _PlusScreenState extends State<PlusScreen> {
       ),
 
       body: DecoratedBox(
-        decoration: const BoxDecoration(gradient: designGradientFond),
+        decoration: BoxDecoration(gradient: designGradientFond),
         child: ListView(
           padding: const EdgeInsets.all(16),
           children: [

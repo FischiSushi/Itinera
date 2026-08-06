@@ -38,7 +38,7 @@ class _SuccesScreenState extends State<SuccesScreen> {
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const Icon(Icons.diamond, size: 20, color: designOr),
+                  Icon(Icons.diamond, size: 20, color: designOr),
                   const SizedBox(width: 6),
                   Text(
                     '${coins()} denier${coins() == 1 ? '' : 's'}',
@@ -55,7 +55,7 @@ class _SuccesScreenState extends State<SuccesScreen> {
       ),
 
       body: DecoratedBox(
-        decoration: const BoxDecoration(gradient: designGradientFond),
+        decoration: BoxDecoration(gradient: designGradientFond),
         child: ListView(
           padding: const EdgeInsets.all(16),
 
@@ -92,7 +92,7 @@ class _SuccesScreenState extends State<SuccesScreen> {
         children: [
           Text(
             categorie,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 15,
               fontWeight: FontWeight.bold,
               color: designAccent,
@@ -119,17 +119,13 @@ class _SuccesScreenState extends State<SuccesScreen> {
           ),
           leading: Icon(
             debloque ? succes.icone : Icons.lock,
-            color: debloque
-                ? designAccent
-                : designNoir.withValues(alpha: 0.35),
+            color: debloque ? designAccent : designNoir.withValues(alpha: 0.35),
           ),
 
           title: Text(
             succes.titre,
             style: TextStyle(
-              color: debloque
-                  ? designNoir
-                  : designNoir.withValues(alpha: 0.35),
+              color: debloque ? designNoir : designNoir.withValues(alpha: 0.35),
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -145,15 +141,11 @@ class _SuccesScreenState extends State<SuccesScreen> {
                     ? Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          const Icon(
-                            Icons.diamond,
-                            size: 16,
-                            color: designOrTexte,
-                          ),
+                          Icon(Icons.diamond, size: 16, color: designOrTexte),
                           const SizedBox(width: 4),
                           Text(
                             '${succes.recompense}',
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontWeight: FontWeight.bold,
                               color: designOrTexte,
                             ),

@@ -107,7 +107,7 @@ class _UniteScreenState extends State<UniteScreen> {
       ),
 
       body: DecoratedBox(
-        decoration: const BoxDecoration(gradient: designGradientFond),
+        decoration: BoxDecoration(gradient: designGradientFond),
         child: Column(
           children: [
             Padding(
@@ -122,12 +122,11 @@ class _UniteScreenState extends State<UniteScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     InkWell(
-                      onTap: () => setState(
-                        () => _actionsOuvertes = !_actionsOuvertes,
-                      ),
+                      onTap: () =>
+                          setState(() => _actionsOuvertes = !_actionsOuvertes),
                       child: Row(
                         children: [
-                          const Expanded(
+                          Expanded(
                             child: Text(
                               'Réviser',
                               style: TextStyle(
@@ -140,10 +139,7 @@ class _UniteScreenState extends State<UniteScreen> {
                           AnimatedRotation(
                             turns: _actionsOuvertes ? 0.5 : 0,
                             duration: const Duration(milliseconds: 200),
-                            child: const Icon(
-                              Icons.expand_more,
-                              color: designNoir,
-                            ),
+                            child: Icon(Icons.expand_more, color: designNoir),
                           ),
                         ],
                       ),
@@ -184,9 +180,7 @@ class _UniteScreenState extends State<UniteScreen> {
 
                               if (cartesARevoir.isEmpty) return;
 
-                              final direction = await choisirDirection(
-                                context,
-                              );
+                              final direction = await choisirDirection(context);
 
                               if (direction == null || !context.mounted) {
                                 return;
@@ -293,52 +287,54 @@ class _UniteScreenState extends State<UniteScreen> {
                       color: designBlanc,
                       borderRadius: BorderRadius.circular(20),
                       child: ListTile(
-                      contentPadding: const EdgeInsets.all(16),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-
-                      leading: CircleAvatar(
-                        backgroundColor: designAccent,
-                        foregroundColor: Colors.white,
-                        child: Text('$index'),
-                      ),
-
-                      title: Text(
-                        nomAffiche(unite),
-                        style: const TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: designNoir,
+                        contentPadding: const EdgeInsets.all(16),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
                         ),
-                      ),
 
-                      subtitle: Text(
-                        '$nombreVocabulaire mots · $nombreARevoir à revoir',
-                        style: TextStyle(color: designNoir.withValues(alpha: 0.6)),
-                      ),
+                        leading: CircleAvatar(
+                          backgroundColor: designAccent,
+                          foregroundColor: Colors.white,
+                          child: Text('$index'),
+                        ),
 
-                      trailing: Icon(
-                        Icons.arrow_forward_ios,
-                        size: 16,
-                        color: designNoir.withValues(alpha: 0.4),
-                      ),
-
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) {
-                              return VocabulaireListeScreen(unite: unite);
-                            },
+                        title: Text(
+                          nomAffiche(unite),
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: designNoir,
                           ),
-                        );
-                      },
+                        ),
 
-                      onLongPress: () async {
-                        await gererUnite(context, unite);
-                        setState(() {});
-                      },
+                        subtitle: Text(
+                          '$nombreVocabulaire mots · $nombreARevoir à revoir',
+                          style: TextStyle(
+                            color: designNoir.withValues(alpha: 0.6),
+                          ),
+                        ),
+
+                        trailing: Icon(
+                          Icons.arrow_forward_ios,
+                          size: 16,
+                          color: designNoir.withValues(alpha: 0.4),
+                        ),
+
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return VocabulaireListeScreen(unite: unite);
+                              },
+                            ),
+                          );
+                        },
+
+                        onLongPress: () async {
+                          await gererUnite(context, unite);
+                          setState(() {});
+                        },
                       ),
                     ),
                   );

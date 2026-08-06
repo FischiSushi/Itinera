@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 
 import 'package:itinera/latin/declinaison.dart';
 import 'package:itinera/latin/erreurs_declinaison.dart';
-import 'package:itinera/main.dart' show texteAttenue, texteClair;
+import 'package:itinera/design/palette.dart';
+import 'package:itinera/design/widgets.dart';
 
 // Pratique ciblée : ne pose des questions que sur les catégories (cas +
 // nombre) où l'utilisateur se trompe le plus souvent, sur des mots tirés
@@ -60,10 +61,16 @@ class _PratiqueCibleeScreenState extends State<PratiqueCibleeScreen> {
     if (_feedback != null || _controleur.text.trim().isEmpty) return;
 
     final bonneReponse = _motActuel.forme(_casActuel, pluriel: _plurielActuel);
-    final correct = _controleur.text.trim().toLowerCase() == bonneReponse.toLowerCase();
+    final correct =
+        _controleur.text.trim().toLowerCase() == bonneReponse.toLowerCase();
 
     if (!correct) {
-      final confusion = formeConfondue(_motActuel, _controleur.text, _casActuel, _plurielActuel);
+      final confusion = formeConfondue(
+        _motActuel,
+        _controleur.text,
+        _casActuel,
+        _plurielActuel,
+      );
       enregistrerErreurDeclinaison(
         casCible: _casActuel.libelle,
         plurielCible: _plurielActuel,
@@ -112,64 +119,88 @@ class _PratiqueCibleeScreenState extends State<PratiqueCibleeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Pratique ciblée (${_index + 1}/$_totalQuestions)')),
-      body: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Text('Score : $_score', style: const TextStyle(color: texteAttenue)),
-            const SizedBox(height: 16),
-            Card(
-              child: Padding(
+      backgroundColor: designFond,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        foregroundColor: Colors.white,
+        title: Text('Pratique ciblée (${_index + 1}/$_totalQuestions)'),
+      ),
+      body: DecoratedBox(
+        decoration: BoxDecoration(gradient: designGradientFond),
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text(
+                'Score : $_score',
+                style: const TextStyle(color: Colors.white70),
+              ),
+              const SizedBox(height: 16),
+              CarteDesign(
                 padding: const EdgeInsets.all(24),
                 child: Column(
                   children: [
                     Text(
                       _motActuel.lemme,
-                      style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                        color: designNoir,
+                      ),
                     ),
-                    Text(_motActuel.traduction, style: TextStyle(color: texteAttenue)),
+                    Text(
+                      _motActuel.traduction,
+                      style: TextStyle(
+                        color: designNoir.withValues(alpha: 0.6),
+                      ),
+                    ),
                     const SizedBox(height: 16),
                     Text(
                       '${_casActuel.libelle} ${_plurielActuel ? 'pluriel' : 'singulier'} ?',
-                      style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: designNoir,
+                      ),
                     ),
                   ],
                 ),
               ),
-            ),
-            const SizedBox(height: 20),
-            TextField(
-              controller: _controleur,
-              focusNode: _focus,
-              autofocus: true,
-              enabled: _feedback == null,
-              textAlign: TextAlign.center,
-              decoration: const InputDecoration(labelText: 'Ta réponse'),
-              onSubmitted: (_) => _valider(),
-            ),
-            const SizedBox(height: 16),
-            if (_feedback != null)
-              Text(
-                _feedback!,
+              const SizedBox(height: 20),
+              TextField(
+                controller: _controleur,
+                focusNode: _focus,
+                autofocus: true,
+                enabled: _feedback == null,
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: _correct ? Colors.green : Colors.red,
+                decoration: const InputDecoration(labelText: 'Ta réponse'),
+                onSubmitted: (_) => _valider(),
+              ),
+              const SizedBox(height: 16),
+              if (_feedback != null)
+                Text(
+                  _feedback!,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: _correct ? Colors.green : Colors.red,
+                  ),
+                ),
+              const SizedBox(height: 16),
+              ElevatedButton(
+                style: styleBoutonAccent,
+                onPressed: _feedback == null ? _valider : _suivant,
+                child: Text(
+                  _feedback == null
+                      ? 'Valider'
+                      : (_index + 1 >= _totalQuestions
+                            ? 'Terminer'
+                            : 'Suivant'),
                 ),
               ),
-            const SizedBox(height: 16),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(foregroundColor: texteClair),
-              onPressed: _feedback == null ? _valider : _suivant,
-              child: Text(
-                _feedback == null
-                    ? 'Valider'
-                    : (_index + 1 >= _totalQuestions ? 'Terminer' : 'Suivant'),
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'package:itinera/main.dart';
 import 'package:itinera/vocabulaire_data.dart';
+import 'package:itinera/design/palette.dart';
+import 'package:itinera/design/widgets.dart';
 
 // ============================================================
 // JEU : ASSOCIATION
@@ -118,15 +119,18 @@ class _JeuAssociationScreenState extends State<JeuAssociationScreen> {
     });
   }
 
-  Color? couleurBouton({
-    required String texte,
+  // (fond, texte) plutôt qu'une seule couleur : un mot non sélectionné pose
+  // sur le fond sombre, donc il lui faut son propre fond crème (comme les
+  // boutons de choix de lecon_detail_screen.dart) plutôt que de s'appuyer
+  // sur la couleur de bouton par défaut du thème.
+  (Color fond, Color texte) couleursBouton({
     required bool trouve,
     required bool selectionne,
   }) {
-    if (trouve) return Colors.green.withValues(alpha: 0.4);
-    if (selectionne && erreurEnCours) return Colors.red;
-    if (selectionne) return accentViolet;
-    return null;
+    if (trouve) return (Colors.green.withValues(alpha: 0.4), Colors.white);
+    if (selectionne && erreurEnCours) return (Colors.red, Colors.white);
+    if (selectionne) return (designAccent, Colors.white);
+    return (designBlanc, designNoir);
   }
 
   Widget boutonMot({
@@ -135,19 +139,20 @@ class _JeuAssociationScreenState extends State<JeuAssociationScreen> {
     required bool selectionne,
     required VoidCallback onTap,
   }) {
+    final (fond, texteCouleur) = couleursBouton(
+      trouve: trouve,
+      selectionne: selectionne,
+    );
+
     return Padding(
       padding: const EdgeInsets.only(bottom: 10),
       child: SizedBox(
         width: double.infinity,
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
-            backgroundColor: couleurBouton(
-              texte: texte,
-              trouve: trouve,
-              selectionne: selectionne,
-            ),
-            foregroundColor: texteClair,
-            disabledForegroundColor: texteClair.withValues(alpha: 0.8),
+            backgroundColor: fond,
+            foregroundColor: texteCouleur,
+            disabledForegroundColor: texteCouleur.withValues(alpha: 0.8),
             padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 8),
           ),
           onPressed: trouve ? null : onTap,
@@ -168,106 +173,113 @@ class _JeuAssociationScreenState extends State<JeuAssociationScreen> {
         (indexGroupe + 1) * _tailleGroupe >= tousLesMots.length;
 
     return Scaffold(
+      backgroundColor: designFond,
       appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        foregroundColor: Colors.white,
         title: Text(
           'Association (groupe ${indexGroupe + 1}/'
           '${(tousLesMots.length / _tailleGroupe).ceil()})',
         ),
       ),
 
-      body: Padding(
-        padding: const EdgeInsets.all(20),
+      body: DecoratedBox(
+        decoration: BoxDecoration(gradient: designGradientFond),
+        child: Padding(
+          padding: const EdgeInsets.all(20),
 
-        child: Column(
-          children: [
-            Text(
-              'Trouvées : ${questionsTrouvees.length} / ${groupeActuel.length}',
-              style: const TextStyle(color: texteAttenue),
-            ),
-
-            const SizedBox(height: 12),
-
-            Expanded(
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: Column(
-                      children: [
-                        for (final question in questionsMelangees)
-                          boutonMot(
-                            texte: question,
-                            trouve: questionsTrouvees.contains(question),
-                            selectionne: question == questionSelectionnee,
-                            onTap: () => selectionnerQuestion(question),
-                          ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Column(
-                      children: [
-                        for (final reponse in reponsesMelangees)
-                          boutonMot(
-                            texte: reponse,
-                            trouve: reponsesTrouvees.contains(reponse),
-                            selectionne: reponse == reponseSelectionnee,
-                            onTap: () => selectionnerReponse(reponse),
-                          ),
-                      ],
-                    ),
-                  ),
-                ],
+          child: Column(
+            children: [
+              Text(
+                'Trouvées : ${questionsTrouvees.length} / ${groupeActuel.length}',
+                style: const TextStyle(color: Colors.white70),
               ),
-            ),
 
-            if (dernierResultatCorrect != null)
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8),
+              const SizedBox(height: 12),
+
+              Expanded(
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Icon(
-                      dernierResultatCorrect!
-                          ? Icons.check_circle
-                          : Icons.cancel,
-                      color: dernierResultatCorrect!
-                          ? Colors.green
-                          : Colors.red,
+                    Expanded(
+                      child: Column(
+                        children: [
+                          for (final question in questionsMelangees)
+                            boutonMot(
+                              texte: question,
+                              trouve: questionsTrouvees.contains(question),
+                              selectionne: question == questionSelectionnee,
+                              onTap: () => selectionnerQuestion(question),
+                            ),
+                        ],
+                      ),
                     ),
-                    const SizedBox(width: 8),
-                    Text(
-                      dernierResultatCorrect!
-                          ? 'Bonne paire !'
-                          : 'Mauvaise paire',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: dernierResultatCorrect!
-                            ? Colors.green
-                            : Colors.red,
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Column(
+                        children: [
+                          for (final reponse in reponsesMelangees)
+                            boutonMot(
+                              texte: reponse,
+                              trouve: reponsesTrouvees.contains(reponse),
+                              selectionne: reponse == reponseSelectionnee,
+                              onTap: () => selectionnerReponse(reponse),
+                            ),
+                        ],
                       ),
                     ),
                   ],
                 ),
               ),
 
-            if (groupeTermine)
-              ElevatedButton(
-                onPressed: () {
-                  if (dernierGroupe) {
-                    Navigator.pop(context);
-                    return;
-                  }
+              if (dernierResultatCorrect != null)
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        dernierResultatCorrect!
+                            ? Icons.check_circle
+                            : Icons.cancel,
+                        color: dernierResultatCorrect!
+                            ? Colors.green
+                            : Colors.red,
+                      ),
+                      const SizedBox(width: 8),
+                      Text(
+                        dernierResultatCorrect!
+                            ? 'Bonne paire !'
+                            : 'Mauvaise paire',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: dernierResultatCorrect!
+                              ? Colors.green
+                              : Colors.red,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
 
-                  setState(() {
-                    indexGroupe++;
-                    demarrerGroupe();
-                  });
-                },
-                child: Text(dernierGroupe ? 'Terminer' : 'Groupe suivant'),
-              ),
-          ],
+              if (groupeTermine)
+                ElevatedButton(
+                  style: styleBoutonAccent,
+                  onPressed: () {
+                    if (dernierGroupe) {
+                      Navigator.pop(context);
+                      return;
+                    }
+
+                    setState(() {
+                      indexGroupe++;
+                      demarrerGroupe();
+                    });
+                  },
+                  child: Text(dernierGroupe ? 'Terminer' : 'Groupe suivant'),
+                ),
+            ],
+          ),
         ),
       ),
     );

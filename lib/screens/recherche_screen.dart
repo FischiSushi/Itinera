@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'package:itinera/main.dart';
 import 'package:itinera/vocabulaire_data.dart';
+import 'package:itinera/design/palette.dart';
+import 'package:itinera/design/widgets.dart';
 
 // ============================================================
 // RECHERCHE
@@ -79,13 +81,16 @@ class _RechercheScreenState extends State<RechercheScreen> {
     final resultats = chercherDansVocabulaire(recherche);
 
     return Scaffold(
+      backgroundColor: designFond,
       appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        foregroundColor: Colors.white,
         title: TextField(
           autofocus: true,
-          style: const TextStyle(color: texteClair),
+          style: const TextStyle(color: Colors.white),
           decoration: InputDecoration(
             hintText: 'Rechercher un mot...',
-            hintStyle: TextStyle(color: texteClair.withValues(alpha: 0.6)),
+            hintStyle: TextStyle(color: Colors.white.withValues(alpha: 0.6)),
             border: InputBorder.none,
           ),
           onChanged: (valeur) {
@@ -95,26 +100,28 @@ class _RechercheScreenState extends State<RechercheScreen> {
           },
         ),
       ),
-      body: ListView.builder(
-        itemCount: resultats.length,
-        itemBuilder: (context, index) {
-          final mot = resultats[index];
+      body: DecoratedBox(
+        decoration: BoxDecoration(gradient: designGradientFond),
+        child: ListView.separated(
+          padding: const EdgeInsets.all(16),
+          itemCount: resultats.length,
+          separatorBuilder: (context, index) => const SizedBox(height: 8),
+          itemBuilder: (context, index) {
+            final mot = resultats[index];
 
-          return ListTile(
-            title: Text(
-              mot.latin,
-              style: const TextStyle(fontWeight: FontWeight.bold),
-            ),
-            subtitle: Text(
-              '${mot.categorie} · ${nomAffiche(mot.unite)}\n${mot.francais}',
-            ),
-            onTap: () async {
-              final supprime = await afficherDetailVocabulaire(context, mot);
+            return carteActionDesign(
+              icone: Icons.menu_book_outlined,
+              titre: mot.latin,
+              sousTitre:
+                  '${mot.categorie} · ${nomAffiche(mot.unite)} · ${mot.francais}',
+              onTap: () async {
+                final supprime = await afficherDetailVocabulaire(context, mot);
 
-              if (supprime) setState(() {});
-            },
-          );
-        },
+                if (supprime) setState(() {});
+              },
+            );
+          },
+        ),
       ),
     );
   }

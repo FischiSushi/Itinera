@@ -3,14 +3,23 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
-import 'package:itinera/main.dart';
+import 'package:itinera/main.dart'
+    show
+        enregistrerPomodoroTermine,
+        ajouterCoins,
+        verifierNouveauxSucces,
+        verifierSuccesEtNotifier;
+import 'package:itinera/design/palette.dart';
 
 // ============================================================
 // MINUTEUR COZY (POMODORO)
 // ============================================================
 
+// Couleur "café" conservée telle quelle : c'est l'indicateur fonctionnel de
+// progression (la tasse se remplit avec le temps écoulé, comme un anneau de
+// minuteur), pas un accent décoratif — hors périmètre de la migration blob.
 const _couleurCozy = Color(0xFFE0A458);
-const _fondCozy = Color(0xFF1E1912);
+const _fondCafe = Color(0xFF6F4423);
 
 const _dureeTravailMinKey = 'pomodoroDureeTravailMin';
 const _dureePauseMinKey = 'pomodoroDureePauseMin';
@@ -287,7 +296,7 @@ class _PomodoroScreenState extends State<PomodoroScreen> {
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           backgroundColor: _couleurCozy,
-                          foregroundColor: _fondCozy,
+                          foregroundColor: designNoir,
                         ),
                         onPressed: () {
                           pomodoroEtat.definirDurees(
@@ -351,10 +360,11 @@ class _PomodoroScreenState extends State<PomodoroScreen> {
         1 - (pomodoroEtat.secondesRestantes / pomodoroEtat.secondesTotalPhase);
 
     return Scaffold(
-      backgroundColor: _fondCozy,
+      backgroundColor: designFond,
 
       appBar: AppBar(
         backgroundColor: Colors.transparent,
+        foregroundColor: Colors.white,
         title: const Text('Minuteur cozy'),
         actions: [
           IconButton(
@@ -365,86 +375,89 @@ class _PomodoroScreenState extends State<PomodoroScreen> {
         ],
       ),
 
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+      body: DecoratedBox(
+        decoration: BoxDecoration(gradient: designGradientFond),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
 
-          children: [
-            Icon(
-              pomodoroEtat.enPause ? Icons.local_cafe : Icons.menu_book,
-              size: 40,
-              color: _couleurCozy,
-            ),
-
-            const SizedBox(height: 12),
-
-            Text(
-              pomodoroEtat.enPause ? 'Pause' : 'Concentration',
-              style: const TextStyle(
-                fontSize: 18,
-                color: texteAttenue,
-                letterSpacing: 1.2,
+            children: [
+              Icon(
+                pomodoroEtat.enPause ? Icons.local_cafe : Icons.menu_book,
+                size: 40,
+                color: _couleurCozy,
               ),
-            ),
 
-            const SizedBox(height: 24),
+              const SizedBox(height: 12),
 
-            Text(
-              texteTemps,
-              style: const TextStyle(
-                fontSize: 48,
-                fontWeight: FontWeight.bold,
-                color: texteClair,
-              ),
-            ),
-
-            const SizedBox(height: 16),
-
-            CustomPaint(
-              size: const Size(220, 240),
-              painter: _TassePainter(
-                remplissage: progression.clamp(0, 1).toDouble(),
-                couleurTasse: _couleurCozy,
-                couleurCafe: const Color(0xFF6F4423),
-              ),
-            ),
-
-            const SizedBox(height: 32),
-
-            Text(
-              '🍅 ${pomodoroEtat.cyclesTermines} session(s) terminée(s) aujourd\'hui',
-              style: const TextStyle(color: texteAttenue),
-            ),
-
-            const SizedBox(height: 32),
-
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                IconButton(
-                  iconSize: 32,
-                  onPressed: pomodoroEtat.reinitialiser,
-                  icon: const Icon(Icons.replay, color: texteAttenue),
+              Text(
+                pomodoroEtat.enPause ? 'Pause' : 'Concentration',
+                style: const TextStyle(
+                  fontSize: 18,
+                  color: Colors.white70,
+                  letterSpacing: 1.2,
                 ),
-                const SizedBox(width: 24),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: _couleurCozy,
-                    foregroundColor: _fondCozy,
-                    shape: const CircleBorder(),
-                    padding: const EdgeInsets.all(24),
-                  ),
-                  onPressed: pomodoroEtat.enCours
-                      ? pomodoroEtat.mettreEnPause
-                      : pomodoroEtat.demarrer,
-                  child: Icon(
-                    pomodoroEtat.enCours ? Icons.pause : Icons.play_arrow,
-                    size: 32,
-                  ),
+              ),
+
+              const SizedBox(height: 24),
+
+              Text(
+                texteTemps,
+                style: const TextStyle(
+                  fontSize: 48,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
                 ),
-              ],
-            ),
-          ],
+              ),
+
+              const SizedBox(height: 16),
+
+              CustomPaint(
+                size: const Size(220, 240),
+                painter: _TassePainter(
+                  remplissage: progression.clamp(0, 1).toDouble(),
+                  couleurTasse: _couleurCozy,
+                  couleurCafe: _fondCafe,
+                ),
+              ),
+
+              const SizedBox(height: 32),
+
+              Text(
+                '🍅 ${pomodoroEtat.cyclesTermines} session(s) terminée(s) aujourd\'hui',
+                style: const TextStyle(color: Colors.white70),
+              ),
+
+              const SizedBox(height: 32),
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  IconButton(
+                    iconSize: 32,
+                    onPressed: pomodoroEtat.reinitialiser,
+                    icon: const Icon(Icons.replay, color: Colors.white70),
+                  ),
+                  const SizedBox(width: 24),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: _couleurCozy,
+                      foregroundColor: designNoir,
+                      shape: const CircleBorder(),
+                      padding: const EdgeInsets.all(24),
+                    ),
+                    onPressed: pomodoroEtat.enCours
+                        ? pomodoroEtat.mettreEnPause
+                        : pomodoroEtat.demarrer,
+                    child: Icon(
+                      pomodoroEtat.enCours ? Icons.pause : Icons.play_arrow,
+                      size: 32,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

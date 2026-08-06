@@ -7,6 +7,8 @@ import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:fsrs/fsrs.dart' as fsrs;
+import 'design/palette.dart';
+import 'design/widgets.dart';
 import 'firebase_options.dart';
 import 'screens/jeu_association_screen.dart';
 import 'screens/main_navigation_screen.dart';
@@ -50,7 +52,9 @@ void main() async {
     // Désactivé en debug pour ne pas polluer Crashlytics avec du bruit de
     // développement — actif dès qu'une version release tourne sur un
     // appareil réel.
-    await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(!kDebugMode);
+    await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(
+      !kDebugMode,
+    );
     FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
     PlatformDispatcher.instance.onError = (erreur, pile) {
       FirebaseCrashlytics.instance.recordError(erreur, pile, fatal: true);
@@ -121,6 +125,8 @@ void main() async {
   }
 
   unawaited(NotificationService().reprogrammerSiActif());
+
+  chargerTemaSauvegarde();
 
   runApp(const LateinApp());
 }
@@ -293,20 +299,66 @@ class ArticleBoutique {
 // recadrées par AvatarGlyphe) sont proposés — les anciens avatars emoji
 // (hibou, temple, aigle...) ont été retirés à la demande de l'utilisateur.
 const articlesBoutique = [
-  ArticleBoutique(id: 'avatar_chat_coeur', nom: 'Chat câlin', emoji: 'chatpfp:0', prix: 60),
-  ArticleBoutique(id: 'avatar_chat_etoile', nom: 'Chat émerveillé', emoji: 'chatpfp:7', prix: 90),
-  ArticleBoutique(id: 'avatar_chat_lune', nom: 'Chat rêveur', emoji: 'chatpfp:13', prix: 120),
-  ArticleBoutique(id: 'avatar_chat_dodo', nom: 'Chat endormi', emoji: 'chatpfp:14', prix: 140),
-  ArticleBoutique(id: 'avatar_chat_amour', nom: 'Chat amoureux', emoji: 'chatpfp:18', prix: 170),
-  ArticleBoutique(id: 'avatar_chat_pelote', nom: 'Chat en boule', emoji: 'chatpfp:22', prix: 190),
-  ArticleBoutique(id: 'avatar_chat_sauvage', nom: 'Chat sauvage', emoji: 'chatpfp:27', prix: 220),
-  ArticleBoutique(id: 'avatar_chat_classique', nom: 'Chat classique', emoji: 'chatpfp:37', prix: 260),
-  ArticleBoutique(id: 'avatar_chat_oreilles', nom: 'Chat mutin', emoji: 'chatlecons:0', prix: 110),
-  ArticleBoutique(id: 'avatar_chat_photographe', nom: 'Chat photographe', emoji: 'chatlecons:1', prix: 150),
-  ArticleBoutique(id: 'avatar_chat_yinyang', nom: 'Chat yin-yang', emoji: 'chatlecons:2', prix: 180),
-  ArticleBoutique(id: 'avatar_chat_boule', nom: 'Chat tout rond', emoji: 'chatlecons:3', prix: 200),
-  ArticleBoutique(id: 'avatar_chat_musicien', nom: 'Chat mélomane', emoji: 'chatlecons:4', prix: 230),
-  ArticleBoutique(id: 'avatar_chat_minimal', nom: 'Chat minimal', emoji: 'chatlecons:5', prix: 130),
+  ArticleBoutique(
+    id: 'avatar_chat_coeur',
+    nom: 'Chat câlin',
+    emoji: 'chatpfp:0',
+    prix: 60,
+  ),
+  ArticleBoutique(
+    id: 'avatar_chat_etoile',
+    nom: 'Chat émerveillé',
+    emoji: 'chatpfp:7',
+    prix: 90,
+  ),
+  ArticleBoutique(
+    id: 'avatar_chat_lune',
+    nom: 'Chat rêveur',
+    emoji: 'chatpfp:13',
+    prix: 120,
+  ),
+  ArticleBoutique(
+    id: 'avatar_chat_pelote',
+    nom: 'Chat en boule',
+    emoji: 'chatpfp:22',
+    prix: 190,
+  ),
+  ArticleBoutique(
+    id: 'avatar_chat_sauvage',
+    nom: 'Chat sauvage',
+    emoji: 'chatpfp:27',
+    prix: 220,
+  ),
+  ArticleBoutique(
+    id: 'avatar_chat_classique',
+    nom: 'Chat classique',
+    emoji: 'chatpfp:37',
+    prix: 260,
+  ),
+  ArticleBoutique(
+    id: 'avatar_chat_photographe',
+    nom: 'Chat photographe',
+    emoji: 'chatlecons:1',
+    prix: 150,
+  ),
+  ArticleBoutique(
+    id: 'avatar_chat_yinyang',
+    nom: 'Chat yin-yang',
+    emoji: 'chatlecons:2',
+    prix: 180,
+  ),
+  ArticleBoutique(
+    id: 'avatar_chat_musicien',
+    nom: 'Chat mélomane',
+    emoji: 'chatlecons:4',
+    prix: 230,
+  ),
+  ArticleBoutique(
+    id: 'avatar_chat_minimal',
+    nom: 'Chat minimal',
+    emoji: 'chatlecons:5',
+    prix: 130,
+  ),
   ArticleBoutique(
     id: 'gel_serie',
     nom: 'Gel de série',
@@ -848,19 +900,21 @@ Future<bool> confirmerSuppression(BuildContext context, Vocabulaire mot) async {
   final confirme = await showDialog<bool>(
     context: context,
     builder: (context) {
-      return AlertDialog(
-        title: const Text('Supprimer ce mot ?'),
-        content: Text('« ${mot.latin} » sera définitivement supprimé.'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context, false),
-            child: const Text('Annuler'),
-          ),
-          TextButton(
-            onPressed: () => Navigator.pop(context, true),
-            child: const Text('Supprimer'),
-          ),
-        ],
+      return FeuilleDesign(
+        child: AlertDialog(
+          title: const Text('Supprimer ce mot ?'),
+          content: Text('« ${mot.latin} » sera définitivement supprimé.'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context, false),
+              child: const Text('Annuler'),
+            ),
+            TextButton(
+              onPressed: () => Navigator.pop(context, true),
+              child: const Text('Supprimer'),
+            ),
+          ],
+        ),
       );
     },
   );
@@ -907,23 +961,25 @@ Future<void> renommerUniteDialog(BuildContext context, String unite) async {
   final nouveauNom = await showDialog<String>(
     context: context,
     builder: (context) {
-      return AlertDialog(
-        title: const Text('Renommer cette unité'),
-        content: TextField(
-          controller: controleur,
-          autofocus: true,
-          decoration: const InputDecoration(labelText: 'Nom affiché'),
+      return FeuilleDesign(
+        child: AlertDialog(
+          title: const Text('Renommer cette unité'),
+          content: TextField(
+            controller: controleur,
+            autofocus: true,
+            decoration: const InputDecoration(labelText: 'Nom affiché'),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Annuler'),
+            ),
+            TextButton(
+              onPressed: () => Navigator.pop(context, controleur.text),
+              child: const Text('Renommer'),
+            ),
+          ],
         ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Annuler'),
-          ),
-          TextButton(
-            onPressed: () => Navigator.pop(context, controleur.text),
-            child: const Text('Renommer'),
-          ),
-        ],
       );
     },
   );
@@ -962,25 +1018,27 @@ Future<bool> confirmerReinitialisation(
   final confirme = await showDialog<bool>(
     context: context,
     builder: (context) {
-      return AlertDialog(
-        title: const Text('Réinitialiser la progression ?'),
-        content: Text(
-          unite == null
-              ? 'Toute ta progression (tous les mots, toutes les unités) '
-                    'sera remise à zéro. Cette action est irréversible.'
-              : 'La progression de « ${nomAffiche(unite)} » sera remise à '
-                    'zéro. Cette action est irréversible.',
+      return FeuilleDesign(
+        child: AlertDialog(
+          title: const Text('Réinitialiser la progression ?'),
+          content: Text(
+            unite == null
+                ? 'Toute ta progression (tous les mots, toutes les unités) '
+                      'sera remise à zéro. Cette action est irréversible.'
+                : 'La progression de « ${nomAffiche(unite)} » sera remise à '
+                      'zéro. Cette action est irréversible.',
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context, false),
+              child: const Text('Annuler'),
+            ),
+            TextButton(
+              onPressed: () => Navigator.pop(context, true),
+              child: const Text('Réinitialiser'),
+            ),
+          ],
         ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context, false),
-            child: const Text('Annuler'),
-          ),
-          TextButton(
-            onPressed: () => Navigator.pop(context, true),
-            child: const Text('Réinitialiser'),
-          ),
-        ],
       );
     },
   );
@@ -1010,22 +1068,24 @@ Future<bool> confirmerSuppressionUnite(
   final confirme = await showDialog<bool>(
     context: context,
     builder: (context) {
-      return AlertDialog(
-        title: const Text('Supprimer cette unité ?'),
-        content: Text(
-          'Tous les mots de « ${nomAffiche(unite)} » et leur progression '
-          'seront supprimés définitivement. Cette action est irréversible.',
+      return FeuilleDesign(
+        child: AlertDialog(
+          title: const Text('Supprimer cette unité ?'),
+          content: Text(
+            'Tous les mots de « ${nomAffiche(unite)} » et leur progression '
+            'seront supprimés définitivement. Cette action est irréversible.',
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context, false),
+              child: const Text('Annuler'),
+            ),
+            TextButton(
+              onPressed: () => Navigator.pop(context, true),
+              child: const Text('Supprimer'),
+            ),
+          ],
         ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context, false),
-            child: const Text('Annuler'),
-          ),
-          TextButton(
-            onPressed: () => Navigator.pop(context, true),
-            child: const Text('Supprimer'),
-          ),
-        ],
       );
     },
   );
@@ -1041,30 +1101,33 @@ Future<bool> confirmerSuppressionUnite(
 Future<void> gererUnite(BuildContext context, String unite) async {
   final action = await showModalBottomSheet<String>(
     context: context,
+    backgroundColor: designBlanc,
     builder: (context) {
-      return SafeArea(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            ListTile(
-              leading: const Icon(Icons.edit),
-              title: const Text('Renommer'),
-              onTap: () => Navigator.pop(context, 'renommer'),
-            ),
-            ListTile(
-              leading: const Icon(Icons.restart_alt),
-              title: const Text('Réinitialiser la progression'),
-              onTap: () => Navigator.pop(context, 'reinitialiser'),
-            ),
-            ListTile(
-              leading: const Icon(Icons.delete_outline, color: Colors.red),
-              title: const Text(
-                'Supprimer cette unité',
-                style: TextStyle(color: Colors.red),
+      return FeuilleDesign(
+        child: SafeArea(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ListTile(
+                leading: const Icon(Icons.edit),
+                title: const Text('Renommer'),
+                onTap: () => Navigator.pop(context, 'renommer'),
               ),
-              onTap: () => Navigator.pop(context, 'supprimer'),
-            ),
-          ],
+              ListTile(
+                leading: const Icon(Icons.restart_alt),
+                title: const Text('Réinitialiser la progression'),
+                onTap: () => Navigator.pop(context, 'reinitialiser'),
+              ),
+              ListTile(
+                leading: const Icon(Icons.delete_outline, color: Colors.red),
+                title: const Text(
+                  'Supprimer cette unité',
+                  style: TextStyle(color: Colors.red),
+                ),
+                onTap: () => Navigator.pop(context, 'supprimer'),
+              ),
+            ],
+          ),
         ),
       );
     },
@@ -1122,23 +1185,25 @@ Future<bool> confirmerSuppressionVolume(
   final confirme = await showDialog<bool>(
     context: context,
     builder: (context) {
-      return AlertDialog(
-        title: const Text('Supprimer cette année ?'),
-        content: Text(
-          'Tous les mots de « ${anneesParVolume[volume] ?? volume} » et '
-          'leur progression seront supprimés définitivement. Cette action '
-          'est irréversible.',
+      return FeuilleDesign(
+        child: AlertDialog(
+          title: const Text('Supprimer cette année ?'),
+          content: Text(
+            'Tous les mots de « ${anneesParVolume[volume] ?? volume} » et '
+            'leur progression seront supprimés définitivement. Cette action '
+            'est irréversible.',
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context, false),
+              child: const Text('Annuler'),
+            ),
+            TextButton(
+              onPressed: () => Navigator.pop(context, true),
+              child: const Text('Supprimer'),
+            ),
+          ],
         ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context, false),
-            child: const Text('Annuler'),
-          ),
-          TextButton(
-            onPressed: () => Navigator.pop(context, true),
-            child: const Text('Supprimer'),
-          ),
-        ],
       );
     },
   );
@@ -1160,37 +1225,44 @@ Future<bool> confirmerSuppressionVolume(
 Future<String?> choisirDirection(BuildContext context) {
   return showModalBottomSheet<String>(
     context: context,
+    backgroundColor: designBlanc,
     builder: (context) {
-      return SafeArea(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Padding(
-              padding: EdgeInsets.fromLTRB(20, 20, 20, 8),
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  'Sens de la révision',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+      return FeuilleDesign(
+        child: SafeArea(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Padding(
+                padding: const EdgeInsets.fromLTRB(20, 20, 20, 8),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    'Sens de la révision',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: designNoir,
+                    ),
+                  ),
                 ),
               ),
-            ),
-            ListTile(
-              leading: const Icon(Icons.arrow_forward),
-              title: const Text('Latin → Français'),
-              onTap: () {
-                Navigator.pop(context, directionLatinVersFrancais);
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.arrow_back),
-              title: const Text('Français → Latin'),
-              onTap: () {
-                Navigator.pop(context, directionFrancaisVersLatin);
-              },
-            ),
-            const SizedBox(height: 12),
-          ],
+              ListTile(
+                leading: const Icon(Icons.arrow_forward),
+                title: const Text('Latin → Français'),
+                onTap: () {
+                  Navigator.pop(context, directionLatinVersFrancais);
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.arrow_back),
+                title: const Text('Français → Latin'),
+                onTap: () {
+                  Navigator.pop(context, directionFrancaisVersLatin);
+                },
+              ),
+              const SizedBox(height: 12),
+            ],
+          ),
         ),
       );
     },
@@ -1256,53 +1328,69 @@ Future<void> choisirEtReviserParDifficulte(BuildContext context) async {
 
   final niveau = await showModalBottomSheet<String>(
     context: context,
+    backgroundColor: designBlanc,
     builder: (context) {
-      return SafeArea(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Padding(
-              padding: EdgeInsets.fromLTRB(20, 20, 20, 8),
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  'Réviser par difficulté',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+      return FeuilleDesign(
+        child: SafeArea(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Padding(
+                padding: const EdgeInsets.fromLTRB(20, 20, 20, 8),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    'Réviser par difficulté',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: designNoir,
+                    ),
+                  ),
                 ),
               ),
-            ),
-            ListTile(
-              leading: const Icon(
-                Icons.sentiment_satisfied,
-                color: Colors.green,
+              ListTile(
+                leading: const Icon(
+                  Icons.sentiment_satisfied,
+                  color: Colors.green,
+                ),
+                title: const Text('Facile'),
+                trailing: Text(
+                  '${facile.length}',
+                  style: TextStyle(color: designNoir),
+                ),
+                enabled: facile.isNotEmpty,
+                onTap: () => Navigator.pop(context, niveauFacile),
               ),
-              title: const Text('Facile'),
-              trailing: Text('${facile.length}'),
-              enabled: facile.isNotEmpty,
-              onTap: () => Navigator.pop(context, niveauFacile),
-            ),
-            ListTile(
-              leading: const Icon(
-                Icons.sentiment_neutral,
-                color: Colors.orange,
+              ListTile(
+                leading: const Icon(
+                  Icons.sentiment_neutral,
+                  color: Colors.orange,
+                ),
+                title: const Text('Moyen'),
+                trailing: Text(
+                  '${moyen.length}',
+                  style: TextStyle(color: designNoir),
+                ),
+                enabled: moyen.isNotEmpty,
+                onTap: () => Navigator.pop(context, niveauMoyen),
               ),
-              title: const Text('Moyen'),
-              trailing: Text('${moyen.length}'),
-              enabled: moyen.isNotEmpty,
-              onTap: () => Navigator.pop(context, niveauMoyen),
-            ),
-            ListTile(
-              leading: const Icon(
-                Icons.sentiment_very_dissatisfied,
-                color: Colors.red,
+              ListTile(
+                leading: const Icon(
+                  Icons.sentiment_very_dissatisfied,
+                  color: Colors.red,
+                ),
+                title: const Text('Difficile'),
+                trailing: Text(
+                  '${difficile.length}',
+                  style: TextStyle(color: designNoir),
+                ),
+                enabled: difficile.isNotEmpty,
+                onTap: () => Navigator.pop(context, niveauDifficile),
               ),
-              title: const Text('Difficile'),
-              trailing: Text('${difficile.length}'),
-              enabled: difficile.isNotEmpty,
-              onTap: () => Navigator.pop(context, niveauDifficile),
-            ),
-            const SizedBox(height: 12),
-          ],
+              const SizedBox(height: 12),
+            ],
+          ),
         ),
       );
     },
@@ -1329,33 +1417,40 @@ Future<void> choisirEtReviserParDifficulte(BuildContext context) async {
 Future<void> choisirJeu(BuildContext context, List<Vocabulaire> mots) async {
   final jeu = await showModalBottomSheet<String>(
     context: context,
+    backgroundColor: designBlanc,
     builder: (context) {
-      return SafeArea(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Padding(
-              padding: EdgeInsets.fromLTRB(20, 20, 20, 8),
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  'Jeux',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+      return FeuilleDesign(
+        child: SafeArea(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Padding(
+                padding: const EdgeInsets.fromLTRB(20, 20, 20, 8),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    'Jeux',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: designNoir,
+                    ),
+                  ),
                 ),
               ),
-            ),
-            ListTile(
-              leading: const Icon(Icons.quiz),
-              title: const Text('Choix multiple'),
-              onTap: () => Navigator.pop(context, 'choix_multiple'),
-            ),
-            ListTile(
-              leading: const Icon(Icons.join_full),
-              title: const Text('Association'),
-              onTap: () => Navigator.pop(context, 'association'),
-            ),
-            const SizedBox(height: 12),
-          ],
+              ListTile(
+                leading: const Icon(Icons.quiz),
+                title: const Text('Choix multiple'),
+                onTap: () => Navigator.pop(context, 'choix_multiple'),
+              ),
+              ListTile(
+                leading: const Icon(Icons.join_full),
+                title: const Text('Association'),
+                onTap: () => Navigator.pop(context, 'association'),
+              ),
+              const SizedBox(height: 12),
+            ],
+          ),
         ),
       );
     },
@@ -1392,61 +1487,6 @@ Color couleurStreak(int jours) {
   return Colors.grey.shade400;
 }
 
-Widget statTile({
-  required IconData icone,
-  required String valeur,
-  required String label,
-  Color? couleur,
-}) {
-  final accent = couleur ?? accentViolet;
-
-  return Expanded(
-    child: Container(
-      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
-      decoration: BoxDecoration(
-        color: surfaceWidget,
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Column(
-        children: [
-          Icon(icone, color: accent),
-          const SizedBox(height: 6),
-          Text(
-            valeur,
-            style: const TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: texteClair,
-            ),
-          ),
-          const SizedBox(height: 2),
-          Text(
-            label,
-            textAlign: TextAlign.center,
-            style: const TextStyle(fontSize: 12, color: texteAttenue),
-          ),
-        ],
-      ),
-    ),
-  );
-}
-
-// Badge monétaire "deniers" (denarius) — pas de portrait (aucun asset
-// image dans le projet), juste un médaillon stylisé.
-Widget badgeDeniers(int montant, {double rayon = 12}) {
-  return Row(
-    mainAxisSize: MainAxisSize.min,
-    children: [
-      Icon(Icons.diamond, size: rayon * 2, color: orAntique),
-      const SizedBox(width: 6),
-      Text(
-        '$montant denier${montant == 1 ? '' : 's'}',
-        style: const TextStyle(fontWeight: FontWeight.bold),
-      ),
-    ],
-  );
-}
-
 // ============================================================
 // APP
 // ============================================================
@@ -1456,7 +1496,22 @@ class LateinApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return ListenableBuilder(
+      listenable: temaActifNotifier,
+      builder: (context, _) => _buildApp(context),
+    );
+  }
+
+  Widget _buildApp(BuildContext context) {
     return MaterialApp(
+      // La clé doit être ici, pas plus bas dans l'arbre (ex. sur `home`) :
+      // le Navigator interne de MaterialApp garde son historique de routes
+      // comme état persistant, indépendant des rebuilds de ses ancêtres —
+      // il ne redérive PAS sa route initiale depuis `home` à chaque build.
+      // Il faut donc démonter tout MaterialApp (Navigator compris) pour
+      // qu'un changement de thème redémarre proprement la navigation avec
+      // les couleurs à jour partout.
+      key: ValueKey(temaActifNotifier.value.nom),
       debugShowCheckedModeBanner: false,
       title: 'Itinera',
 

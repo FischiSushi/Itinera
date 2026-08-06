@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'package:itinera/main.dart';
 import 'package:itinera/vocabulaire_data.dart';
+import 'package:itinera/design/palette.dart';
+import 'package:itinera/design/widgets.dart';
 
 // ============================================================
 // JEU : CHOIX MULTIPLE
@@ -101,13 +102,16 @@ class _QuizChoixMultipleScreenState extends State<QuizChoixMultipleScreen> {
   }
 
   Widget boutonOption(String option, String bonneReponse) {
-    Color? couleur;
+    Color fond = designBlanc;
+    Color texte = designNoir;
 
     if (optionChoisie != null) {
       if (option == bonneReponse) {
-        couleur = Colors.green;
+        fond = Colors.green;
+        texte = Colors.white;
       } else if (option == optionChoisie) {
-        couleur = Colors.red;
+        fond = Colors.red;
+        texte = Colors.white;
       }
     }
 
@@ -117,10 +121,12 @@ class _QuizChoixMultipleScreenState extends State<QuizChoixMultipleScreen> {
         width: double.infinity,
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
-            backgroundColor: couleur,
-            foregroundColor: texteClair,
-            disabledForegroundColor: texteClair.withValues(alpha: 0.8),
+            backgroundColor: fond,
+            foregroundColor: texte,
             padding: const EdgeInsets.symmetric(vertical: 16),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+            ),
           ),
           onPressed: () => repondre(option),
           child: Text(option, textAlign: TextAlign.center),
@@ -135,82 +141,91 @@ class _QuizChoixMultipleScreenState extends State<QuizChoixMultipleScreen> {
     final bonneReponse = texteReponse(motActuel);
 
     return Scaffold(
+      backgroundColor: designFond,
       appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        foregroundColor: Colors.white,
         title: Text('Choix multiple (${index + 1}/${questions.length})'),
       ),
 
-      body: Padding(
-        padding: const EdgeInsets.all(20),
+      body: DecoratedBox(
+        decoration: BoxDecoration(gradient: designGradientFond),
+        child: Padding(
+          padding: const EdgeInsets.all(20),
 
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
 
-          children: [
-            Text('Score : $score', style: const TextStyle(color: texteAttenue)),
+            children: [
+              Text(
+                'Score : $score',
+                style: const TextStyle(color: Colors.white70),
+              ),
 
-            const SizedBox(height: 24),
+              const SizedBox(height: 24),
 
-            Card(
-              child: Padding(
+              CarteDesign(
                 padding: const EdgeInsets.all(32),
                 child: Text(
                   texteQuestion(motActuel),
                   textAlign: TextAlign.center,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 28,
                     fontWeight: FontWeight.bold,
+                    color: designNoir,
                   ),
                 ),
               ),
-            ),
 
-            const SizedBox(height: 24),
+              const SizedBox(height: 24),
 
-            for (final option in options) boutonOption(option, bonneReponse),
+              for (final option in options) boutonOption(option, bonneReponse),
 
-            if (optionChoisie != null) ...[
-              const SizedBox(height: 8),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Icon(
-                    optionChoisie == bonneReponse
-                        ? Icons.check_circle
-                        : Icons.cancel,
-                    color: optionChoisie == bonneReponse
-                        ? Colors.green
-                        : Colors.red,
-                  ),
-                  const SizedBox(width: 8),
-                  Flexible(
-                    child: Text(
+              if (optionChoisie != null) ...[
+                const SizedBox(height: 8),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Icon(
                       optionChoisie == bonneReponse
-                          ? 'Correct !'
-                          : 'Faux — la bonne réponse était : $bonneReponse',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: optionChoisie == bonneReponse
-                            ? Colors.green
-                            : Colors.red,
+                          ? Icons.check_circle
+                          : Icons.cancel,
+                      color: optionChoisie == bonneReponse
+                          ? Colors.green
+                          : Colors.red,
+                    ),
+                    const SizedBox(width: 8),
+                    Flexible(
+                      child: Text(
+                        optionChoisie == bonneReponse
+                            ? 'Correct !'
+                            : 'Faux — la bonne réponse était : $bonneReponse',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: optionChoisie == bonneReponse
+                              ? Colors.green
+                              : Colors.red,
+                        ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-            ],
-
-            const Spacer(),
-
-            if (optionChoisie != null)
-              ElevatedButton(
-                onPressed: suivant,
-                child: Text(
-                  index + 1 >= questions.length ? 'Terminer' : 'Suivant',
+                  ],
                 ),
-              ),
-          ],
+              ],
+
+              const Spacer(),
+
+              if (optionChoisie != null)
+                ElevatedButton(
+                  style: styleBoutonAccent,
+                  onPressed: suivant,
+                  child: Text(
+                    index + 1 >= questions.length ? 'Terminer' : 'Suivant',
+                  ),
+                ),
+            ],
+          ),
         ),
       ),
     );

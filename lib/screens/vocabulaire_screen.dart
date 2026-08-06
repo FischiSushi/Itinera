@@ -5,6 +5,7 @@ import 'package:fsrs/fsrs.dart' as fsrs;
 import 'package:itinera/main.dart';
 import 'package:itinera/services/tts_service.dart';
 import 'package:itinera/vocabulaire_data.dart';
+import 'package:itinera/design/palette.dart';
 
 // ============================================================
 // VOKABELTRAINER
@@ -132,22 +133,30 @@ class _VocabulaireScreenState extends State<VocabulaireScreen> {
         : aktuelleVokabel.latin;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Révision')),
+      backgroundColor: designFond,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        foregroundColor: Colors.white,
+        title: const Text('Révision'),
+      ),
 
-      body: Padding(
-        padding: const EdgeInsets.all(16),
+      body: DecoratedBox(
+        decoration: BoxDecoration(gradient: designGradientFond),
+        child: Padding(
+          padding: const EdgeInsets.all(16),
 
-        child: Column(
-          children: [
-            // KARTE
-            Stack(
-              children: [
-                Card(
-                  elevation: 5,
-
-                  child: SizedBox(
+          child: Column(
+            children: [
+              // KARTE
+              Stack(
+                children: [
+                  Container(
                     width: double.infinity,
                     height: 300,
+                    decoration: BoxDecoration(
+                      color: designBlanc,
+                      borderRadius: BorderRadius.circular(24),
+                    ),
 
                     child: Padding(
                       padding: const EdgeInsets.all(24),
@@ -159,8 +168,8 @@ class _VocabulaireScreenState extends State<VocabulaireScreen> {
                           Text(
                             aktuelleVokabel.categorie.toUpperCase(),
 
-                            style: const TextStyle(
-                              color: Colors.grey,
+                            style: TextStyle(
+                              color: designNoir.withValues(alpha: 0.5),
                               letterSpacing: 1.5,
                             ),
                           ),
@@ -172,9 +181,10 @@ class _VocabulaireScreenState extends State<VocabulaireScreen> {
 
                             textAlign: TextAlign.center,
 
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 30,
                               fontWeight: FontWeight.bold,
+                              color: designNoir,
                             ),
                           ),
 
@@ -186,130 +196,187 @@ class _VocabulaireScreenState extends State<VocabulaireScreen> {
 
                               textAlign: TextAlign.center,
 
-                              style: const TextStyle(fontSize: 23),
+                              style: TextStyle(
+                                fontSize: 23,
+                                color: designAccent,
+                                fontWeight: FontWeight.w600,
+                              ),
                             ),
                         ],
                       ),
                     ),
                   ),
-                ),
-                Positioned(
-                  top: 4,
-                  left: 4,
-                  child: IconButton(
-                    icon: const Icon(Icons.volume_up, color: texteClair),
-                    tooltip: 'Écouter la prononciation',
-                    onPressed: () {
-                      TtsService.instance.prononcer(aktuelleVokabel.latin);
-                    },
-                  ),
-                ),
-                if (aktuelleVokabel.etymologie != null)
                   Positioned(
                     top: 4,
-                    right: 4,
+                    left: 4,
                     child: IconButton(
-                      icon: const Icon(Icons.info_outline, color: texteClair),
+                      icon: Icon(
+                        Icons.volume_up,
+                        color: designNoir.withValues(alpha: 0.5),
+                      ),
+                      tooltip: 'Écouter la prononciation',
                       onPressed: () {
-                        afficherEtymologie(aktuelleVokabel.etymologie!);
+                        TtsService.instance.prononcer(aktuelleVokabel.latin);
                       },
                     ),
                   ),
-              ],
-            ),
+                  if (aktuelleVokabel.etymologie != null)
+                    Positioned(
+                      top: 4,
+                      right: 4,
+                      child: IconButton(
+                        icon: Icon(
+                          Icons.info_outline,
+                          color: designNoir.withValues(alpha: 0.5),
+                        ),
+                        onPressed: () {
+                          afficherEtymologie(aktuelleVokabel.etymologie!);
+                        },
+                      ),
+                    ),
+                ],
+              ),
 
-            const SizedBox(height: 35),
+              const SizedBox(height: 35),
 
-            // ANTWORT
-            SizedBox(
-              width: double.infinity,
+              // ANTWORT
+              SizedBox(
+                width: double.infinity,
 
-              child: ElevatedButton(
-                onPressed: antwortUmschalten,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: designAccent,
+                    foregroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(28),
+                    ),
+                    padding: const EdgeInsets.symmetric(vertical: 14),
+                  ),
+                  onPressed: antwortUmschalten,
 
-                child: Text(
-                  antwortSichtbar
-                      ? 'Masquer la réponse'
-                      : 'Afficher la réponse',
+                  child: Text(
+                    antwortSichtbar
+                        ? 'Masquer la réponse'
+                        : 'Afficher la réponse',
+                  ),
                 ),
               ),
-            ),
 
-            const SizedBox(height: 15),
+              const SizedBox(height: 15),
 
-            const SizedBox(height: 25),
+              const SizedBox(height: 25),
 
-            if (antwortSichtbar)
+              if (antwortSichtbar)
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    // AGAIN
+                    Expanded(
+                      child: OutlinedButton(
+                        style: OutlinedButton.styleFrom(
+                          foregroundColor: Colors.white,
+                          side: BorderSide(
+                            color: Colors.white.withValues(alpha: 0.4),
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                        ),
+                        onPressed: () {
+                          carteEvaluee('again');
+                        },
+                        child: const Text('À revoir'),
+                      ),
+                    ),
+
+                    const SizedBox(width: 8),
+
+                    // HARD
+                    Expanded(
+                      child: OutlinedButton(
+                        style: OutlinedButton.styleFrom(
+                          foregroundColor: Colors.white,
+                          side: BorderSide(
+                            color: Colors.white.withValues(alpha: 0.4),
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                        ),
+                        onPressed: () {
+                          carteEvaluee('hard');
+                        },
+                        child: const Text('Difficile'),
+                      ),
+                    ),
+
+                    const SizedBox(width: 8),
+
+                    // GOOD
+                    Expanded(
+                      child: OutlinedButton(
+                        style: OutlinedButton.styleFrom(
+                          foregroundColor: Colors.white,
+                          side: BorderSide(
+                            color: Colors.white.withValues(alpha: 0.4),
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                        ),
+                        onPressed: () {
+                          carteEvaluee('good');
+                        },
+                        child: const Text('Bien'),
+                      ),
+                    ),
+
+                    const SizedBox(width: 8),
+
+                    // EASY
+                    Expanded(
+                      child: OutlinedButton(
+                        style: OutlinedButton.styleFrom(
+                          foregroundColor: Colors.white,
+                          side: BorderSide(
+                            color: Colors.white.withValues(alpha: 0.4),
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                        ),
+                        onPressed: () {
+                          carteEvaluee('easy');
+                        },
+                        child: const Text('Facile'),
+                      ),
+                    ),
+                  ],
+                ),
+
+              // NAVIGATION
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
                 children: [
-                  // AGAIN
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: () {
-                        carteEvaluee('again');
-                      },
-                      child: const Text('À revoir'),
-                    ),
+                  IconButton(
+                    onPressed: vorherigeKarte,
+
+                    icon: const Icon(Icons.arrow_back, color: Colors.white),
                   ),
 
-                  const SizedBox(width: 8),
+                  TextButton(
+                    onPressed: naechsteKarte,
 
-                  // HARD
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: () {
-                        carteEvaluee('hard');
-                      },
-                      child: const Text('Difficile'),
-                    ),
-                  ),
-
-                  const SizedBox(width: 8),
-
-                  // GOOD
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: () {
-                        carteEvaluee('good');
-                      },
-                      child: const Text('Bien'),
-                    ),
-                  ),
-
-                  const SizedBox(width: 8),
-
-                  // EASY
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: () {
-                        carteEvaluee('easy');
-                      },
-                      child: const Text('Facile'),
+                    child: const Text(
+                      'Suivant →',
+                      style: TextStyle(color: Colors.white),
                     ),
                   ),
                 ],
               ),
-
-            // NAVIGATION
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
-              children: [
-                IconButton(
-                  onPressed: vorherigeKarte,
-
-                  icon: const Icon(Icons.arrow_back, color: texteClair),
-                ),
-
-                TextButton(
-                  onPressed: naechsteKarte,
-
-                  child: const Text('Suivant →'),
-                ),
-              ],
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

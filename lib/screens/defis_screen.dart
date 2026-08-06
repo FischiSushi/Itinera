@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
-import 'package:itinera/main.dart' show texteAttenue;
 import 'package:itinera/screens/defi_quiz_screen.dart';
 import 'package:itinera/services/duel_service.dart';
 import 'package:itinera/widgets/avatar_glyphe.dart';
+import 'package:itinera/design/palette.dart';
+import 'package:itinera/design/widgets.dart';
 
 class DefisScreen extends StatefulWidget {
   final String monUid;
@@ -50,9 +51,15 @@ class _DefisScreenState extends State<DefisScreen> {
     return DefaultTabController(
       length: 3,
       child: Scaffold(
+        backgroundColor: designFond,
         appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          foregroundColor: Colors.white,
           title: const Text('Défis'),
           bottom: const TabBar(
+            labelColor: Colors.white,
+            unselectedLabelColor: Colors.white70,
+            indicatorColor: Colors.white,
             tabs: [
               Tab(text: 'Reçus'),
               Tab(text: 'Envoyés'),
@@ -60,8 +67,11 @@ class _DefisScreenState extends State<DefisScreen> {
             ],
           ),
         ),
-        body: TabBarView(
-          children: [_ongletRecus(), _ongletEnvoyes(), _ongletTermines()],
+        body: DecoratedBox(
+          decoration: BoxDecoration(gradient: designGradientFond),
+          child: TabBarView(
+            children: [_ongletRecus(), _ongletEnvoyes(), _ongletTermines()],
+          ),
         ),
       ),
     );
@@ -90,11 +100,16 @@ class _DefisScreenState extends State<DefisScreen> {
           separatorBuilder: (context, index) => const SizedBox(height: 8),
           itemBuilder: (context, i) {
             final defi = defis[i];
-            return Card(
+            return CarteDesign(
+              padding: EdgeInsets.zero,
               child: ListTile(
+                iconColor: designAccent,
+                textColor: designNoir,
                 leading: AvatarGlyphe(valeur: defi.fromAvatar, taille: 32),
                 title: Text(defi.fromNom),
-                subtitle: Text('Son score : ${defi.scoreFrom} / ${defi.mots.length}'),
+                subtitle: Text(
+                  'Son score : ${defi.scoreFrom} / ${defi.mots.length}',
+                ),
                 trailing: const Icon(Icons.play_arrow),
                 onTap: () => _repondre(defi),
               ),
@@ -128,8 +143,11 @@ class _DefisScreenState extends State<DefisScreen> {
           separatorBuilder: (context, index) => const SizedBox(height: 8),
           itemBuilder: (context, i) {
             final defi = defis[i];
-            return Card(
+            return CarteDesign(
+              padding: EdgeInsets.zero,
               child: ListTile(
+                iconColor: designAccent,
+                textColor: designNoir,
                 leading: AvatarGlyphe(valeur: defi.toAvatar, taille: 32),
                 title: Text(defi.toNom),
                 subtitle: Text(
@@ -185,11 +203,14 @@ class _DefisScreenState extends State<DefisScreen> {
                 couleur = Colors.red;
               } else {
                 resultat = 'Égalité';
-                couleur = texteAttenue;
+                couleur = designNoir.withValues(alpha: 0.6);
               }
 
-              return Card(
+              return CarteDesign(
+                padding: EdgeInsets.zero,
                 child: ListTile(
+                  iconColor: designAccent,
+                  textColor: designNoir,
                   leading: AvatarGlyphe(
                     valeur: defi.adversaireAvatar(widget.monUid),
                     taille: 32,
@@ -198,7 +219,10 @@ class _DefisScreenState extends State<DefisScreen> {
                   subtitle: Text('$monScore - $scoreAdversaire'),
                   trailing: Text(
                     resultat,
-                    style: TextStyle(fontWeight: FontWeight.bold, color: couleur),
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: couleur,
+                    ),
                   ),
                 ),
               );
@@ -216,9 +240,13 @@ class _DefisScreenState extends State<DefisScreen> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(icone, size: 48, color: texteAttenue),
+            Icon(icone, size: 48, color: Colors.white70),
             const SizedBox(height: 12),
-            Text(texte, textAlign: TextAlign.center, style: TextStyle(color: texteAttenue)),
+            Text(
+              texte,
+              textAlign: TextAlign.center,
+              style: const TextStyle(color: Colors.white70),
+            ),
           ],
         ),
       ),

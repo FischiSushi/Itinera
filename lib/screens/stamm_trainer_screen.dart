@@ -2,8 +2,9 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
-import 'package:itinera/main.dart';
 import 'package:itinera/vocabulaire_data.dart';
+import 'package:itinera/design/palette.dart';
+import 'package:itinera/design/widgets.dart';
 
 // ============================================================
 // GRAMMAIRE : STAMMTRAINER (VERBES)
@@ -123,13 +124,16 @@ class _StammTrainerScreenState extends State<StammTrainerScreen> {
   }
 
   Widget boutonOption(String option) {
-    Color? couleur;
+    Color fond = designBlanc;
+    Color texte = designNoir;
 
     if (optionChoisie != null) {
       if (option == reponseCorrecte) {
-        couleur = Colors.green;
+        fond = Colors.green;
+        texte = Colors.white;
       } else if (option == optionChoisie) {
-        couleur = Colors.red;
+        fond = Colors.red;
+        texte = Colors.white;
       }
     }
 
@@ -139,9 +143,12 @@ class _StammTrainerScreenState extends State<StammTrainerScreen> {
         width: double.infinity,
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
-            backgroundColor: couleur,
-            foregroundColor: texteClair,
+            backgroundColor: fond,
+            foregroundColor: texte,
             padding: const EdgeInsets.symmetric(vertical: 16),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+            ),
           ),
           onPressed: () => repondre(option),
           child: Text(option, textAlign: TextAlign.center),
@@ -162,14 +169,23 @@ class _StammTrainerScreenState extends State<StammTrainerScreen> {
   Widget build(BuildContext context) {
     if (verbes.isEmpty) {
       return Scaffold(
-        appBar: AppBar(title: const Text('Stammtrainer')),
-        body: const Center(
-          child: Padding(
-            padding: EdgeInsets.all(24),
-            child: Text(
-              'Pas assez de verbes avec formes complètes dans le '
-              'vocabulaire pour ce jeu.',
-              textAlign: TextAlign.center,
+        backgroundColor: designFond,
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          foregroundColor: Colors.white,
+          title: const Text('Stammtrainer'),
+        ),
+        body: DecoratedBox(
+          decoration: BoxDecoration(gradient: designGradientFond),
+          child: const Center(
+            child: Padding(
+              padding: EdgeInsets.all(24),
+              child: Text(
+                'Pas assez de verbes avec formes complètes dans le '
+                'vocabulaire pour ce jeu.',
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.white70),
+              ),
             ),
           ),
         ),
@@ -177,100 +193,111 @@ class _StammTrainerScreenState extends State<StammTrainerScreen> {
     }
 
     return Scaffold(
+      backgroundColor: designFond,
       appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        foregroundColor: Colors.white,
         title: Text('Stammtrainer (${index + 1}/$totalQuestions)'),
       ),
 
-      body: Padding(
-        padding: const EdgeInsets.all(20),
+      body: DecoratedBox(
+        decoration: BoxDecoration(gradient: designGradientFond),
+        child: Padding(
+          padding: const EdgeInsets.all(20),
 
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
 
-          children: [
-            Text('Score : $score', style: const TextStyle(color: texteAttenue)),
+            children: [
+              Text(
+                'Score : $score',
+                style: const TextStyle(color: Colors.white70),
+              ),
 
-            const SizedBox(height: 16),
+              const SizedBox(height: 16),
 
-            Card(
-              child: Padding(
+              CarteDesign(
                 padding: const EdgeInsets.all(24),
                 child: Column(
                   children: [
                     Text(
                       texteMasque,
                       textAlign: TextAlign.center,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 22,
                         fontWeight: FontWeight.bold,
+                        color: designNoir,
                       ),
                     ),
                     const SizedBox(height: 8),
                     Text(
                       verbeActuel.francais,
                       textAlign: TextAlign.center,
-                      style: const TextStyle(color: texteAttenue),
+                      style: TextStyle(
+                        color: designNoir.withValues(alpha: 0.6),
+                      ),
                     ),
                   ],
                 ),
               ),
-            ),
 
-            const SizedBox(height: 8),
-
-            Text(
-              'Quelle est la forme du ${_labelsStamms[indexCible]} ?',
-              textAlign: TextAlign.center,
-              style: const TextStyle(color: texteAttenue),
-            ),
-
-            const SizedBox(height: 24),
-
-            for (final option in options) boutonOption(option),
-
-            if (optionChoisie != null) ...[
               const SizedBox(height: 8),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Icon(
-                    optionChoisie == reponseCorrecte
-                        ? Icons.check_circle
-                        : Icons.cancel,
-                    color: optionChoisie == reponseCorrecte
-                        ? Colors.green
-                        : Colors.red,
-                  ),
-                  const SizedBox(width: 8),
-                  Flexible(
-                    child: Text(
+
+              Text(
+                'Quelle est la forme du ${_labelsStamms[indexCible]} ?',
+                textAlign: TextAlign.center,
+                style: const TextStyle(color: Colors.white70),
+              ),
+
+              const SizedBox(height: 24),
+
+              for (final option in options) boutonOption(option),
+
+              if (optionChoisie != null) ...[
+                const SizedBox(height: 8),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Icon(
                       optionChoisie == reponseCorrecte
-                          ? 'Correct !'
-                          : 'Faux — la bonne réponse était : $reponseCorrecte',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: optionChoisie == reponseCorrecte
-                            ? Colors.green
-                            : Colors.red,
+                          ? Icons.check_circle
+                          : Icons.cancel,
+                      color: optionChoisie == reponseCorrecte
+                          ? Colors.green
+                          : Colors.red,
+                    ),
+                    const SizedBox(width: 8),
+                    Flexible(
+                      child: Text(
+                        optionChoisie == reponseCorrecte
+                            ? 'Correct !'
+                            : 'Faux — la bonne réponse était : $reponseCorrecte',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: optionChoisie == reponseCorrecte
+                              ? Colors.green
+                              : Colors.red,
+                        ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-            ],
-
-            const Spacer(),
-
-            if (optionChoisie != null)
-              ElevatedButton(
-                onPressed: suivant,
-                child: Text(
-                  index + 1 >= totalQuestions ? 'Terminer' : 'Suivant',
+                  ],
                 ),
-              ),
-          ],
+              ],
+
+              const Spacer(),
+
+              if (optionChoisie != null)
+                ElevatedButton(
+                  style: styleBoutonAccent,
+                  onPressed: suivant,
+                  child: Text(
+                    index + 1 >= totalQuestions ? 'Terminer' : 'Suivant',
+                  ),
+                ),
+            ],
+          ),
         ),
       ),
     );

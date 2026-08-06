@@ -191,7 +191,7 @@ class GrammaireScreen extends StatelessWidget {
       ),
 
       body: DecoratedBox(
-        decoration: const BoxDecoration(gradient: designGradientFond),
+        decoration: BoxDecoration(gradient: designGradientFond),
         child: ListView(
           padding: const EdgeInsets.all(16),
 

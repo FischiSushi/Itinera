@@ -44,13 +44,19 @@ class _GraphiqueActiviteState extends State<GraphiqueActivite> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text(
+              Text(
                 'Activité récente',
-                style: TextStyle(fontWeight: FontWeight.bold, color: designNoir),
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: designNoir,
+                ),
               ),
               Text(
                 '$total révisions',
-                style: TextStyle(color: designNoir.withValues(alpha: 0.6), fontSize: 12),
+                style: TextStyle(
+                  color: designNoir.withValues(alpha: 0.6),
+                  fontSize: 12,
+                ),
               ),
             ],
           ),
@@ -59,7 +65,10 @@ class _GraphiqueActiviteState extends State<GraphiqueActivite> {
             indexAffiche == dernierIndex
                 ? '${valeurs[indexAffiche]} aujourd\'hui'
                 : '${valeurs[indexAffiche]} le ${_dateDuJour(indexAffiche).day}/${_dateDuJour(indexAffiche).month}',
-            style: TextStyle(color: designNoir.withValues(alpha: 0.6), fontSize: 12),
+            style: TextStyle(
+              color: designNoir.withValues(alpha: 0.6),
+              fontSize: 12,
+            ),
           ),
           const SizedBox(height: 14),
           SizedBox(

@@ -20,7 +20,7 @@ class TextesHubScreen extends StatelessWidget {
       ),
 
       body: DecoratedBox(
-        decoration: const BoxDecoration(gradient: designGradientFond),
+        decoration: BoxDecoration(gradient: designGradientFond),
         child: ListView(
           padding: const EdgeInsets.all(16),
           children: [
@@ -82,7 +82,7 @@ class TexteListeScreen extends StatelessWidget {
       ),
 
       body: DecoratedBox(
-        decoration: const BoxDecoration(gradient: designGradientFond),
+        decoration: BoxDecoration(gradient: designGradientFond),
         child: ListView.builder(
           padding: const EdgeInsets.all(16),
 
@@ -103,7 +103,7 @@ class TexteListeScreen extends StatelessWidget {
                   ),
                   title: Text(
                     texte.titre,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontWeight: FontWeight.bold,
                       color: designNoir,
                     ),
@@ -151,7 +151,7 @@ class TexteDetailScreen extends StatelessWidget {
       ),
 
       body: DecoratedBox(
-        decoration: const BoxDecoration(gradient: designGradientFond),
+        decoration: BoxDecoration(gradient: designGradientFond),
         child: ListView(
           padding: const EdgeInsets.all(20),
 
@@ -168,7 +168,7 @@ class TexteDetailScreen extends StatelessWidget {
                   for (final paragraphe in texte.paragraphes) ...[
                     Text(
                       paragraphe.texte,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 17,
                         height: 1.5,
                         color: designNoir,
@@ -190,7 +190,7 @@ class TexteDetailScreen extends StatelessWidget {
 
                   if (texte.banqueDeMots.isNotEmpty) ...[
                     const SizedBox(height: 8),
-                    const Text(
+                    Text(
                       'Banque de mots',
                       style: TextStyle(
                         fontSize: 16,
@@ -206,10 +206,8 @@ class TexteDetailScreen extends StatelessWidget {
                         for (final mot in texte.banqueDeMots)
                           Chip(
                             label: Text(mot),
-                            backgroundColor: designNoir.withValues(
-                              alpha: 0.05,
-                            ),
-                            labelStyle: const TextStyle(color: designNoir),
+                            backgroundColor: designNoir.withValues(alpha: 0.05),
+                            labelStyle: TextStyle(color: designNoir),
                             side: BorderSide.none,
                           ),
                       ],
@@ -218,7 +216,7 @@ class TexteDetailScreen extends StatelessWidget {
 
                   if (texte.motsAConnaitre.isNotEmpty) ...[
                     const SizedBox(height: 24),
-                    const Text(
+                    Text(
                       'Mots à connaître',
                       style: TextStyle(
                         fontSize: 16,
@@ -240,7 +238,7 @@ class TexteDetailScreen extends StatelessWidget {
                           children: [
                             Text(
                               mot.latin,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: designNoir,
                               ),
@@ -248,7 +246,7 @@ class TexteDetailScreen extends StatelessWidget {
                             const SizedBox(height: 2),
                             Text(
                               mot.francais,
-                              style: const TextStyle(color: designNoir),
+                              style: TextStyle(color: designNoir),
                             ),
                             if (mot.etymologie != null) ...[
                               const SizedBox(height: 4),

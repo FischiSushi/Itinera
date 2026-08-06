@@ -63,7 +63,7 @@ class _StatistiquesScreenState extends State<StatistiquesScreen> {
       ),
 
       body: DecoratedBox(
-        decoration: const BoxDecoration(gradient: designGradientFond),
+        decoration: BoxDecoration(gradient: designGradientFond),
         child: ListView(
           padding: const EdgeInsets.all(20),
 
@@ -134,7 +134,7 @@ class _StatistiquesScreenState extends State<StatistiquesScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text(
+                      Text(
                         'Parcours terminé',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
@@ -143,7 +143,7 @@ class _StatistiquesScreenState extends State<StatistiquesScreen> {
                       ),
                       Text(
                         '$leconsTerminees / $totalLecons',
-                        style: const TextStyle(color: designNoir),
+                        style: TextStyle(color: designNoir),
                       ),
                     ],
                   ),
@@ -156,7 +156,7 @@ class _StatistiquesScreenState extends State<StatistiquesScreen> {
                           : leconsTerminees / totalLecons,
                       minHeight: 8,
                       backgroundColor: designNoir.withValues(alpha: 0.08),
-                      valueColor: const AlwaysStoppedAnimation(designAccent),
+                      valueColor: AlwaysStoppedAnimation(designAccent),
                     ),
                   ),
                 ],
@@ -183,10 +183,10 @@ class _StatistiquesScreenState extends State<StatistiquesScreen> {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20),
                 ),
-                leading: const Icon(Icons.emoji_events, color: designOrTexte),
+                leading: Icon(Icons.emoji_events, color: designOrTexte),
                 title: Text(
                   '$succesTermines / $succesTotal débloqués',
-                  style: const TextStyle(color: designNoir),
+                  style: TextStyle(color: designNoir),
                 ),
                 subtitle: Text(
                   'Voir tous les succès',
@@ -238,7 +238,7 @@ class _StatistiquesScreenState extends State<StatistiquesScreen> {
               Expanded(
                 child: Text(
                   nomAffiche(unite),
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: designNoir,
                   ),
@@ -246,7 +246,7 @@ class _StatistiquesScreenState extends State<StatistiquesScreen> {
               ),
               Text(
                 '$apprisDeCetteUnite / $total',
-                style: const TextStyle(color: designNoir),
+                style: TextStyle(color: designNoir),
               ),
             ],
           ),
@@ -260,7 +260,7 @@ class _StatistiquesScreenState extends State<StatistiquesScreen> {
               value: pourcentage,
               minHeight: 8,
               backgroundColor: designNoir.withValues(alpha: 0.08),
-              valueColor: const AlwaysStoppedAnimation(designAccent),
+              valueColor: AlwaysStoppedAnimation(designAccent),
             ),
           ),
         ],

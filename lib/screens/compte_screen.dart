@@ -10,6 +10,8 @@ import 'package:itinera/services/auth_service.dart';
 import 'package:itinera/services/duel_service.dart';
 import 'package:itinera/services/social_service.dart';
 import 'package:itinera/widgets/avatar_glyphe.dart';
+import 'package:itinera/design/palette.dart';
+import 'package:itinera/design/widgets.dart';
 
 class CompteScreen extends StatefulWidget {
   const CompteScreen({super.key});
@@ -57,28 +59,40 @@ class _EcranNonConfigure extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Mon compte')),
-      body: Padding(
-        padding: const EdgeInsets.all(24),
-        child: Center(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(Icons.cloud_off, size: 48, color: texteAttenue),
-              const SizedBox(height: 16),
-              const Text(
-                'La fonction Compte n\'est pas encore configurée.',
-                textAlign: TextAlign.center,
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                'Voir FIREBASE_SETUP.md à la racine du projet pour '
-                'l\'activer.',
-                textAlign: TextAlign.center,
-                style: TextStyle(color: texteAttenue),
-              ),
-            ],
+      backgroundColor: designFond,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        foregroundColor: Colors.white,
+        title: const Text('Mon compte'),
+      ),
+      body: DecoratedBox(
+        decoration: BoxDecoration(gradient: designGradientFond),
+        child: Padding(
+          padding: const EdgeInsets.all(24),
+          child: Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(Icons.cloud_off, size: 48, color: Colors.white70),
+                const SizedBox(height: 16),
+                const Text(
+                  'La fonction Compte n\'est pas encore configurée.',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                    color: Colors.white,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                const Text(
+                  'Voir FIREBASE_SETUP.md à la racine du projet pour '
+                  'l\'activer.',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: Colors.white70),
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -150,7 +164,9 @@ class _EcranConnexionState extends State<_EcranConnexion> {
 
   Future<void> _motDePasseOublie() async {
     if (_emailControleur.text.trim().isEmpty) {
-      setState(() => _erreur = 'Indique ton adresse e-mail ci-dessus d\'abord.');
+      setState(
+        () => _erreur = 'Indique ton adresse e-mail ci-dessus d\'abord.',
+      );
       return;
     }
 
@@ -158,9 +174,7 @@ class _EcranConnexionState extends State<_EcranConnexion> {
       await widget.auth.reinitialiserMotDePasse(_emailControleur.text);
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('E-mail de réinitialisation envoyé.'),
-          ),
+          const SnackBar(content: Text('E-mail de réinitialisation envoyé.')),
         );
       }
     } on AuthException catch (e) {
@@ -171,87 +185,102 @@ class _EcranConnexionState extends State<_EcranConnexion> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Mon compte')),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(20),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Icon(Icons.account_circle, size: 64, color: accentViolet),
-              const SizedBox(height: 8),
-              Text(
-                _modeInscription ? 'Créer un compte' : 'Se connecter',
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(height: 24),
-              if (_modeInscription) ...[
-                TextFormField(
-                  controller: _nomControleur,
-                  decoration: const InputDecoration(
-                    labelText: 'Nom affiché (optionnel)',
+      backgroundColor: designFond,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        foregroundColor: Colors.white,
+        title: const Text('Mon compte'),
+      ),
+      body: DecoratedBox(
+        decoration: BoxDecoration(gradient: designGradientFond),
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(20),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                const Icon(Icons.account_circle, size: 64, color: Colors.white),
+                const SizedBox(height: 8),
+                Text(
+                  _modeInscription ? 'Créer un compte' : 'Se connecter',
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
                   ),
                 ),
-                const SizedBox(height: 12),
-              ],
-              TextFormField(
-                controller: _emailControleur,
-                keyboardType: TextInputType.emailAddress,
-                decoration: const InputDecoration(labelText: 'E-mail'),
-                validator: (valeur) => (valeur == null || !valeur.contains('@'))
-                    ? 'Adresse e-mail invalide'
-                    : null,
-              ),
-              const SizedBox(height: 12),
-              TextFormField(
-                controller: _motDePasseControleur,
-                obscureText: true,
-                decoration: const InputDecoration(labelText: 'Mot de passe'),
-                validator: (valeur) => (valeur == null || valeur.length < 6)
-                    ? '6 caractères minimum'
-                    : null,
-              ),
-              if (_erreur != null) ...[
-                const SizedBox(height: 12),
-                Text(
-                  _erreur!,
-                  style: const TextStyle(color: Colors.redAccent),
+                const SizedBox(height: 24),
+                if (_modeInscription) ...[
+                  TextFormField(
+                    controller: _nomControleur,
+                    decoration: const InputDecoration(
+                      labelText: 'Nom affiché (optionnel)',
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                ],
+                TextFormField(
+                  controller: _emailControleur,
+                  keyboardType: TextInputType.emailAddress,
+                  decoration: const InputDecoration(labelText: 'E-mail'),
+                  validator: (valeur) =>
+                      (valeur == null || !valeur.contains('@'))
+                      ? 'Adresse e-mail invalide'
+                      : null,
                 ),
-              ],
-              const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: _enCours ? null : _valider,
-                child: _enCours
-                    ? const SizedBox(
-                        width: 20,
-                        height: 20,
-                        child: CircularProgressIndicator(strokeWidth: 2),
-                      )
-                    : Text(_modeInscription ? 'Créer mon compte' : 'Se connecter'),
-              ),
-              const SizedBox(height: 8),
-              TextButton(
-                onPressed: () => setState(() {
-                  _modeInscription = !_modeInscription;
-                  _erreur = null;
-                }),
-                child: Text(
-                  _modeInscription
-                      ? 'J\'ai déjà un compte'
-                      : 'Créer un nouveau compte',
+                const SizedBox(height: 12),
+                TextFormField(
+                  controller: _motDePasseControleur,
+                  obscureText: true,
+                  decoration: const InputDecoration(labelText: 'Mot de passe'),
+                  validator: (valeur) => (valeur == null || valeur.length < 6)
+                      ? '6 caractères minimum'
+                      : null,
                 ),
-              ),
-              if (!_modeInscription)
+                if (_erreur != null) ...[
+                  const SizedBox(height: 12),
+                  Text(
+                    _erreur!,
+                    style: const TextStyle(color: Colors.redAccent),
+                  ),
+                ],
+                const SizedBox(height: 20),
+                ElevatedButton(
+                  style: styleBoutonAccent,
+                  onPressed: _enCours ? null : _valider,
+                  child: _enCours
+                      ? const SizedBox(
+                          width: 20,
+                          height: 20,
+                          child: CircularProgressIndicator(strokeWidth: 2),
+                        )
+                      : Text(
+                          _modeInscription
+                              ? 'Créer mon compte'
+                              : 'Se connecter',
+                        ),
+                ),
+                const SizedBox(height: 8),
                 TextButton(
-                  onPressed: _motDePasseOublie,
-                  child: const Text('Mot de passe oublié ?'),
+                  onPressed: () => setState(() {
+                    _modeInscription = !_modeInscription;
+                    _erreur = null;
+                  }),
+                  child: Text(
+                    _modeInscription
+                        ? 'J\'ai déjà un compte'
+                        : 'Créer un nouveau compte',
+                  ),
                 ),
-            ],
+                if (!_modeInscription)
+                  TextButton(
+                    onPressed: _motDePasseOublie,
+                    child: const Text('Mot de passe oublié ?'),
+                  ),
+              ],
+            ),
           ),
         ),
       ),
@@ -334,15 +363,17 @@ class _EcranProfilState extends State<_EcranProfil> {
 
     if (profil == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Personne ne correspond à cette adresse.')),
+        const SnackBar(
+          content: Text('Personne ne correspond à cette adresse.'),
+        ),
       );
       return;
     }
 
     if (profil.uid == widget.utilisateur.uid) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('C\'est toi !')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('C\'est toi !')));
       return;
     }
 
@@ -364,9 +395,7 @@ class _EcranProfilState extends State<_EcranProfil> {
             Flexible(child: Text(profil.displayName)),
           ],
         ),
-        content: Text(
-          '🔥 ${profil.streak} · 🏆 ${profil.achievementsCount}',
-        ),
+        content: Text('🔥 ${profil.streak} · 🏆 ${profil.achievementsCount}'),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
@@ -439,7 +468,9 @@ class _EcranProfilState extends State<_EcranProfil> {
                                 taille: 32,
                               ),
                               title: Text(p.displayName),
-                              subtitle: Text('🔥 ${p.streak} · 🏆 ${p.achievementsCount}'),
+                              subtitle: Text(
+                                '🔥 ${p.streak} · 🏆 ${p.achievementsCount}',
+                              ),
                             ),
                           )
                           .toList(),
@@ -461,7 +492,10 @@ class _EcranProfilState extends State<_EcranProfil> {
         : (widget.utilisateur.email ?? 'Sans nom');
 
     return Scaffold(
+      backgroundColor: designFond,
       appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        foregroundColor: Colors.white,
         title: const Text('Mon compte'),
         actions: [
           IconButton(
@@ -471,32 +505,42 @@ class _EcranProfilState extends State<_EcranProfil> {
           ),
         ],
       ),
-      body: ListView(
-        padding: const EdgeInsets.all(16),
-        children: [
-          Center(
-            child: Column(
-              children: [
-                CircleAvatar(
-                  radius: 38,
-                  backgroundColor: accentViolet.withValues(alpha: 0.15),
-                  child: AvatarGlyphe(
-                    valeur: emojiAvatarEquipe(),
-                    taille: 46,
+      body: DecoratedBox(
+        decoration: BoxDecoration(gradient: designGradientFond),
+        child: ListView(
+          padding: const EdgeInsets.all(16),
+          children: [
+            Center(
+              child: Column(
+                children: [
+                  CircleAvatar(
+                    radius: 38,
+                    backgroundColor: Colors.white.withValues(alpha: 0.15),
+                    child: AvatarGlyphe(
+                      valeur: emojiAvatarEquipe(),
+                      taille: 46,
+                    ),
                   ),
-                ),
-                const SizedBox(height: 8),
-                Text(nom, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 17)),
-                if (widget.utilisateur.email != null)
-                  Text(widget.utilisateur.email!, style: TextStyle(color: texteAttenue)),
-              ],
+                  const SizedBox(height: 8),
+                  Text(
+                    nom,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 17,
+                      color: Colors.white,
+                    ),
+                  ),
+                  if (widget.utilisateur.email != null)
+                    Text(
+                      widget.utilisateur.email!,
+                      style: const TextStyle(color: Colors.white70),
+                    ),
+                ],
+              ),
             ),
-          ),
-          const SizedBox(height: 20),
+            const SizedBox(height: 20),
 
-          Card(
-            child: Padding(
-              padding: const EdgeInsets.all(16),
+            CarteDesign(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
@@ -508,143 +552,173 @@ class _EcranProfilState extends State<_EcranProfil> {
                   ),
                   _StatTuile(
                     icone: Icons.diamond,
-                    couleur: orAntique,
+                    couleur: designOrTexte,
                     valeur: '${coins()}',
                     label: 'Deniers',
                   ),
                   GestureDetector(
                     onTap: () => Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const SuccesScreen()),
+                      MaterialPageRoute(
+                        builder: (context) => const SuccesScreen(),
+                      ),
                     ),
                     child: _StatTuile(
                       icone: Icons.emoji_events,
-                      couleur: accentViolet,
-                      valeur: '${succesDebloques().length}/${succesDisponibles.length}',
+                      couleur: designAccent,
+                      valeur:
+                          '${succesDebloques().length}/${succesDisponibles.length}',
                       label: 'Succès',
                     ),
                   ),
                 ],
               ),
             ),
-          ),
-          const SizedBox(height: 12),
+            const SizedBox(height: 12),
 
-          Card(
-            child: ListTile(
-              leading: const Icon(Icons.storefront),
-              title: const Text('Changer d\'avatar'),
-              subtitle: const Text('Ouvrir la boutique'),
-              trailing: const Icon(Icons.arrow_forward_ios),
-              onTap: () async {
-                await Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const BoutiqueScreen()),
-                );
-                setState(() {});
-              },
-            ),
-          ),
-          const SizedBox(height: 12),
-
-          Card(
-            child: StreamBuilder<List<Defi>>(
-              stream: _duel.defisRecus(uid),
-              builder: (context, snap) {
-                final enAttente = snap.data?.length ?? 0;
-
-                return ListTile(
-                  leading: const Icon(Icons.sports_kabaddi),
-                  title: const Text('Défis'),
-                  subtitle: Text(
-                    enAttente > 0
-                        ? '$enAttente en attente de réponse'
-                        : 'Défie tes amis en quiz',
-                  ),
-                  trailing: enAttente > 0
-                      ? CircleAvatar(
-                          radius: 12,
-                          backgroundColor: accentViolet,
-                          child: Text(
-                            '$enAttente',
-                            style: const TextStyle(fontSize: 12, color: Colors.white),
-                          ),
-                        )
-                      : const Icon(Icons.arrow_forward_ios, size: 16),
-                  onTap: () => Navigator.push(
+            CarteDesign(
+              padding: EdgeInsets.zero,
+              child: ListTile(
+                iconColor: designAccent,
+                textColor: designNoir,
+                leading: const Icon(Icons.storefront),
+                title: const Text('Changer d\'avatar'),
+                subtitle: const Text('Ouvrir la boutique'),
+                trailing: const Icon(Icons.arrow_forward_ios),
+                onTap: () async {
+                  await Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => DefisScreen(monUid: uid),
+                      builder: (context) => const BoutiqueScreen(),
                     ),
-                  ),
-                );
-              },
+                  );
+                  setState(() {});
+                },
+              ),
             ),
-          ),
-          const SizedBox(height: 12),
+            const SizedBox(height: 12),
 
-          Card(
-            child: Column(
-              children: [
-                StreamBuilder<int>(
-                  stream: widget.social.nombreAbonnes(uid),
-                  builder: (context, snap) => ListTile(
-                    leading: const Icon(Icons.group),
-                    title: const Text('Abonnés'),
-                    trailing: Text('${snap.data ?? 0}'),
-                    onTap: () => _afficherListe(
-                      'Abonnés',
-                      widget.social.abonnesUids(uid),
+            CarteDesign(
+              padding: EdgeInsets.zero,
+              child: StreamBuilder<List<Defi>>(
+                stream: _duel.defisRecus(uid),
+                builder: (context, snap) {
+                  final enAttente = snap.data?.length ?? 0;
+
+                  return ListTile(
+                    iconColor: designAccent,
+                    textColor: designNoir,
+                    leading: const Icon(Icons.sports_kabaddi),
+                    title: const Text('Défis'),
+                    subtitle: Text(
+                      enAttente > 0
+                          ? '$enAttente en attente de réponse'
+                          : 'Défie tes amis en quiz',
                     ),
-                  ),
-                ),
-                const Divider(height: 1),
-                StreamBuilder<int>(
-                  stream: widget.social.nombreAbonnements(uid),
-                  builder: (context, snap) => ListTile(
-                    leading: const Icon(Icons.person_add_alt),
-                    title: const Text('Abonnements'),
-                    trailing: Text('${snap.data ?? 0}'),
-                    onTap: () => _afficherListe(
-                      'Abonnements',
-                      widget.social.abonnementsUids(uid),
+                    trailing: enAttente > 0
+                        ? CircleAvatar(
+                            radius: 12,
+                            backgroundColor: designAccent,
+                            child: Text(
+                              '$enAttente',
+                              style: const TextStyle(
+                                fontSize: 12,
+                                color: Colors.white,
+                              ),
+                            ),
+                          )
+                        : const Icon(Icons.arrow_forward_ios, size: 16),
+                    onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => DefisScreen(monUid: uid),
+                      ),
                     ),
-                  ),
-                ),
-                const Divider(height: 1),
-                ListTile(
-                  leading: const Icon(Icons.leaderboard),
-                  title: const Text('Classement'),
-                  onTap: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => ClassementScreen(
-                        monUid: uid,
-                        social: widget.social,
+                  );
+                },
+              ),
+            ),
+            const SizedBox(height: 12),
+
+            CarteDesign(
+              padding: EdgeInsets.zero,
+              child: Column(
+                children: [
+                  StreamBuilder<int>(
+                    stream: widget.social.nombreAbonnes(uid),
+                    builder: (context, snap) => ListTile(
+                      iconColor: designAccent,
+                      textColor: designNoir,
+                      leading: const Icon(Icons.group),
+                      title: const Text('Abonnés'),
+                      trailing: Text('${snap.data ?? 0}'),
+                      onTap: () => _afficherListe(
+                        'Abonnés',
+                        widget.social.abonnesUids(uid),
                       ),
                     ),
                   ),
-                ),
-                const Divider(height: 1),
-                ListTile(
-                  leading: const Icon(Icons.search),
-                  title: const Text('Chercher quelqu\'un'),
-                  onTap: _chercherEtSuivre,
-                ),
-              ],
+                  Divider(height: 1, color: designNoir.withValues(alpha: 0.1)),
+                  StreamBuilder<int>(
+                    stream: widget.social.nombreAbonnements(uid),
+                    builder: (context, snap) => ListTile(
+                      iconColor: designAccent,
+                      textColor: designNoir,
+                      leading: const Icon(Icons.person_add_alt),
+                      title: const Text('Abonnements'),
+                      trailing: Text('${snap.data ?? 0}'),
+                      onTap: () => _afficherListe(
+                        'Abonnements',
+                        widget.social.abonnementsUids(uid),
+                      ),
+                    ),
+                  ),
+                  Divider(height: 1, color: designNoir.withValues(alpha: 0.1)),
+                  ListTile(
+                    iconColor: designAccent,
+                    textColor: designNoir,
+                    leading: const Icon(Icons.leaderboard),
+                    title: const Text('Classement'),
+                    onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ClassementScreen(
+                          monUid: uid,
+                          social: widget.social,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Divider(height: 1, color: designNoir.withValues(alpha: 0.1)),
+                  ListTile(
+                    iconColor: designAccent,
+                    textColor: designNoir,
+                    leading: const Icon(Icons.search),
+                    title: const Text('Chercher quelqu\'un'),
+                    onTap: _chercherEtSuivre,
+                  ),
+                ],
+              ),
             ),
-          ),
-          const SizedBox(height: 24),
+            const SizedBox(height: 24),
 
-          Card(
-            child: ListTile(
-              leading: const Icon(Icons.delete_forever, color: Colors.red),
-              title: const Text('Supprimer mon compte', style: TextStyle(color: Colors.red)),
-              subtitle: const Text('Efface ton profil et tes abonnements, définitivement'),
-              onTap: _supprimerCompte,
+            CarteDesign(
+              padding: EdgeInsets.zero,
+              child: ListTile(
+                leading: const Icon(Icons.delete_forever, color: Colors.red),
+                title: const Text(
+                  'Supprimer mon compte',
+                  style: TextStyle(color: Colors.red),
+                ),
+                subtitle: Text(
+                  'Efface ton profil et tes abonnements, définitivement',
+                  style: TextStyle(color: designNoir.withValues(alpha: 0.6)),
+                ),
+                onTap: _supprimerCompte,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -683,7 +757,9 @@ class _EcranProfilState extends State<_EcranProfil> {
         return;
       }
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.message)));
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(e.message)));
       }
     }
   }
@@ -720,7 +796,9 @@ class _EcranProfilState extends State<_EcranProfil> {
       await widget.auth.reauthentifierEtSupprimer(motDePasse);
     } on AuthException catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.message)));
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(e.message)));
       }
     }
   }
@@ -745,8 +823,17 @@ class _StatTuile extends StatelessWidget {
       children: [
         Icon(icone, color: couleur),
         const SizedBox(height: 4),
-        Text(valeur, style: const TextStyle(fontWeight: FontWeight.bold)),
-        Text(label, style: TextStyle(fontSize: 12, color: texteAttenue)),
+        Text(
+          valeur,
+          style: TextStyle(fontWeight: FontWeight.bold, color: designNoir),
+        ),
+        Text(
+          label,
+          style: TextStyle(
+            fontSize: 12,
+            color: designNoir.withValues(alpha: 0.6),
+          ),
+        ),
       ],
     );
   }

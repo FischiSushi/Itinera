@@ -17,7 +17,7 @@ class LocutionsScreen extends StatelessWidget {
       ),
 
       body: DecoratedBox(
-        decoration: const BoxDecoration(gradient: designGradientFond),
+        decoration: BoxDecoration(gradient: designGradientFond),
         child: ListView.builder(
           padding: const EdgeInsets.all(16),
 
@@ -42,7 +42,7 @@ class LocutionsScreen extends StatelessWidget {
                   collapsedIconColor: designNoir.withValues(alpha: 0.6),
                   title: Text(
                     locution.latin,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 17,
                       fontWeight: FontWeight.bold,
                       color: designNoir,
@@ -57,7 +57,7 @@ class LocutionsScreen extends StatelessWidget {
                         children: [
                           Text(
                             locution.francais,
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w600,
                               color: designNoir,

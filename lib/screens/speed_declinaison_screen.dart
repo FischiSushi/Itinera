@@ -6,7 +6,9 @@ import 'package:hive_flutter/hive_flutter.dart';
 
 import 'package:itinera/latin/declinaison.dart';
 import 'package:itinera/latin/erreurs_declinaison.dart';
-import 'package:itinera/main.dart' show accentViolet, texteAttenue, texteClair;
+import 'package:itinera/main.dart' show accentViolet;
+import 'package:itinera/design/palette.dart';
+import 'package:itinera/design/widgets.dart';
 
 const _meilleurScoreSpeedKey = 'meilleurScoreDeclinaisonRapide';
 
@@ -74,10 +76,16 @@ class _SpeedDeclinaisonScreenState extends State<SpeedDeclinaisonScreen> {
     if (_termine || _controleur.text.trim().isEmpty) return;
 
     final bonneReponse = _motActuel.forme(_casActuel, pluriel: _plurielActuel);
-    final correct = _controleur.text.trim().toLowerCase() == bonneReponse.toLowerCase();
+    final correct =
+        _controleur.text.trim().toLowerCase() == bonneReponse.toLowerCase();
 
     if (!correct) {
-      final confusion = formeConfondue(_motActuel, _controleur.text, _casActuel, _plurielActuel);
+      final confusion = formeConfondue(
+        _motActuel,
+        _controleur.text,
+        _casActuel,
+        _plurielActuel,
+      );
       enregistrerErreurDeclinaison(
         casCible: _casActuel.libelle,
         plurielCible: _plurielActuel,
@@ -127,41 +135,63 @@ class _SpeedDeclinaisonScreenState extends State<SpeedDeclinaisonScreen> {
       final nouveauRecord = _correctes > 0 && _correctes >= record;
 
       return Scaffold(
-        appBar: AppBar(title: const Text('Déclinaison rapide')),
-        body: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(24),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(
-                  nouveauRecord ? Icons.emoji_events : Icons.timer_off,
-                  size: 56,
-                  color: accentViolet,
-                ),
-                const SizedBox(height: 16),
-                Text(
-                  '$_correctes bonnes réponses',
-                  style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  'sur $_total tentatives en ${_dureeTotale}s',
-                  style: TextStyle(color: texteAttenue),
-                ),
-                if (nouveauRecord) ...[
-                  const SizedBox(height: 8),
-                  const Text(
-                    'Nouveau record !',
-                    style: TextStyle(fontWeight: FontWeight.bold, color: accentViolet),
+        backgroundColor: designFond,
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          foregroundColor: Colors.white,
+          title: const Text('Déclinaison rapide'),
+        ),
+        body: DecoratedBox(
+          decoration: BoxDecoration(gradient: designGradientFond),
+          child: Center(
+            child: Padding(
+              padding: const EdgeInsets.all(24),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    nouveauRecord ? Icons.emoji_events : Icons.timer_off,
+                    size: 56,
+                    color: accentViolet,
                   ),
-                ] else ...[
-                  const SizedBox(height: 8),
-                  Text('Record : $record', style: TextStyle(color: texteAttenue)),
+                  const SizedBox(height: 16),
+                  Text(
+                    '$_correctes bonnes réponses',
+                    style: const TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    'sur $_total tentatives en ${_dureeTotale}s',
+                    style: const TextStyle(color: Colors.white70),
+                  ),
+                  if (nouveauRecord) ...[
+                    const SizedBox(height: 8),
+                    const Text(
+                      'Nouveau record !',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: accentViolet,
+                      ),
+                    ),
+                  ] else ...[
+                    const SizedBox(height: 8),
+                    Text(
+                      'Record : $record',
+                      style: const TextStyle(color: Colors.white70),
+                    ),
+                  ],
+                  const SizedBox(height: 24),
+                  ElevatedButton(
+                    style: styleBoutonAccent,
+                    onPressed: _rejouer,
+                    child: const Text('Rejouer'),
+                  ),
                 ],
-                const SizedBox(height: 24),
-                ElevatedButton(onPressed: _rejouer, child: const Text('Rejouer')),
-              ],
+              ),
             ),
           ),
         ),
@@ -169,54 +199,72 @@ class _SpeedDeclinaisonScreenState extends State<SpeedDeclinaisonScreen> {
     }
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Déclinaison rapide')),
-      body: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('✅ $_correctes / $_total', style: TextStyle(color: texteAttenue)),
-                Text(
-                  '${_tempsRestant}s',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
-                    color: _tempsRestant <= 10 ? Colors.red : texteClair,
+      backgroundColor: designFond,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        foregroundColor: Colors.white,
+        title: const Text('Déclinaison rapide'),
+      ),
+      body: DecoratedBox(
+        decoration: BoxDecoration(gradient: designGradientFond),
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    '✅ $_correctes / $_total',
+                    style: const TextStyle(color: Colors.white70),
                   ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 16),
-            Card(
-              color: _dernierResultat == null
-                  ? null
-                  : (_dernierResultat!
-                      ? Colors.green.withValues(alpha: 0.15)
-                      : Colors.red.withValues(alpha: 0.15)),
-              child: Padding(
+                  Text(
+                    '${_tempsRestant}s',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                      color: _tempsRestant <= 10 ? Colors.red : Colors.white,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 16),
+              Container(
                 padding: const EdgeInsets.all(24),
+                decoration: BoxDecoration(
+                  color: _dernierResultat == null
+                      ? designBlanc
+                      : (_dernierResultat! ? Colors.green : Colors.red),
+                  borderRadius: BorderRadius.circular(20),
+                ),
                 child: Text(
                   '${_casActuel.libelle} ${_plurielActuel ? 'pluriel' : 'singulier'} — ${_motActuel.lemme}',
                   textAlign: TextAlign.center,
-                  style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: _dernierResultat == null ? designNoir : Colors.white,
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(height: 20),
-            TextField(
-              controller: _controleur,
-              focusNode: _focus,
-              autofocus: true,
-              textAlign: TextAlign.center,
-              decoration: const InputDecoration(labelText: 'Ta réponse'),
-              onSubmitted: (_) => _valider(),
-            ),
-            const SizedBox(height: 16),
-            ElevatedButton(onPressed: _valider, child: const Text('Valider')),
-          ],
+              const SizedBox(height: 20),
+              TextField(
+                controller: _controleur,
+                focusNode: _focus,
+                autofocus: true,
+                textAlign: TextAlign.center,
+                decoration: const InputDecoration(labelText: 'Ta réponse'),
+                onSubmitted: (_) => _valider(),
+              ),
+              const SizedBox(height: 16),
+              ElevatedButton(
+                style: styleBoutonAccent,
+                onPressed: _valider,
+                child: const Text('Valider'),
+              ),
+            ],
+          ),
         ),
       ),
     );

@@ -48,7 +48,7 @@ class _BoutiqueScreenState extends State<BoutiqueScreen> {
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const Icon(Icons.diamond, size: 20, color: designOr),
+                  Icon(Icons.diamond, size: 20, color: designOr),
                   const SizedBox(width: 6),
                   Text(
                     '${coins()} denier${coins() == 1 ? '' : 's'}',
@@ -65,7 +65,7 @@ class _BoutiqueScreenState extends State<BoutiqueScreen> {
       ),
 
       body: DecoratedBox(
-        decoration: const BoxDecoration(gradient: designGradientFond),
+        decoration: BoxDecoration(gradient: designGradientFond),
         child: ListView(
           padding: const EdgeInsets.all(16),
 
@@ -90,10 +90,7 @@ class _BoutiqueScreenState extends State<BoutiqueScreen> {
                   ),
                   leading: AvatarGlyphe(valeur: article.emoji, taille: 40),
 
-                  title: Text(
-                    article.nom,
-                    style: const TextStyle(color: designNoir),
-                  ),
+                  title: Text(article.nom, style: TextStyle(color: designNoir)),
 
                   subtitle: Text(
                     article.estAvatar
@@ -110,9 +107,7 @@ class _BoutiqueScreenState extends State<BoutiqueScreen> {
                                 backgroundColor: designAccent.withValues(
                                   alpha: 0.15,
                                 ),
-                                labelStyle: const TextStyle(
-                                  color: designOrTexte,
-                                ),
+                                labelStyle: TextStyle(color: designOrTexte),
                                 side: BorderSide.none,
                               )
                             : ElevatedButton(

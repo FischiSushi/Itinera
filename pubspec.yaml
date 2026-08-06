@@ -79,6 +79,11 @@ flutter:
     - assets/chat_pfp.png
     - assets/chat_stickers.png
     - assets/stars_starry_sky_night_182857_3840x2160.jpg
+    - assets/sceaux/
+    - assets/sceaux_rouge/
+    - assets/sceaux_rose/
+    - assets/white sigils/
+    - assets/purple sigils/
 
   # To add assets to your application, add an assets section, like this:
   # assets:

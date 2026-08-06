@@ -25,11 +25,11 @@ const _cheminChatStickers = 'assets/chat_stickers.png';
 // qu'un calcul de grille.
 enum PoseChatStickers {
   oreillesPointues(Rect.fromLTRB(0.77, 0.06, 0.99, 0.20)),
-  appareilPhoto(Rect.fromLTRB(0.015, 0.335, 0.205, 0.425)),
-  yinYang(Rect.fromLTRB(0.76, 0.30, 0.99, 0.44)),
+  appareilPhoto(Rect.fromLTRB(0.0041, 0.3328, 0.1848, 0.4389)),
+  yinYang(Rect.fromLTRB(0.7473, 0.3160, 0.9647, 0.4437)),
   boule(Rect.fromLTRB(0.775, 0.46, 0.975, 0.535)),
-  casqueAudio(Rect.fromLTRB(0.595, 0.225, 0.775, 0.30)),
-  visageSimple(Rect.fromLTRB(0.22, 0.905, 0.42, 0.985));
+  casqueAudio(Rect.fromLTRB(0.5612, 0.2115, 0.7459, 0.3200)),
+  visageSimple(Rect.fromLTRB(0.2120, 0.8867, 0.4049, 1.0));
 
   final Rect zone;
 
@@ -111,6 +111,10 @@ class AvatarGlyphe extends StatelessWidget {
 
   Rect _zoneGrilleChatPfp(String valeur) {
     final index = int.tryParse(valeur.substring(prefixeChatPfp.length)) ?? 0;
+
+    final personnalisee = _zonesPersonaliseesChatPfp[index];
+    if (personnalisee != null) return personnalisee;
+
     final colonne = (index % _colonnesChatPfp) / _colonnesChatPfp;
     final ligne = (index ~/ _colonnesChatPfp) / _lignesChatPfp;
     return Rect.fromLTWH(
@@ -121,6 +125,21 @@ class AvatarGlyphe extends StatelessWidget {
     );
   }
 }
+
+// Recadrages sur mesure pour les cases de la grille chat_pfp utilisées en
+// boutique : la case brute (1/5 x 1/8 de la planche) ne centre pas
+// forcément le dessin (texte "Zzz", "OK"...), donc chaque zone ici est la
+// vraie boîte englobante du dessin (détection de forme connexe, carrée,
+// centrée) plutôt que la case entière — voir scratchpad/center_avatars.ps1
+// pour la méthode si de nouveaux avatars sont ajoutés.
+const _zonesPersonaliseesChatPfp = {
+  0: Rect.fromLTRB(0.0353, 0.0187, 0.2228, 0.1418), // chat câlin
+  7: Rect.fromLTRB(0.4063, 0.1392, 0.5938, 0.2632), // chat émerveillé
+  13: Rect.fromLTRB(0.5910, 0.2614, 0.7799, 0.3854), // chat rêveur
+  22: Rect.fromLTRB(0.4076, 0.5049, 0.5938, 0.6271), // chat en boule
+  27: Rect.fromLTRB(0.4063, 0.6333, 0.5924, 0.7556), // chat sauvage
+  37: Rect.fromLTRB(0.4076, 0.8752, 0.5924, 0.9964), // chat classique
+};
 
 final Map<String, Future<ui.Image>> _imagesChargees = {};
 

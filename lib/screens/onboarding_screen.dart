@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
-import 'package:itinera/main.dart' show accentViolet, orAntique, texteAttenue, texteClair;
+import 'package:itinera/main.dart' show accentViolet, orAntique;
+import 'package:itinera/design/palette.dart';
+import 'package:itinera/design/widgets.dart';
 
 const _onboardingVuKey = 'onboardingVu';
 
@@ -33,14 +35,16 @@ const _pages = [
     icone: Icons.auto_stories,
     couleur: accentViolet,
     titre: 'Bienvenue dans Itinera',
-    texte: 'Apprends le latin pas à pas : vocabulaire, grammaire, textes '
+    texte:
+        'Apprends le latin pas à pas : vocabulaire, grammaire, textes '
         'et exercices, organisés comme ton année scolaire.',
   ),
   _PageOnboarding(
     icone: Icons.local_fire_department,
     couleur: Colors.orange,
     titre: 'Ta série',
-    texte: 'Chaque jour où tu révises au moins une carte de vocabulaire '
+    texte:
+        'Chaque jour où tu révises au moins une carte de vocabulaire '
         'compte pour ta série. Reviens régulièrement pour la faire grandir '
         '— un rappel quotidien peut t\'aider (réglable dans Paramètres).',
   ),
@@ -48,7 +52,8 @@ const _pages = [
     icone: Icons.diamond,
     couleur: orAntique,
     titre: 'Deniers et boutique',
-    texte: 'Réussis des révisions et débloque des succès pour gagner des '
+    texte:
+        'Réussis des révisions et débloque des succès pour gagner des '
         'deniers. Dépense-les dans la boutique pour changer d\'avatar ou '
         'protéger ta série avec un gel.',
   ),
@@ -56,7 +61,8 @@ const _pages = [
     icone: Icons.emoji_events,
     couleur: accentViolet,
     titre: 'Succès et progression',
-    texte: 'Consulte tes succès et tes statistiques à tout moment depuis '
+    texte:
+        'Consulte tes succès et tes statistiques à tout moment depuis '
         'l\'onglet Plus. Prêt à commencer ?',
   ),
 ];
@@ -90,7 +96,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       _terminer();
       return;
     }
-    _controleur.nextPage(duration: const Duration(milliseconds: 250), curve: Curves.easeOut);
+    _controleur.nextPage(
+      duration: const Duration(milliseconds: 250),
+      curve: Curves.easeOut,
+    );
   }
 
   @override
@@ -98,78 +107,92 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     final derniere = _index == _pages.length - 1;
 
     return Scaffold(
-      body: SafeArea(
-        child: Column(
-          children: [
-            Align(
-              alignment: Alignment.topRight,
-              child: TextButton(
-                onPressed: _terminer,
-                child: Text('Passer', style: TextStyle(color: texteAttenue)),
-              ),
-            ),
-            Expanded(
-              child: PageView.builder(
-                controller: _controleur,
-                itemCount: _pages.length,
-                onPageChanged: (i) => setState(() => _index = i),
-                itemBuilder: (context, i) {
-                  final page = _pages[i];
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 32),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(page.icone, size: 72, color: page.couleur),
-                        const SizedBox(height: 32),
-                        Text(
-                          page.titre,
-                          textAlign: TextAlign.center,
-                          style: const TextStyle(
-                            fontSize: 22,
-                            fontWeight: FontWeight.bold,
-                            color: texteClair,
-                          ),
-                        ),
-                        const SizedBox(height: 16),
-                        Text(
-                          page.texte,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: 15, color: texteAttenue, height: 1.4),
-                        ),
-                      ],
-                    ),
-                  );
-                },
-              ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                for (var i = 0; i < _pages.length; i++)
-                  AnimatedContainer(
-                    duration: const Duration(milliseconds: 200),
-                    margin: const EdgeInsets.symmetric(horizontal: 4),
-                    width: i == _index ? 20 : 8,
-                    height: 8,
-                    decoration: BoxDecoration(
-                      color: i == _index ? accentViolet : texteAttenue.withValues(alpha: 0.3),
-                      borderRadius: BorderRadius.circular(4),
-                    ),
+      backgroundColor: designFond,
+      body: DecoratedBox(
+        decoration: BoxDecoration(gradient: designGradientFond),
+        child: SafeArea(
+          child: Column(
+            children: [
+              Align(
+                alignment: Alignment.topRight,
+                child: TextButton(
+                  onPressed: _terminer,
+                  child: Text(
+                    'Passer',
+                    style: TextStyle(color: Colors.white70),
                   ),
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.all(24),
-              child: SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: _suivant,
-                  child: Text(derniere ? 'Commencer' : 'Suivant'),
                 ),
               ),
-            ),
-          ],
+              Expanded(
+                child: PageView.builder(
+                  controller: _controleur,
+                  itemCount: _pages.length,
+                  onPageChanged: (i) => setState(() => _index = i),
+                  itemBuilder: (context, i) {
+                    final page = _pages[i];
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 32),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(page.icone, size: 72, color: page.couleur),
+                          const SizedBox(height: 32),
+                          Text(
+                            page.titre,
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
+                              fontSize: 22,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                          ),
+                          const SizedBox(height: 16),
+                          Text(
+                            page.texte,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 15,
+                              color: Colors.white70,
+                              height: 1.4,
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  for (var i = 0; i < _pages.length; i++)
+                    AnimatedContainer(
+                      duration: const Duration(milliseconds: 200),
+                      margin: const EdgeInsets.symmetric(horizontal: 4),
+                      width: i == _index ? 20 : 8,
+                      height: 8,
+                      decoration: BoxDecoration(
+                        color: i == _index
+                            ? accentViolet
+                            : Colors.white70.withValues(alpha: 0.3),
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                    ),
+                ],
+              ),
+              Padding(
+                padding: const EdgeInsets.all(24),
+                child: SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    style: styleBoutonAccent,
+                    onPressed: _suivant,
+                    child: Text(derniere ? 'Commencer' : 'Suivant'),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
