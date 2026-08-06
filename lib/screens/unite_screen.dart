@@ -58,13 +58,17 @@ class _UniteScreenState extends State<UniteScreen> {
   List<String> get unites =>
       _vocabulaireVolume.map((mot) => mot.unite).toSet().toList();
 
+  // Volontairement PAS limités à widget.unite, contrairement à `unites` :
+  // les dates d'échéance FSRS ne connaissent pas les volumes, réviser sur
+  // "ce qui est dû aujourd'hui" doit donc rester global à tout le
+  // vocabulaire, peu importe l'année affichée.
   int compterARevoir() {
     final maintenant = DateTime.now().toUtc();
-    return _vocabulaireVolume.where((mot) => mot.estDu(maintenant)).length;
+    return vocabulaire.where((mot) => mot.estDu(maintenant)).length;
   }
 
   int compterNouveaux() {
-    return _vocabulaireVolume.where((mot) => mot.estNouveau).length;
+    return vocabulaire.where((mot) => mot.estNouveau).length;
   }
 
   int compterAppris() {
@@ -73,7 +77,7 @@ class _UniteScreenState extends State<UniteScreen> {
 
   List<Vocabulaire> vocabulaireARevoir() {
     final maintenant = DateTime.now().toUtc();
-    return _vocabulaireVolume.where((mot) => mot.estDu(maintenant)).toList();
+    return vocabulaire.where((mot) => mot.estDu(maintenant)).toList();
   }
 
   // Petit bouton en forme de pastille arrondie, même style que le bouton
