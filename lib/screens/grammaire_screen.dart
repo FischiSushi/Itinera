@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import 'package:itinera/grammaire_tableaux_data.dart';
-import 'package:itinera/main.dart';
 import 'package:itinera/design/palette.dart';
 import 'package:itinera/design/widgets.dart';
 import 'package:itinera/screens/declinaisons_screen.dart';
@@ -39,13 +38,10 @@ Widget _celluleFormeConjugaison(String forme, String radical) {
   return Text.rich(
     TextSpan(
       children: [
-        TextSpan(text: radical),
+        TextSpan(text: radical, style: TextStyle(color: designNoir)),
         TextSpan(
           text: terminaison,
-          style: const TextStyle(
-            color: accentViolet,
-            fontWeight: FontWeight.bold,
-          ),
+          style: TextStyle(color: designAccent, fontWeight: FontWeight.bold),
         ),
       ],
     ),
@@ -55,58 +51,58 @@ Widget _celluleFormeConjugaison(String forme, String radical) {
 Widget tableauConjugaison(Conjugaison conj) {
   final radical = _radicalCommunConjugaison(conj.present);
 
-  return Card(
-    child: Padding(
-      padding: const EdgeInsets.all(16),
+  return CarteDesign(
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
 
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-
-        children: [
-          Text(
-            conj.titre,
-            style: const TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+      children: [
+        Text(
+          conj.titre,
+          style: TextStyle(
+            fontSize: 17,
+            fontWeight: FontWeight.bold,
+            color: designNoir,
           ),
+        ),
 
-          const SizedBox(height: 4),
+        const SizedBox(height: 4),
 
-          Text(
-            '${conj.tempsPrimitifs} « ${conj.traduction} »',
-            style: const TextStyle(color: texteAttenue),
-          ),
+        Text(
+          '${conj.tempsPrimitifs} « ${conj.traduction} »',
+          style: TextStyle(color: designNoir.withValues(alpha: 0.6)),
+        ),
 
-          const SizedBox(height: 12),
+        const SizedBox(height: 12),
 
-          Table(
-            columnWidths: const {
-              0: FlexColumnWidth(1.3),
-              1: FlexColumnWidth(1),
-            },
+        Table(
+          columnWidths: const {
+            0: FlexColumnWidth(1.3),
+            1: FlexColumnWidth(1),
+          },
 
-            children: [
-              for (final personne in personnesLatines)
-                TableRow(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 4),
-                      child: Text(
-                        personne,
-                        style: const TextStyle(color: texteAttenue),
-                      ),
+          children: [
+            for (final personne in personnesLatines)
+              TableRow(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 4),
+                    child: Text(
+                      personne,
+                      style: TextStyle(color: designNoir.withValues(alpha: 0.6)),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 4),
-                      child: _celluleFormeConjugaison(
-                        conj.present[personne]!,
-                        radical,
-                      ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 4),
+                    child: _celluleFormeConjugaison(
+                      conj.present[personne]!,
+                      radical,
                     ),
-                  ],
-                ),
-            ],
-          ),
-        ],
-      ),
+                  ),
+                ],
+              ),
+          ],
+        ),
+      ],
     ),
   );
 }
@@ -117,58 +113,58 @@ Widget tableauImparfait(Conjugaison conj) {
 
   final radical = _radicalCommunConjugaison(imparfait);
 
-  return Card(
-    child: Padding(
-      padding: const EdgeInsets.all(16),
+  return CarteDesign(
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
 
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-
-        children: [
-          Text(
-            conj.titre,
-            style: const TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+      children: [
+        Text(
+          conj.titre,
+          style: TextStyle(
+            fontSize: 17,
+            fontWeight: FontWeight.bold,
+            color: designNoir,
           ),
+        ),
 
-          const SizedBox(height: 4),
+        const SizedBox(height: 4),
 
-          Text(
-            '${conj.tempsPrimitifs} « ${conj.traduction} »',
-            style: const TextStyle(color: texteAttenue),
-          ),
+        Text(
+          '${conj.tempsPrimitifs} « ${conj.traduction} »',
+          style: TextStyle(color: designNoir.withValues(alpha: 0.6)),
+        ),
 
-          const SizedBox(height: 12),
+        const SizedBox(height: 12),
 
-          Table(
-            columnWidths: const {
-              0: FlexColumnWidth(1.3),
-              1: FlexColumnWidth(1),
-            },
+        Table(
+          columnWidths: const {
+            0: FlexColumnWidth(1.3),
+            1: FlexColumnWidth(1),
+          },
 
-            children: [
-              for (final personne in personnesLatines)
-                TableRow(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 4),
-                      child: Text(
-                        personne,
-                        style: const TextStyle(color: texteAttenue),
-                      ),
+          children: [
+            for (final personne in personnesLatines)
+              TableRow(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 4),
+                    child: Text(
+                      personne,
+                      style: TextStyle(color: designNoir.withValues(alpha: 0.6)),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 4),
-                      child: _celluleFormeConjugaison(
-                        imparfait[personne]!,
-                        radical,
-                      ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 4),
+                    child: _celluleFormeConjugaison(
+                      imparfait[personne]!,
+                      radical,
                     ),
-                  ],
-                ),
-            ],
-          ),
-        ],
-      ),
+                  ),
+                ],
+              ),
+          ],
+        ),
+      ],
     ),
   );
 }
