@@ -6,6 +6,7 @@ import 'package:itinera/design/palette.dart';
 import 'package:itinera/design/widgets.dart';
 import 'package:itinera/screens/ajouter_vocabulaire_screen.dart';
 import 'package:itinera/screens/recherche_screen.dart';
+import 'package:itinera/screens/selecteur_unite_screen.dart';
 import 'package:itinera/screens/vocabulaire_liste_screen.dart';
 import 'package:itinera/screens/vocabulaire_screen.dart';
 
@@ -14,7 +15,12 @@ import 'package:itinera/screens/vocabulaire_screen.dart';
 // ============================================================
 
 class UniteScreen extends StatefulWidget {
-  const UniteScreen({super.key});
+  // Un préfixe de volume (ex. 'Vol. I'), comme AccueilScreen.unite — le
+  // vocabulaire de cette année s'affiche seul, avec un sélecteur pour
+  // changer d'année (voir SelecteurUniteScreen).
+  final String unite;
+
+  const UniteScreen({super.key, this.unite = 'Vol. I'});
 
   @override
   State<UniteScreen> createState() => _UniteScreenState();
@@ -46,21 +52,64 @@ class _UniteScreenState extends State<UniteScreen> {
     }
   }
 
+  List<Vocabulaire> get _vocabulaireVolume =>
+      vocabulaire.where((mot) => volumeDe(mot.unite) == widget.unite).toList();
+
   List<String> get unites =>
-      vocabulaire.map((mot) => mot.unite).toSet().toList();
+      _vocabulaireVolume.map((mot) => mot.unite).toSet().toList();
 
   int compterARevoir() {
     final maintenant = DateTime.now().toUtc();
-    return vocabulaire.where((mot) => mot.estDu(maintenant)).length;
+    return _vocabulaireVolume.where((mot) => mot.estDu(maintenant)).length;
   }
 
   int compterNouveaux() {
-    return vocabulaire.where((mot) => mot.estNouveau).length;
+    return _vocabulaireVolume.where((mot) => mot.estNouveau).length;
+  }
+
+  int compterAppris() {
+    return _vocabulaireVolume.where((mot) => !mot.estNouveau).length;
   }
 
   List<Vocabulaire> vocabulaireARevoir() {
     final maintenant = DateTime.now().toUtc();
-    return vocabulaire.where((mot) => mot.estDu(maintenant)).toList();
+    return _vocabulaireVolume.where((mot) => mot.estDu(maintenant)).toList();
+  }
+
+  // Petit bouton en forme de pastille arrondie, même style que le bouton
+  // « Changer d'année » d'AccueilScreen — posé sur le même panneau crème,
+  // donc même traitement visuel pour rester cohérent entre les deux écrans.
+  Widget _boutonPastille({
+    required IconData icone,
+    required String libelle,
+    required VoidCallback onTap,
+  }) {
+    return Material(
+      color: designNoir.withValues(alpha: 0.06),
+      borderRadius: BorderRadius.circular(20),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(20),
+        onTap: onTap,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(icone, size: 16, color: designNoir),
+              const SizedBox(width: 6),
+              Text(
+                libelle,
+                style: TextStyle(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w600,
+                  color: designNoir,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 
   @override
@@ -121,6 +170,72 @@ class _UniteScreenState extends State<UniteScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            anneeDe(widget.unite).toUpperCase(),
+                            style: TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                              color: designAccent,
+                              letterSpacing: 1.2,
+                            ),
+                          ),
+                        ),
+                        _boutonPastille(
+                          icone: Icons.swap_horiz,
+                          libelle: 'Changer d\'année',
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    const SelecteurUniteScreen(
+                                      mode: ModeSelecteurUnite.vocabulaire,
+                                    ),
+                              ),
+                            );
+                          },
+                        ),
+                      ],
+                    ),
+
+                    if (_vocabulaireVolume.isNotEmpty) ...[
+                      const SizedBox(height: 14),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(8),
+                              child: LinearProgressIndicator(
+                                value:
+                                    compterAppris() / _vocabulaireVolume.length,
+                                minHeight: 8,
+                                backgroundColor: designNoir.withValues(
+                                  alpha: 0.1,
+                                ),
+                                valueColor: AlwaysStoppedAnimation(
+                                  designAccent,
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 10),
+                          Text(
+                            '${compterAppris()}/${_vocabulaireVolume.length} mots',
+                            style: TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                              color: designNoir.withValues(alpha: 0.6),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+
+                    const SizedBox(height: 16),
+
                     InkWell(
                       onTap: () =>
                           setState(() => _actionsOuvertes = !_actionsOuvertes),
